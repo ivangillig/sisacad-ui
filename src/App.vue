@@ -25,6 +25,8 @@ import AppMenu from './AppMenu.vue';
 import AppConfig from './AppConfig.vue';
 import AppFooter from './AppFooter.vue';
 
+import axios from 'axios'; //agregado para login
+
 export default {
     emits: ['change-theme'],
     data() {
@@ -39,6 +41,46 @@ export default {
                     items: [{
                         label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
                     }]
+                },
+                {
+                    label: 'Alumnos',
+                    items: [
+                        {
+                            label: 'ABM', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+						{label: 'Listado Alumnos', icon: 'pi pi-fw pi-filter-fill', to: '/alumnos'},
+						{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+                            ]
+                        },
+						{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
+						{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
+					]
+                },
+                {
+                    label: 'Docentes',
+                    items: [
+                        {
+                            label: 'Gestion de Docentes', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+						{label: 'ABM Docentes', icon: 'pi pi-fw pi-user-edit', to: '/docentes'},
+                                
+                            ]
+                        },
+					]
+                },
+                {
+                    label: 'Administracion',
+                    items: [
+                        {
+                            label: 'ABM', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
+						{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+                            ]
+                        },
+						{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
+						{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
+					]
                 },
 				{
 					label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
@@ -78,7 +120,15 @@ export default {
 				{
 					label: 'Pages', icon: 'pi pi-fw pi-clone',
 					items: [
+                        {
+                            label: 'Alumnos', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+						{label: 'ABM Alumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
+                                
+                            ]
+                        },
 						{label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/crud'},
+						{label: 'CrudAlumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
 						{label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/timeline'},
                         {label: 'Landing', icon: 'pi pi-fw pi-globe', to: '/landing'},
                         {label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login'},
@@ -92,7 +142,7 @@ export default {
                     label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
+                            label: 'Submenu 15', icon: 'pi pi-fw pi-bookmark',
                             items: [
                                 {
                                     label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
@@ -133,13 +183,6 @@ export default {
                         }
                     ]
                 },
-                {
-                    label: 'Get Started', 
-                    items: [
-                        {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
-                        {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sakai-vue"}}
-                    ]
-                }
             ]
         }
     },
@@ -245,7 +288,19 @@ export default {
         'AppMenu': AppMenu,
         'AppConfig': AppConfig,
         'AppFooter': AppFooter,
+    },
+    beforeCreate(){
+        this.$store.commit('initializeStore')
+
+        const token = this.$store.state.token
+
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = "Token " + token
+        } else {
+            axios.defaults.headers.common['Authorization'] = ''
+        }
     }
+
 }
 </script>
 

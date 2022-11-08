@@ -26,7 +26,7 @@
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></button>
+                        <Button label="Sign In" v-on:click="login()" class="w-full p-3 text-xl"></button>
                     </div>
                 </div>
             </div>
@@ -35,14 +35,57 @@
 </template>
 
 <script>
+import clienteAxios from '../config/axios'
 export default {
     data() {
         return {
             email: '',
             password: '',
-            checked: false
+            checked: false,
+            errors: []
         }
     },
+        methods: {
+            login() {
+                const formData = {
+                    email: this.email,
+                    password: this.password
+                }
+
+                clienteAxios.post('auth/login/', formData).then(response =>{
+                    console.log(response)
+
+                    const token = response.data.key
+
+                    this.$store.commit('setToken', token)
+
+                    clienteAxios.defaults.headers.common['Authorization'] = "Token " + token
+
+                    localStorage.setItem("token", token)
+
+                    this.$router.push('/')
+
+                }).catch(error => {
+                    if( error.response) {
+                        for (const property in error.response.data) {
+                            this.errors.push(`${property}: ${error.response.data[property]}`)
+                        }
+                        console.log(error.response.data)
+                    } else if (error.message) {
+                        console.log(error.message)
+                    } else {
+                        console.log(error)
+                    }
+                })
+
+            },
+            setAuthenticated(status) {
+                this.authenticated = status;
+            },
+            logout() {
+                this.authenticated = false;
+            }
+        },
     computed: {
         logoColor() {
             if (this.$appState.darkTheme) return 'white';

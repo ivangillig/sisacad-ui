@@ -114,6 +114,31 @@ const routes = [
                 name: 'crud',
                 component: () => import('./pages/CrudDemo.vue')
             },
+            // {
+            //     path: '/alumnos',
+            //     name: 'crudalumnos',
+            //     component: () => import('./pages/CrudAlumnos.vue')
+            // },
+            // {
+            //     path: '/alumnos/nuevoalumno',
+            //     name: 'nuevoalumno',
+            //     component: () => import('./pages/alumnos/NuevoAlumno.vue')
+            // },
+            // {
+            //     path: '/alumnos/pagocuota',
+            //     name: 'pagocuota',
+            //     component: () => import('./pages/PagoCuota.vue')
+            // },
+            // {
+            //     path: '/docentes',
+            //     name: 'cruddocentes',
+            //     component: () => import('./pages/CrudDocentes.vue')
+            // },
+            {
+                path: '/administracion/niveles',
+                name: 'crudnivel',
+                component: () => import('./pages/administracion/CrudNivel.vue')
+            },
             {
                 path: '/timeline',
                 name: 'timeline',
