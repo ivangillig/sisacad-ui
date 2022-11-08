@@ -1,4 +1,5 @@
 <template>
+    <Toast/>
     <div class="surface-0 flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="grid justify-content-center p-2 lg:p-0" style="min-width:80%">
             <div class="col-12 mt-5 xl:mt-0 text-center">
@@ -67,7 +68,10 @@ export default {
 
                 }).catch(error => {
                     if( error.response) {
+                        
                         for (const property in error.response.data) {
+                            this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
+
                             this.errors.push(`${property}: ${error.response.data[property]}`)
                         }
                         console.log(error.response.data)
