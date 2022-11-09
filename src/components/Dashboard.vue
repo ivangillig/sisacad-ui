@@ -296,6 +296,7 @@ export default {
         else {
             this.applyLightTheme();
         }
+
 	},
 	beforeUnmount() {
         EventBus.off('change-theme', this.themeChangeListener );

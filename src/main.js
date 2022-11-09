@@ -115,7 +115,7 @@ app.use(PrimeVue, { ripple: true, inputStyle: 'outlined' });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
-app.use(store); //agregado
+app.use(store); // localStorage
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

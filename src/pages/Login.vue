@@ -61,6 +61,15 @@ export default {
 
                     clienteAxios.defaults.headers.common['Authorization'] = "Token " + token
 
+                    clienteAxios.get('auth/user/').then(response =>{
+                        if(response.status == 200){
+
+                            console.log(response)
+                            localStorage.setItem("user-info", JSON.stringify(response.data))
+                        }
+
+                    })
+
                     localStorage.setItem("token", token)
 
                     this.$router.push('/')

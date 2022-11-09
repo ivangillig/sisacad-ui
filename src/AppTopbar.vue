@@ -32,8 +32,15 @@
 					<span>Profile</span>
 				</button>
 			</li>
+			<li>
+				<button class="p-link layout-topbar-button" @click="logout">
+					<i class="pi pi-power-off"></i>
+					<span>Cerrar Sesión</span>
+				</button>
+			</li>
 		</ul>
 	</div>
+
 </template>
 
 <script>
@@ -47,6 +54,10 @@ export default {
         },
 		topbarImage() {
 			return this.$appState.darkTheme ? 'images/logo-white.svg' : 'images/logo-dark.svg';
+		},
+		logout() {
+			localStorage.clear();
+			this.$router.push('/login')
 		}
     },
 	computed: {
