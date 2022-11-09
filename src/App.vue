@@ -44,20 +44,6 @@ export default {
                 },
                 /**
                 {
-                    label: 'Alumnos',
-                    items: [
-                        {
-                            label: 'ABM', icon: 'pi pi-fw pi-user-edit',
-                            items: [
-						{label: 'Listado Alumnos', icon: 'pi pi-fw pi-filter-fill', to: '/alumnos'},
-						{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
-                            ]
-                        },
-						{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
-						{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
-					]
-                },
-                {
                     label: 'Docentes',
                     items: [
                         {
@@ -74,9 +60,23 @@ export default {
                     label: 'Administracion',
                     items: [
                         {
-                            label: 'ABM', icon: 'pi pi-fw pi-user-edit',
+                            label: 'ABM Secretaría', icon: 'pi pi-fw pi-user-edit',
                             items: [
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
+						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+                            ]
+                        },
+						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
+						//{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
+					]
+                },
+                {
+                    label: 'Alumnos',
+                    items: [
+                        {
+                            label: 'ABM Alumnos', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+						{label: 'Listado Alumnos', icon: 'pi pi-fw pi-filter-fill', to: '/alumnos'},
 						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
                             ]
                         },

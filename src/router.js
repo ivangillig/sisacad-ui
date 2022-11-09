@@ -116,11 +116,11 @@ const routes = [
                 name: 'crud',
                 component: () => import('./pages/CrudDemo.vue')
             },
-            // {
-            //     path: '/alumnos',
-            //     name: 'crudalumnos',
-            //     component: () => import('./pages/CrudAlumnos.vue')
-            // },
+            {
+                path: '/alumnos',
+                name: 'crudalumnos',
+                component: () => import('./pages/alumnos/CrudAlumnos.vue')
+            },
             // {
             //     path: '/alumnos/nuevoalumno',
             //     name: 'nuevoalumno',

@@ -2,7 +2,7 @@
 	<div class="layout-topbar">
 		<router-link to="/" class="layout-topbar-logo">
 			<img alt="Logo" :src="topbarImage()" />
-			<span>SAKAI</span>
+			<span>SisAcad | JIF</span>
 		</router-link>
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>
@@ -53,7 +53,7 @@ export default {
             this.$emit('topbar-menu-toggle', event);
         },
 		topbarImage() {
-			return this.$appState.darkTheme ? 'images/logo-white.svg' : 'images/logo-dark.svg';
+			return this.$appState.darkTheme ? 'images/logo-jif.png' : 'images/logo-jif.png'; //cambiar un icono a contraste
 		},
 		logout() {
 			localStorage.clear();
