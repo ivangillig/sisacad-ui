@@ -78,13 +78,13 @@
 					<img :src="'images/product/' + product.image" :alt="product.image" v-if="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
 					<div class="field">
 						<label for="name">Nombre</label>
-						<InputText id="name" v-model.trim="product.nombre" required="true" autofocus :class="{'p-invalid': submitted && !product.nombre}" />
-						<small class="p-invalid" v-if="submitted && !product.nombre">El nombre es obligatorio.</small>
+						<InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{'p-invalid': submitted && !product.name}" />
+						<small class="p-invalid" v-if="submitted && !product.name">El nombre es obligatorio.</small>
 					</div>
 
 					<div class="field">
 						<label for="estado" class="mb-3">Estado</label>
-						<Dropdown id="estado" v-model="product.estado" :options="statuses" optionLabel="label" placeholder="Seleccione un estado">
+						<Dropdown id="estado" v-model="product.state" :options="statuses" optionLabel="label" placeholder="Seleccione un estado">
 							<template #value="slotProps">
 								<div v-if="slotProps.value && slotProps.value.value">
 									<span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
@@ -108,7 +108,7 @@
 				<Dialog v-model:visible="deleteProductDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="product">Está seguro de que desea eliminarlo?<b>{{product.name}}</b>?</span>
+						<span v-if="product">Está seguro de que desea eliminarlo?</span>
 					</div>
 					<template #footer>
 						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false"/>
@@ -179,9 +179,9 @@ export default {
 		},
 		saveProduct() {
 			this.submitted = true;
-			if (this.product.nombre.trim()) {
+			if (this.product.name.trim()) {
 				if (this.product.id) {
-					this.product.estado = this.product.estado.value ? this.product.estado.value: this.product.estado;
+					this.product.state = this.product.state.value ? this.product.state.value: this.product.state;
 					this.products[this.findIndexById(this.product.id)] = this.product;
 
 					this.administracionApi.updateNivel(this.product.id, this.product).then(data => {
@@ -197,7 +197,7 @@ export default {
 			
 				}
 				else {
-					this.product.estado = this.product.estado ? this.product.estado.value : 'Activo';
+					this.product.state = this.product.state ? this.product.state.value : 'Activo';
 					this.products.push(this.product);
 
 					this.administracionApi.newNivel(this.product).then(data => {

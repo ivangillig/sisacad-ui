@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import App from './App.vue';
+import store from '../store';
 
 const routes = [
     {
@@ -10,7 +11,8 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import('./components/Dashboard.vue')
+                component: () => import('./components/Dashboard.vue'),
+                meta: { requireLogin: true}
             },
             {
                 path: '/formlayout',
@@ -137,7 +139,8 @@ const routes = [
             {
                 path: '/administracion/niveles',
                 name: 'crudnivel',
-                component: () => import('./pages/administracion/CrudNivel.vue')
+                component: () => import('./pages/administracion/CrudNivel.vue'),
+                meta: { requireLogin: true}
             },
             {
                 path: '/timeline',
@@ -197,5 +200,14 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+
+    if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated){
+        next('/login')
+    }else{
+        next()
+    }
+})
 
 export default router;

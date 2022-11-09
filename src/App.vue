@@ -42,6 +42,7 @@ export default {
                         label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
                     }]
                 },
+                /**
                 {
                     label: 'Alumnos',
                     items: [
@@ -68,6 +69,7 @@ export default {
                         },
 					]
                 },
+                */
                 {
                     label: 'Administracion',
                     items: [
@@ -75,13 +77,14 @@ export default {
                             label: 'ABM', icon: 'pi pi-fw pi-user-edit',
                             items: [
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
-						{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
                             ]
                         },
-						{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
-						{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
+						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
+						//{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
 					]
                 },
+                /*
 				{
 					label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
 					items: [
@@ -117,11 +120,14 @@ export default {
                         {label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://www.primefaces.org/primeflex/', target: '_blank'},
                     ]
                 },
+                */
+
 				{
 					label: 'Pages', icon: 'pi pi-fw pi-clone',
 					items: [
-                        {
-                            label: 'Alumnos', icon: 'pi pi-fw pi-user-edit',
+                         /*
+                         {
+                           label: 'Alumnos', icon: 'pi pi-fw pi-user-edit',
                             items: [
 						{label: 'ABM Alumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
                                 
@@ -130,8 +136,9 @@ export default {
 						{label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/crud'},
 						{label: 'CrudAlumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
 						{label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/timeline'},
-                        {label: 'Landing', icon: 'pi pi-fw pi-globe', to: '/landing'},
-                        {label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login'},
+                        {label: 'Landing', icon: 'pi pi-fw pi-globe', to: '/landing'},*/
+                        {label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login'},]},
+                        /*
                         {label: 'Error', icon: 'pi pi-fw pi-times-circle', to: '/error'},
                         {label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', to: '/notfound'},
                         {label: 'Access Denied', icon: 'pi pi-fw pi-lock', to: '/access'},
@@ -183,6 +190,7 @@ export default {
                         }
                     ]
                 },
+                */
             ]
         }
     },
