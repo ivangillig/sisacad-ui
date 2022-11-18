@@ -121,11 +121,28 @@ const routes = [
                 name: 'crudalumnos',
                 component: () => import('./pages/alumnos/CrudAlumnos.vue')
             },
-            // {
-            //     path: '/alumnos/nuevoalumno',
-            //     name: 'nuevoalumno',
-            //     component: () => import('./pages/alumnos/NuevoAlumno.vue')
-            // },
+            {
+                path: '/alumnos/nuevoalumno',
+                component: () => import('./pages/alumnos/AddStudent.vue'),
+                children: [
+                    {
+                        path: '',
+                        component: () => import('./pages/alumnos/steps/PersonalInformation.vue')
+                    },
+                    {
+                        path: '/steps/seat',
+                        component: () => import('./pages/alumnos/steps/SeatDemo.vue')
+                    },
+                    {
+                        path: '/steps/payment',
+                        component: () => import('./pages/alumnos/steps/PaymentDemo.vue')
+                    },
+                    {
+                        path: '/steps/confirmation',
+                        component: () => import('./pages/alumnos/steps/ConfirmationDemo.vue')
+                    },
+                ],
+            },
             // {
             //     path: '/alumnos/pagocuota',
             //     name: 'pagocuota',

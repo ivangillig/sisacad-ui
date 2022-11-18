@@ -183,9 +183,10 @@ export default {
 	},
 	methods: {
 		openNew() {
-			this.product = {};
-			this.submitted = false;
-			this.productDialog = true;
+			this.$router.replace({ path: "/alumnos/nuevoalumno" });
+			// this.product = {};
+			// this.submitted = false;
+			// this.productDialog = true;
 		},
 		hideDialog() {
 			this.productDialog = false;
