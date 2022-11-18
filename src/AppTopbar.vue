@@ -56,7 +56,8 @@ export default {
 			return this.$appState.darkTheme ? 'images/logo-jif.png' : 'images/logo-jif.png'; //cambiar un icono a contraste
 		},
 		logout() {
-			localStorage.clear();
+			console.log('saliendo')
+			this.$store.commit('removeToken')
 			this.$router.push('/login')
 		}
     },

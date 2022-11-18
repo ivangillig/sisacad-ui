@@ -101,6 +101,7 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 
 import CodeHighlight from './AppCodeHighlight';
 import BlockViewer from './BlockViewer';
+// import clienteAxios from './config/axios';
 
 router.beforeEach(function(to, from, next) {
     window.scrollTo(0, 0);
@@ -116,6 +117,9 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
 app.use(store); // localStorage
+
+store.commit('initializeStore')
+
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

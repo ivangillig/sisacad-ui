@@ -65,8 +65,11 @@ export default {
                     clienteAxios.get('auth/user/').then(response =>{
                         if(response.status == 200){
 
-                            console.log(response)
-                            localStorage.setItem("user-info", JSON.stringify(response.data))
+                            const body = response.data
+                            
+                            localStorage.setItem('email', body.email)
+                            localStorage.setItem('first name', body.first_name)
+                            localStorage.setItem('last name', body.first_lastname)
                         }
 
                     })
@@ -80,10 +83,7 @@ export default {
                         
                         for (const property in error.response.data) {
                             this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
-
-                            //this.errors.push(`${property}: ${error.response.data[property]}`)
                         }
-                        //console.log(error.response.data)
                     } else if (error.message) {
                         console.log(error.message)
                     } else {

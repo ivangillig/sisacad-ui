@@ -298,8 +298,8 @@ export default {
         'AppFooter': AppFooter,
     },
     beforeCreate(){
-        this.$store.commit('initializeStore')
-
+        //this.$store.commit('initializeStore')
+        
         const token = this.$store.state.token
 
         if (token) {

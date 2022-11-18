@@ -1,5 +1,6 @@
 // import axios from 'axios';
-import clienteAxios from "../config/axios";
+import clienteAxios from '../config/axios'
+
 
 export default class AdministracionApi {
 

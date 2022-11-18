@@ -203,8 +203,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-    if (to.matched.some(record => record.meta.requireLogin)){
-        console.log('pagina que requiere login')
+    if (to.matched.some(record => record.meta.requireLogin)){        
         if ( !store.state.isAuthenticated ){
             next('/login')
         }else{
