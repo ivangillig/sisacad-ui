@@ -47,7 +47,12 @@
 					<Column field="estado" header="Estado" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">Estado</span>
-							{{slotProps.data.state}}
+							<div v-if="slotProps.data.state === true">
+								Activo
+							</div>
+							<div v-else>
+								Inactivo
+							</div>
 						</template>
 					</Column>
 					
@@ -82,7 +87,7 @@
 						<small class="p-invalid" v-if="submitted && !product.name">El nombre es obligatorio.</small>
 					</div>
 
-					<div class="field">
+					<!-- <div class="field">
 						<label for="estado" class="mb-3">Estado</label>
 						<Dropdown id="estado" v-model="product.state" :options="statuses" optionLabel="label" placeholder="Seleccione un estado">
 							<template #value="slotProps">
@@ -97,7 +102,7 @@
 								</span>
 							</template>
 						</Dropdown>
-					</div>
+					</div> -->
 					
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
@@ -197,7 +202,7 @@ export default {
 			
 				}
 				else {
-					this.product.state = this.product.state ? this.product.state.value : 'Activo';
+					//this.product.state = this.product.state ? this.product.state.value : 'Activo';
 					this.products.push(this.product);
 
 					this.administracionApi.newNivel(this.product).then(data => {
