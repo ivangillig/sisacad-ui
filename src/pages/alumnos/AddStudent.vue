@@ -19,20 +19,20 @@ export default {
 			return {
 				items: [
 				{
-						label: 'Información Institucional',
-						to: '/'
-					},
-					{
 						label: 'Información Personal',
-						to: '/steps/seat'
+						to: '/alumnos/nuevoalumno'
 					},
 					{
 						label: 'Información Medica',
-						to: '/steps/payment'
+						to: '/steps/informacioninstitucional'
 					},
+					// {
+					// 	label: 'Autorizaciones',
+					// 	to: '/steps/payment'
+					// },
 					{
-						label: 'Autorizaciones',
-						to: '/steps/confirmation'
+						label: 'Registrar',
+						to: '/steps/confirmacion'
 					}
 				],
 				formObject: {}

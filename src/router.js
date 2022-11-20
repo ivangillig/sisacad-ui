@@ -130,16 +130,16 @@ const routes = [
                         component: () => import('./pages/alumnos/steps/PersonalInformation.vue')
                     },
                     {
-                        path: '/steps/seat',
-                        component: () => import('./pages/alumnos/steps/SeatDemo.vue')
+                        path: '/steps/informacioninstitucional',
+                        component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue')
                     },
+                    // {
+                    //     path: '/steps/payment',
+                    //     component: () => import('./pages/alumnos/steps/PaymentDemo.vue')
+                    // },
                     {
-                        path: '/steps/payment',
-                        component: () => import('./pages/alumnos/steps/PaymentDemo.vue')
-                    },
-                    {
-                        path: '/steps/confirmation',
-                        component: () => import('./pages/alumnos/steps/ConfirmationDemo.vue')
+                        path: '/steps/confirmacion',
+                        component: () => import('./pages/alumnos/steps/Confirmation.vue')
                     },
                 ],
             },

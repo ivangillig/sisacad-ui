@@ -1,0 +1,113 @@
+<template>
+
+<div class="col-12 mt-4">
+    <div class="card card-w-title">
+		<h5>Datos Personales</h5>
+
+            <div class="p-fluid formgrid grid mt-5">
+                <div class="field col-12 md:col-3">
+                    <label for="class">Nombre</label>
+                    <b>{{formData.first_name ? formData.first_name : '-'}}</b>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="middle_name">Segundo Nombre</label>
+                    <b>{{formData.middle_name ? formData.middle_name : '-'}}</b>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="first_lastname">Apellido Paterno</label>
+                    <b>{{formData.first_lastname ? formData.first_lastname : '-'}}</b>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="second_lastname">Apellido Materno</label>
+                    <b>{{formData.second_lastname ? formData.second_lastname : '-'}}</b>
+                </div>
+                <div class="field col-3">
+                    <label for="nationality">Nacionalidad</label>
+                    <b>{{formData.nationality ? formData.nationality : '-'}}</b>
+                </div>
+                <div class="field col-3">
+                    <label for="birthdate">Fecha de nacimiento</label>
+                    <b>{{formData.birthdate ? formData.birthdate : '-'}}</b>
+                </div>
+                <div class="field col-6">
+                    <label for="birth_place">Lugar de nacimiento</label>
+                    <b>{{formData.birth_place ? formData.birth_place : '-'}}</b>
+                </div>
+                <div class="field col-3">
+                    <label for="doc_number">DNI</label>
+                    <b>{{formData.doc_number ? formData.doc_number : '-'}}</b>
+                </div>
+                <div class="field col-3">
+                    <label for="gender">Género</label>
+                    <b>{{formData.gender ? formData.gender : '-'}}</b>
+                </div>
+            </div>
+    </div>
+
+    <div class="card card-w-title">
+		<h5>Dirección</h5>
+            <div class="p-fluid formgrid grid mt-5">
+                <div class="field col-3">
+                    <label for="street">Calle</label>
+                    <b>{{formData.street ? formData.street : '-'}}</b>
+                </div>
+                <div class="field col-1">
+                    <label for="number">Nro</label>
+                    <b>{{formData.number ? formData.number : '-'}}</b>
+                </div>
+                <div class="field col-1">
+                    <label for="floor">Piso</label>
+                    <b>{{formData.floor ? formData.floor : '-'}}</b>
+                </div>
+                <div class="field col-1">
+                    <label for="department">Depto</label>
+                    <b>{{formData.department ? formData.department : '-'}}</b>
+                </div>
+                <div class="field col-2">
+                    <label for="city">Ciudad</label>
+                    <b>{{formData.city ? formData.city : '-'}}</b>
+                </div>
+                <div class="field col-2">
+                    <label for="state">Provincia</label>
+                    <b>{{formData.state ? formData.state : '-'}}</b>
+                </div>
+                <div class="field col-2">
+                    <label for="cp">Código Postal</label>
+                    <b>{{formData.cp ? formData.cp : '-'}}</b>
+                </div>
+            </div>
+    </div>
+
+    <div class="card card-w-title">
+        <h5>Institucional</h5>
+            <div class="p-fluid formgrid grid mt-5">
+                <div class="field col-6">
+                    <label for="email">Email Institucional</label>
+                    <b>{{formData.email ? formData.email : '-'}}</b>
+                </div>   
+            </div>
+    </div>
+                    
+                        <div class="grid grid-nogutter justify-content-between">
+                            <Button label="Atrás" @click="prevPage()" icon="pi pi-angle-left"></Button>
+                            <Button label="Registrar Alumno" @click="complete()" icon="pi pi-check" icon-pos="right" class="p-button-success"></Button>
+                        </div>
+</div>     
+</template>
+
+<script>
+    export default {
+        props: {
+            formData: Object
+        },
+        methods: {
+            prevPage() {
+                this.$emit('prev-page', { pageIndex: 2 });
+            },
+            complete() {
+                this.$emit('complete');
+            }
+        },
+    }
+
+</script>

@@ -1,78 +1,148 @@
 <template>
 
-<div class="col-12 mt-4">
-			<div class="card">
-                
-				<div class="p-fluid formgrid grid">
-					<div class="field col-12 md:col-3">
-						<label for="first_name">Primer Nombre</label>
-						<InputText id="first_name" type="text" :class="{'p-invalid': validationErrors.first_name && submitted}"/>
-                        <small v-show="validationErrors.first_name && submitted" class="p-error">El nombre es obligatorio.</small>
-					</div>
-                    <div class="field col-12 md:col-3">
-						<label for="firstname2">Segundo Nombre</label>
-						<InputText id="firstname2" type="text" />
-					</div>
-                    <div class="field col-12 md:col-3">
-						<label for="first_lastname">Apellido Paterno</label>
-						<InputText id="first_lastname" type="text" :class="{'p-invalid': validationErrors.firstname && submitted}" />
-                        <small v-show="validationErrors.first_lastname && submitted" class="p-error">El Apellido es obligatorio.</small>
-					</div>
-					<div class="field col-12 md:col-3">
-						<label for="lastname2">Apellido Materno</label>
-						<InputText id="lastname2" type="text"/>
-					</div>
+    <div class="col-12 mt-4">
+        <div class="card">
+            <h5>Información Personal</h5>
 
-                    <!-- <div class="field col-12 md:col-4">						
-                        <label for="lastname2">Correo Institucional</label>
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon">
-                                <i class="pi pi-inbox"></i>
-                            </span>
-                            <InputText placeholder="E-mail" />
-                        </div>
-                    </div> -->
+            <div class="p-fluid formgrid grid mt-5">
+                <div class="field col-12 md:col-3">
+                    <label for="first_name">Primer Nombre</label>
+                    <InputText id="first_name" v-model="first_name" type="text" :class="{'p-invalid': validationErrors.first_name && submitted}" />
+                    <small v-show="validationErrors.first_name && submitted" class="p-error">El nombre es obligatorio.</small>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="middle_name">Segundo Nombre</label>
+                    <InputText id="middle_name" type="text" v-model="middle_name"/>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="first_lastname">Apellido Paterno</label>
+                    <InputText id="first_lastname" v-model="first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
+                    <small v-show="validationErrors.first_lastname && submitted" class="p-error">El Apellido es obligatorio.</small>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label for="second_lastname">Apellido Materno</label>
+                    <InputText id="second_lastname" type="text" v-model="second_lastname"/>
+                </div>
 
-                    <!-- dni
-                    email personal
-                    lugar de nacimiento
-                    nacionalidad
-                    genero
-                    direccion
-                    barrio
-                    telefono familiar -->
+                <!-- <div class="field col-12 md:col-4">						
+                            <label for="lastname2">Correo Institucional</label>
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon">
+                                    <i class="pi pi-envelope"></i>
+                                </span>
+                                <InputText placeholder="E-mail" />
+                            </div>
+                        </div> -->
+
+                <!-- dni
+                        email personal
+                        lugar de nacimiento
+                        genero
+                        direccion
+                        barrio
+                        telefono familiar -->
+
+                <div class="field col-12 md:col-3">
+                    <label for="nationality">Nacionalidad</label>
+                    <AutoComplete id="nationality" v-model="selectedCountry" :suggestions="filteredCountries"
+                        @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
+                        <template #item="slotProps">
+                            <div class="country-item">
+                                <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" width="18" /> -->
+                                <div class="ml-2">{{slotProps.item.name}}</div>
+                            </div>
+                        </template>
+                    </AutoComplete>
+                </div>
+
+                <div class="field col-12 md:col-3">
+                    <label for="birthdate">Fecha de nacimiento</label>
+                    <Calendar id="birthdate" v-model="birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        :showButtonBar="true" :showIcon="true" />
+                </div>
+
+                <div class="field col-12 md:col-6">
+                    <label for="birth_place">Lugar de nacimiento</label>
+                    <InputText id="birth_place" type="text" v-model="birth_place" />
+                </div>
+
+                <div class="field col-12 md:col-3">
+                    <label for="doc_number">DNI</label>
+                    <InputMask id="doc_number" mask="99.999.999" v-model="doc_number"
+                        :class="{'p-invalid': validationErrors.doc_number && submitted}" />
+                    <small v-show="validationErrors.doc_number && submitted" class="p-error">El DNI es obligatorio.</small>
+                </div>
+
+                <div class="field col-12 md:col-3">
+                    <label for="gender">Género</label>
+                    <Dropdown id="gender" v-model="gender" :options="genderOptions" optionLabel="name" optionValue="value"
+                        placeholder="Selecciona uno" />
+                </div>
+                <!-- <div class="field col-12">
+                            <label for="address">Dirección</label>
+                            <Textarea id="address" rows="4"/>
+                        </div> -->
+
+            </div>
+        </div>
+    </div>
 
 
-					<div class="field col-12 md:col-3">
-						<label for="doc_number">DNI</label>
-						<InputMask id="doc_number" mask="99.999.999"/>
-					</div>
+    <div class="card">
+        <h5>Dirección</h5>
+        <div class="p-fluid  grid mt-5">
 
-                    <div class="field col-12 md:col-4">
-						<label for="birthdate">Fecha de nacimiento</label>
-                        <Calendar id="birthdate" v-model="date1" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy" :showButtonBar="true" :showIcon="true" />
-					</div>
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                    <InputText id="street" type="text" v-model="street"/>
+                    <label for="street">Calle</label>
+                </span>
+            </div>
 
-                    
-					<div class="field col-12">
-						<label for="address">Dirección</label>
-						<Textarea id="address" rows="4"/>
-					</div>
-					<div class="field col-12 md:col-6">
-						<label for="city">Ciudad</label>
-						<InputText id="city" type="text" />
-					</div>
-					<div class="field col-12 md:col-3">
-						<label for="state">Provincia</label>
-						<Dropdown id="state" v-model="dropdownItem" :options="dropdownItems" optionLabel="name" placeholder="Selecciona una"></Dropdown>
-					</div>
-					<div class="field col-12 md:col-3">
-						<label for="zip">CP</label>
-						<InputText id="zip" type="number"/>
-					</div>
-				</div>
-			</div>
-		</div>
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                <InputText id="number" type="text" v-model="number" />
+                <label for="number">Número</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                <InputText id="floor" type="text" v-model="floor" />
+                <label for="floor">Piso</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                    <InputText id="department" type="text" v-model="department" />
+                    <label for="department">Departamento</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label">
+                <InputText id="city" type="text" v-model="city" />
+                <label for="city">Ciudad</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-4">
+                <span class="p-float-label">
+                    <Dropdown id="state" v-model="state" :options="stateItems" optionLabel="name" optionValue="value"
+                    placeholder="Selecciona una"></Dropdown>
+                    <label for="state">Provincia</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                <InputText id="cp" type="text" v-model="cp"/>
+                <label for="cp">Código Postal</label>
+                </span>
+            </div>
+        </div>
+    </div>
 
     <div class="grid grid-nogutter justify-content-between">
         <i></i>
@@ -81,8 +151,11 @@
 </template>
 
 <script>
+import CountryService from '../../../service/CountryService'
+
 export default {
     created() {
+        this.countryService = new CountryService();
         let today = new Date();
         let month = today.getMonth();
         let year = today.getFullYear();
@@ -98,23 +171,73 @@ export default {
         this.maxDate.setMonth(nextMonth);
         this.maxDate.setFullYear(nextYear);
     },
+    mounted(){
+        this.countryService.getCountries().then(data => this.countries = data);
+    },
     data() {
         return {
-            
             first_name: '',
+            middle_name: null,
             first_lastname: '',
-            date1: null,
+            second_lastname: null,
+			selectedCountry: null,
+            birthdate: null,
+            birth_place: null,
             doc_number: '',
+			filteredCountries: null,
+            gender: null,
+
+            street: null,
+            number: null,
+            floor: null,
+            department: null,
+            city: null,
+            state: null,
+            cp: null,
+
+            stateItems: [
+                {name: 'Tierra Del Fuego', value: 1},
+                {name: 'Santa Cruz', value: 2},
+                {name: 'Chubut', value: 3},
+                {name: 'Buenos Aires', value: 4},
+            ],
+
+            genderOptions: [
+                {name: 'Sin especificar', value: 1},
+                {name: 'Sin género', value: 2},
+                {name: 'Másculino', value: 3},
+                {name: 'Femenino', value: 4},
+            ],
             submitted: false,
             validationErrors: {}
         }
     },
+    countryService: null,
     methods: {
         nextPage() {
-            console.log({formData: { first_name: this.first_name, first_lastname: this.first_lastname, }})
             this.submitted = true;
-            if (this.validateForm()) {
-                this.$emit('next-page', { formData: { first_name: this.first_name, first_lastname: this.first_lastname, }, pageIndex: 0 });
+            console.log(this.first_name, this.first_lastname)
+            if (this.validateForm()) {                
+                this.$emit('next-page', { 
+                    formData: { 
+                        first_name: this.first_name, 
+                        middle_name: this.middle_name,
+                        first_lastname: this.first_lastname,
+                        second_lastname: this.second_lastname,
+                        doc_number: this.doc_number,
+                        birthdate: this.birth_place,
+                        birth_place: this.birth_place,
+                        gender: this.gender,
+                        street: this.street,
+                        number: this.number,
+                        floor: this.floor,
+                        department: this.deparment,
+                        city: this.city,
+                        state: this.state,
+                        cp: this.cp,
+                    }, 
+                    pageIndex: 0 
+                });
             }
         },
         validateForm() {
@@ -128,8 +251,25 @@ export default {
             else
                 delete this.validationErrors['first_lastname'];
 
+            if (!this.doc_number.trim())
+                this.validationErrors['doc_number'] = true;
+            else
+                delete this.validationErrors['doc_number'];
+
             return !Object.keys(this.validationErrors).length;
-        }
+        },
+        searchCountry(event) {
+            setTimeout(() => {
+                if (!event.query.trim().length) {
+                    this.filteredCountries = [...this.countries];
+                }
+                else {
+                    this.filteredCountries = this.countries.filter((country) => {
+                        return country.name.toLowerCase().startsWith(event.query.toLowerCase());
+                    });
+                }
+            }, 250);
+        },
     }
 }
 </script>
