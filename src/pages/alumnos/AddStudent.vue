@@ -1,5 +1,6 @@
 <template>
 	
+	<Toast/>
 	<div class="card card-w-title">
 		<h5>Agregar Nuevo Alumno</h5>
 		<p>Completa la información personal e institucional del alumno </p>
@@ -23,7 +24,7 @@ export default {
 						to: '/alumnos/nuevoalumno'
 					},
 					{
-						label: 'Información Medica',
+						label: 'Información Institucional',
 						to: '/steps/informacioninstitucional'
 					},
 					// {
@@ -50,7 +51,9 @@ export default {
             this.$router.push(this.items[event.pageIndex - 1].to);
         },
         complete() {
-            this.$toast.add({severity:'success', summary:'Order submitted', detail: 'Dear, ' + this.formObject.firstname + ' ' + this.formObject.lastname + ' your order completed.'});
+
+			
+            this.$toast.add({severity:'success', summary:'Alumno ingresado', detail: 'El alumno ' + this.formObject.first_name + ' ' + this.formObject.first_lastname + ' fue agregado correctamente.'});
         }
     }
 }

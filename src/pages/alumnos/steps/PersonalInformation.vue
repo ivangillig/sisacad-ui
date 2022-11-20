@@ -180,11 +180,11 @@ export default {
             middle_name: null,
             first_lastname: '',
             second_lastname: null,
-			selectedCountry: null,
+            selectedCountry: null,
             birthdate: null,
             birth_place: null,
             doc_number: '',
-			filteredCountries: null,
+            filteredCountries: null,
             gender: null,
 
             street: null,
@@ -216,7 +216,7 @@ export default {
     methods: {
         nextPage() {
             this.submitted = true;
-            console.log(this.first_name, this.first_lastname)
+            
             if (this.validateForm()) {                
                 this.$emit('next-page', { 
                     formData: { 

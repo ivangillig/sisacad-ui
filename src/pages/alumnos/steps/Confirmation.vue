@@ -90,24 +90,47 @@
                     
                         <div class="grid grid-nogutter justify-content-between">
                             <Button label="Atrás" @click="prevPage()" icon="pi pi-angle-left"></Button>
-                            <Button label="Registrar Alumno" @click="complete()" icon="pi pi-check" icon-pos="right" class="p-button-success"></Button>
+                            <Button label="Registrar Alumno" @click="complete(formData)" icon="pi pi-check" icon-pos="right" class="p-button-success"></Button>
                         </div>
 </div>     
 </template>
 
 <script>
-    export default {
-        props: {
-            formData: Object
+
+import AuthService from '../../../service/AuthService'
+export default {
+    created() {
+        this.AuthService = new AuthService();
+    },
+    props: {
+        formData: Object
+    },
+    methods: {
+        prevPage() {
+            this.$emit('prev-page', { pageIndex: 2 });
         },
-        methods: {
-            prevPage() {
-                this.$emit('prev-page', { pageIndex: 2 });
-            },
-            complete() {
-                this.$emit('complete');
-            }
-        },
-    }
+        complete(formData) {
+            var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
+
+            this.AuthService.newUser(user).then(data => {
+                if (data.status === 201) {
+                    this.$emit('complete', this.formData);
+                }
+            }).catch(error => {
+                    if( error.response) {
+                        
+                        for (const property in error.response.data) {
+                            this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
+                        }
+                    } else if (error.message) {
+                        console.log(error.message)
+                    } else {
+                        console.log(error)
+                    }
+            })
+
+        }
+    },
+}
 
 </script>
