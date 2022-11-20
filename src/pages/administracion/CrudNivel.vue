@@ -139,7 +139,7 @@
 
 <script>
 import {FilterMatchMode} from 'primevue/api';
-import AdministracionApi from '../../service/AdministracionApi';
+import AdminService from '../../service/AdminService';
 
 export default {
 	data() {
@@ -158,9 +158,9 @@ export default {
 			]
 		}
 	},
-	administracionApi: null,
+	AdminService: null,
 	created() {
-		this.administracionApi = new AdministracionApi();
+		this.AdminService = new AdminService();
 		this.initFilters();
 	},
 	mounted() {
@@ -169,7 +169,7 @@ export default {
 			this.$router.replace({ name: "Login" });
 		}
 
-		this.administracionApi.getNiveles().then(data => this.products = data);
+		this.AdminService.getNiveles().then(data => this.products = data);
 
 	},
 	methods: {
@@ -189,10 +189,10 @@ export default {
 					this.product.state = this.product.state.value ? this.product.state.value: this.product.state;
 					this.products[this.findIndexById(this.product.id)] = this.product;
 
-					this.administracionApi.updateNivel(this.product.id, this.product).then(data => {
+					this.AdminService.updateNivel(this.product.id, this.product).then(data => {
 					console.log(data)
 						if(data.status === 200){
-							this.administracionApi.getNiveles().then(data => this.products = data);
+							this.AdminService.getNiveles().then(data => this.products = data);
 							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Nivel actualizado!', life: 3000});
 						}
 						if(data.status === 400){
@@ -205,9 +205,9 @@ export default {
 					//this.product.state = this.product.state ? this.product.state.value : 'Activo';
 					this.products.push(this.product);
 
-					this.administracionApi.newNivel(this.product).then(data => {
+					this.AdminService.newNivel(this.product).then(data => {
 					if(data.status === 201){
-						this.administracionApi.getNiveles().then(data => this.products = data);
+						this.AdminService.getNiveles().then(data => this.products = data);
 						this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
 					}});
 				
@@ -230,10 +230,10 @@ export default {
 		},
 		deleteProduct() {
 
-			this.administracionApi.deleteNivel(this.product.id).then(data => {
+			this.AdminService.deleteNivel(this.product.id).then(data => {
 				if(data.status === 204){
 
-				this.administracionApi.getNiveles().then(data => this.products = data);
+				this.AdminService.getNiveles().then(data => this.products = data);
 				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel Eliminado', life: 5000});
 				}
 			});

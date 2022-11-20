@@ -2,11 +2,8 @@
 import clienteAxios from '../config/axios'
 
 
-export default class AdministracionApi {
+export default class AdminService {
 
-    getProductsSmall() {
-        return clienteAxios.get('assets/demo/data/products-small.json').then(res => res.data.data);
-    }
 
     getNiveles() {
         return clienteAxios.get('/administracion/nivel/').then(res => res.data);
@@ -24,7 +21,8 @@ export default class AdministracionApi {
         return clienteAxios.delete(`/administracion/nivel/${id}/`);
     }
 
-    getProductsWithOrdersSmall() {
-        return clienteAxios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);
+    newStudent(student) {
+        return clienteAxios.post('/secretaria/alumno/', student);
     }
+
 }

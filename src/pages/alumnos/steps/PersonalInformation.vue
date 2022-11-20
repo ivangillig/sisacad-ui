@@ -44,7 +44,7 @@
 
                 <div class="field col-12 md:col-3">
                     <label for="nationality">Nacionalidad</label>
-                    <AutoComplete id="nationality" v-model="selectedCountry" :suggestions="filteredCountries"
+                    <AutoComplete id="nationality" v-model="nationality" :suggestions="filteredCountries"
                         @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
                         <template #item="slotProps">
                             <div class="country-item">
@@ -183,6 +183,7 @@ export default {
             selectedCountry: null,
             birthdate: null,
             birth_place: null,
+            nationality: null,
             doc_number: '',
             filteredCountries: null,
             gender: null,
@@ -227,6 +228,7 @@ export default {
                         doc_number: this.doc_number,
                         birthdate: this.birth_place,
                         birth_place: this.birth_place,
+                        nationality: this.nationality.code,
                         gender: this.gender,
                         street: this.street,
                         number: this.number,

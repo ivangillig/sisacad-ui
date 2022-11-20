@@ -97,10 +97,13 @@
 
 <script>
 
-import AuthService from '../../../service/AuthService'
+import AuthService from '../../../service/AuthService';
+import AdminService from '../../../service/AdminService';
+
 export default {
     created() {
         this.AuthService = new AuthService();
+        this.AdminService = new AdminService();
     },
     props: {
         formData: Object
@@ -111,14 +114,47 @@ export default {
         },
         complete(formData) {
             var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
+            var student = {
+                doc_number: formData.doc_number,
+                    first_name: formData.first_name, 
+                    middle_name: formData.middle_name,
+                    first_lastname: formData.first_lastname,
+                    second_lastname: formData.second_lastname,
+                    birthdate: formData.birth_place,
+                    birth_place: formData.birth_place,
+                    gender: formData.gender,
+                    street: formData.street,
+                    number: formData.number,
+                    floor: formData.floor,
+                    department: formData.deparment,
+                    city: formData.city,
+                    address_state: formData.state,
+                    cp: formData.cp
+                    }
 
             this.AuthService.newUser(user).then(data => {
-                if (data.status === 201) {
-                    this.$emit('complete', this.formData);
+                    if (data.status === 201) {
+
+                        this.AdminService.newStudent(student).then(data => {
+                            if (data.status === 201) {
+                                this.$emit('complete', this.formData);
+                            }
+                        }).catch(error => {
+                            if (error.response) {
+
+                                for (const property in error.response.data) {
+                                    this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000 });
+                                }
+                            } else if (error.message) {
+                                console.log(error.message)
+                            } else {
+                                console.log(error)
+                            }
+                        })
                 }
             }).catch(error => {
                     if( error.response) {
-                        
+                     
                         for (const property in error.response.data) {
                             this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
                         }
