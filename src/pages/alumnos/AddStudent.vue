@@ -27,10 +27,10 @@ export default {
 						label: 'Información Institucional',
 						to: '/steps/informacioninstitucional'
 					},
-					// {
-					// 	label: 'Autorizaciones',
-					// 	to: '/steps/payment'
-					// },
+					{
+						label: 'Información Médica y Autorizaciones',
+						to: '/steps/informacionextra'
+					},
 					{
 						label: 'Registrar',
 						to: '/steps/confirmacion'
@@ -53,7 +53,7 @@ export default {
         complete() {
 
 			
-            this.$toast.add({severity:'success', summary:'Alumno ingresado', detail: 'El alumno ' + this.formObject.first_name + ' ' + this.formObject.first_lastname + ' fue agregado correctamente.'});
+            this.$toast.add({severity:'success', summary:'Alumno ingresado', life: 3000, detail: 'El alumno ' + this.formObject.first_name + ' ' + this.formObject.first_lastname + ' fue agregado correctamente.'});
         }
     }
 }

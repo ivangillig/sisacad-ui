@@ -27,7 +27,7 @@
                 </div>
                 <div class="field col-3">
                     <label for="birthdate">Fecha de nacimiento</label>
-                    <b>{{formData.birthdate ? formData.birthdate : '-'}}</b>
+                    <b>{{formData.birthdate ? formData.birthdate.toLocaleDateString('es-AR') : '-'}}</b>
                 </div>
                 <div class="field col-6">
                     <label for="birth_place">Lugar de nacimiento</label>
@@ -110,7 +110,7 @@ export default {
     },
     methods: {
         prevPage() {
-            this.$emit('prev-page', { pageIndex: 2 });
+            this.$emit('prev-page', { pageIndex: 3 });
         },
         complete(formData) {
             var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
@@ -120,23 +120,29 @@ export default {
                     middle_name: formData.middle_name,
                     first_lastname: formData.first_lastname,
                     second_lastname: formData.second_lastname,
-                    birthdate: formData.birth_place,
+                    birthday: formData.birthdate.toLocaleDateString('es-AR').split("/").reverse().join("-"),
                     birth_place: formData.birth_place,
-                    gender: formData.gender,
+                    nationality: formData.nationality,
+                    gender: formData.gender.toString(),
+                    phone: formData.phone.toString(),
+                    family_phone: formData.family_phone.toString(),
                     street: formData.street,
                     number: formData.number,
-                    floor: formData.floor,
-                    department: formData.deparment,
+                    floor: formData.floor.toString(),
+                    department: formData.department.toString(),
                     city: formData.city,
                     address_state: formData.state,
                     cp: formData.cp
                     }
 
-            this.AuthService.newUser(user).then(data => {
-                    if (data.status === 201) {
+            console.log(student)
 
-                        this.AdminService.newStudent(student).then(data => {
-                            if (data.status === 201) {
+            this.AuthService.newUser(user).then(response => {
+                    if (response.status === 201) {
+                        student.user = response.data.user
+
+                        this.AdminService.newStudent(student).then(response => {
+                            if (response.status === 201) {
                                 this.$emit('complete', this.formData);
                             }
                         }).catch(error => {

@@ -4,24 +4,34 @@
         <div class="card">
             <h5>Información Personal</h5>
 
-            <div class="p-fluid formgrid grid mt-5">
+            <div class="p-fluid grid mt-5">
                 <div class="field col-12 md:col-3">
-                    <label for="first_name">Primer Nombre</label>
-                    <InputText id="first_name" v-model="first_name" type="text" :class="{'p-invalid': validationErrors.first_name && submitted}" />
-                    <small v-show="validationErrors.first_name && submitted" class="p-error">El nombre es obligatorio.</small>
+                    <span class="p-float-label">
+                        <InputText id="first_name" v-model="first_name" type="text" :class="{'p-invalid': validationErrors.first_name && submitted}" />
+                        <small v-show="validationErrors.first_name && submitted" class="p-error">El nombre es obligatorio.</small>
+                        <label for="first_name">Primer Nombre</label>
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-3">
+                    <span class="p-float-label">
+                        <InputText id="middle_name" type="text" v-model="middle_name"/>
+                        <label for="middle_name">Segundo Nombre</label>
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-3">
+                    <span class="p-float-label">
+                        <InputText id="first_lastname" v-model="first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
+                        <small v-show="validationErrors.first_lastname && submitted" class="p-error">El Apellido es obligatorio.</small>
+                        <label for="first_lastname">Apellido Paterno</label>
+                    </span>
                 </div>
                 <div class="field col-12 md:col-3">
-                    <label for="middle_name">Segundo Nombre</label>
-                    <InputText id="middle_name" type="text" v-model="middle_name"/>
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label for="first_lastname">Apellido Paterno</label>
-                    <InputText id="first_lastname" v-model="first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
-                    <small v-show="validationErrors.first_lastname && submitted" class="p-error">El Apellido es obligatorio.</small>
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label for="second_lastname">Apellido Materno</label>
-                    <InputText id="second_lastname" type="text" v-model="second_lastname"/>
+                    <span class="p-float-label">
+                        <InputText id="second_lastname" type="text" v-model="second_lastname"/>
+                        <label for="second_lastname">Apellido Materno</label>
+                    </span>
                 </div>
 
                 <!-- <div class="field col-12 md:col-4">						
@@ -34,17 +44,9 @@
                             </div>
                         </div> -->
 
-                <!-- dni
-                        email personal
-                        lugar de nacimiento
-                        genero
-                        direccion
-                        barrio
-                        telefono familiar -->
-
                 <div class="field col-12 md:col-3">
-                    <label for="nationality">Nacionalidad</label>
-                    <AutoComplete id="nationality" v-model="nationality" :suggestions="filteredCountries"
+                    <span class="p-float-label">
+                        <AutoComplete id="nationality" v-model="nationality" :suggestions="filteredCountries"
                         @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
                         <template #item="slotProps">
                             <div class="country-item">
@@ -53,31 +55,42 @@
                             </div>
                         </template>
                     </AutoComplete>
+                    <label for="nationality">Nacionalidad</label>
+                    </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
-                    <label for="birthdate">Fecha de nacimiento</label>
-                    <Calendar id="birthdate" v-model="birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
-                        :showButtonBar="true" :showIcon="true" />
+                    <span class="p-float-label">
+                        <Calendar id="birthdate" v-model="birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
+                        <label for="birthdate">Fecha de nacimiento</label>
+                    </span>
                 </div>
 
                 <div class="field col-12 md:col-6">
-                    <label for="birth_place">Lugar de nacimiento</label>
-                    <InputText id="birth_place" type="text" v-model="birth_place" />
+                    <span class="p-float-label">
+                        <InputText id="birth_place" type="text" v-model="birth_place" />
+                        <label for="birth_place">Lugar de nacimiento</label>
+                    </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
-                    <label for="doc_number">DNI</label>
-                    <InputMask id="doc_number" mask="99.999.999" v-model="doc_number"
+                    <span class="p-float-label">
+                        <InputMask id="doc_number" mask="99.999.999" v-model="doc_number"
                         :class="{'p-invalid': validationErrors.doc_number && submitted}" />
-                    <small v-show="validationErrors.doc_number && submitted" class="p-error">El DNI es obligatorio.</small>
+                        <small v-show="validationErrors.doc_number && submitted" class="p-error">El DNI es obligatorio.</small>
+                        <label for="doc_number">DNI</label>
+                    </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
-                    <label for="gender">Género</label>
-                    <Dropdown id="gender" v-model="gender" :options="genderOptions" optionLabel="name" optionValue="value"
+                    <span class="p-float-label">
+                        <Dropdown id="gender" v-model="gender" :options="genderOptions" optionLabel="name" optionValue="value"
                         placeholder="Selecciona uno" />
+                        <label for="gender">Género</label>
+                    </span>
                 </div>
+
                 <!-- <div class="field col-12">
                             <label for="address">Dirección</label>
                             <Textarea id="address" rows="4"/>
@@ -89,8 +102,8 @@
 
 
     <div class="card">
-        <h5>Dirección</h5>
-        <div class="p-fluid  grid mt-5">
+        <h5>Domicilio y Contacto</h5>
+        <div class="p-fluid grid mt-5">
 
             <div class="field col-12 md:col-6">
                 <span class="p-float-label">
@@ -101,33 +114,33 @@
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputText id="number" type="text" v-model="number" />
+                <InputNumber id="number" type="text" v-model="number" :useGrouping="false"/>
                 <label for="number">Número</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputText id="floor" type="text" v-model="floor" />
+                <InputNumber id="floor" type="text" v-model="floor" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                    <InputText id="department" type="text" v-model="department" />
-                    <label for="department">Departamento</label>
+                    <InputNumber id="department" type="text" v-model="department" showButtons/>
+                    <label for="department">Depto</label>
                 </span>
             </div>
 
-            <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-4">
                 <span class="p-float-label">
                 <InputText id="city" type="text" v-model="city" />
                 <label for="city">Ciudad</label>
                 </span>
             </div>
 
-            <div class="field col-12 md:col-4">
+            <div class="field col-12 md:col-3">
                 <span class="p-float-label">
                     <Dropdown id="state" v-model="state" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
@@ -135,10 +148,24 @@
                 </span>
             </div>
 
-            <div class="field col-12 md:col-2">
+            <div class="field col-12 md:col-1">
                 <span class="p-float-label">
                 <InputText id="cp" type="text" v-model="cp"/>
                 <label for="cp">Código Postal</label>
+                </span>
+            </div>
+
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                    <InputNumber inputId="phone" v-model="phone" max_length="10" :useGrouping="false" />
+                    <label for="phone">Teléfono Personal</label>
+                </span>
+            </div>
+            
+            <div class="field col-12 md:col-2">
+                <span class="p-float-label">
+                    <InputNumber inputId="family_phone" v-model="family_phone" max_length="10" :useGrouping="false" />
+                    <label for="family_phone">Teléfono Familiar</label>
                 </span>
             </div>
         </div>
@@ -181,12 +208,14 @@ export default {
             first_lastname: '',
             second_lastname: null,
             selectedCountry: null,
-            birthdate: null,
+            birthdate: '',
             birth_place: null,
-            nationality: null,
+            nationality: '',
             doc_number: '',
             filteredCountries: null,
-            gender: null,
+            gender: '',
+            phone: null,
+            family_phone: null,
 
             street: null,
             number: null,
@@ -226,14 +255,16 @@ export default {
                         first_lastname: this.first_lastname,
                         second_lastname: this.second_lastname,
                         doc_number: this.doc_number,
-                        birthdate: this.birth_place,
+                        birthdate: this.birthdate,
                         birth_place: this.birth_place,
                         nationality: this.nationality.code,
                         gender: this.gender,
+                        phone: this.phone,
+                        family_phone: this.family_phone,
                         street: this.street,
                         number: this.number,
                         floor: this.floor,
-                        department: this.deparment,
+                        department: this.department,
                         city: this.city,
                         state: this.state,
                         cp: this.cp,
@@ -275,3 +306,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.Dropdown {
+    width: 14rem;
+}
+</style>

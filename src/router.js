@@ -133,10 +133,10 @@ const routes = [
                         path: '/steps/informacioninstitucional',
                         component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue')
                     },
-                    // {
-                    //     path: '/steps/payment',
-                    //     component: () => import('./pages/alumnos/steps/PaymentDemo.vue')
-                    // },
+                    {
+                        path: '/steps/informacionextra',
+                        component: () => import('./pages/alumnos/steps/MedAuthInformation.vue')
+                    },
                     {
                         path: '/steps/confirmacion',
                         component: () => import('./pages/alumnos/steps/Confirmation.vue')
