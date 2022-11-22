@@ -1,22 +1,34 @@
 <template>
-     <div class="col-12 mt-4">
-        <div class="card">
-            <Fieldset legend="Autorizaciones" :toggleable="true">
-                <div class="p-fluid grid align-items-center">
-                    
-                    <div class="col-12 md:col-3">
-                        <h5>Tiene autorización para salir de paseos?</h5>
-                    </div>
-                    <div class="col-12 md:col-1">
-                        <SelectButton v-model="trips_auth" :options="options" optionLabel="name" optionValue="value"
-                            aria-labelledby="single" />
-                    </div>
-                    
+    <div class="col-12 mt-4">
+        <Fieldset legend="Autorizaciones" :toggleable="true" >
 
-
+            <div class="p-fluid grid mt-4">
+                
+                <div class="field col-12 md:col-1">
                 </div>
-            </Fieldset>
-        </div>
+                <div class="field col-12 md:col-3">
+                    <h5>Tiene autorización para salir de paseos?</h5>
+                </div>
+                <div class="col-12 md:col-1">
+                    <SelectButton v-model="trips_auth" :options="options" optionLabel="name" optionValue="value"
+                    aria-labelledby="single" />
+                </div>
+                <div class="field col-12 md:col-1">
+                </div>
+                <div class="field col-12 md:col-3">
+                    <h5>Tiene autorización para salir de paseos?</h5>
+                </div>
+                <div class="col-12 md:col-1">
+                    <SelectButton v-model="medical_auth" :options="options" optionLabel="name" optionValue="value"
+                    aria-labelledby="single" />
+                </div>
+                <div class="field col-12 md:col-1">
+                </div>
+                
+            </div>
+
+
+        </Fieldset>
     </div>
 
     <div class="card">
@@ -27,50 +39,50 @@
             <div class="field col-12 md:col-6">
                 <span class="p-float-label">
                     <Chips v-model="value2" separator="," />
-                <label for="number">Alergias (separar con , )</label>
+                    <label for="number">Alergias (separar con , )</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputNumber id="number" type="text" v-model="number" :useGrouping="false"/>
-                <label for="number">Número</label>
+                    <InputNumber id="number" type="text" v-model="number" :useGrouping="false" />
+                    <label for="number">Número</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputNumber id="floor" type="text" v-model="floor" showButtons/>
-                <label for="floor">Piso</label>
+                    <InputNumber id="floor" type="text" v-model="floor" showButtons />
+                    <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                    <InputNumber id="department" type="text" v-model="department" showButtons/>
+                    <InputNumber id="department" type="text" v-model="department" showButtons />
                     <label for="department">Depto</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-4">
                 <span class="p-float-label">
-                <InputText id="city" type="text" v-model="city" />
-                <label for="city">Ciudad</label>
+                    <InputText id="city" type="text" v-model="city" />
+                    <label for="city">Ciudad</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-3">
                 <span class="p-float-label">
                     <Dropdown id="state" v-model="state" :options="stateItems" optionLabel="name" optionValue="value"
-                    placeholder="Selecciona una"></Dropdown>
+                        placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-1">
                 <span class="p-float-label">
-                <InputText id="cp" type="text" v-model="cp"/>
-                <label for="cp">Código Postal</label>
+                    <InputText id="cp" type="text" v-model="cp" />
+                    <label for="cp">Código Postal</label>
                 </span>
             </div>
 
@@ -80,7 +92,7 @@
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
-            
+
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
                     <InputNumber inputId="family_phone" v-model="family_phone" max_length="10" :useGrouping="false" />
@@ -89,6 +101,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="grid grid-nogutter justify-content-between">
         <Button label="Anterior" @click="prevPage()" icon="pi pi-angle-left"></Button>

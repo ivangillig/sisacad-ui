@@ -179,10 +179,14 @@
 
 <script>
 import CountryService from '../../../service/CountryService'
+import AdminService from '../../../service/AdminService';
 
 export default {
     created() {
+        this.AdminService = new AdminService();
         this.countryService = new CountryService();
+
+
         let today = new Date();
         let month = today.getMonth();
         let year = today.getFullYear();
@@ -247,30 +251,45 @@ export default {
         nextPage() {
             this.submitted = true;
             
-            if (this.validateForm()) {                
-                this.$emit('next-page', { 
-                    formData: { 
-                        first_name: this.first_name, 
-                        middle_name: this.middle_name,
-                        first_lastname: this.first_lastname,
-                        second_lastname: this.second_lastname,
-                        doc_number: this.doc_number,
-                        birthdate: this.birthdate,
-                        birth_place: this.birth_place,
-                        nationality: this.nationality.code,
-                        gender: this.gender,
-                        phone: this.phone,
-                        family_phone: this.family_phone,
-                        street: this.street,
-                        number: this.number,
-                        floor: this.floor,
-                        department: this.department,
-                        city: this.city,
-                        state: this.state,
-                        cp: this.cp,
-                    }, 
-                    pageIndex: 0 
-                });
+            if (this.validateForm()) {
+                this.AdminService.getPerson(this.doc_number.replaceAll('.', '')).then(response => {
+                    console.log(response.status)
+                    if (response.status === 200) {
+                        this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
+                    }
+                }).catch(error => {
+                    if (error.response.status === 404) {
+
+                        this.$emit('next-page', {
+                            formData: {
+                                first_name: this.first_name,
+                                middle_name: this.middle_name,
+                                first_lastname: this.first_lastname,
+                                second_lastname: this.second_lastname,
+                                doc_number: this.doc_number,
+                                birthdate: this.birthdate,
+                                birth_place: this.birth_place,
+                                nationality: this.nationality.code,
+                                gender: this.gender,
+                                phone: this.phone,
+                                family_phone: this.family_phone,
+                                street: this.street,
+                                number: this.number,
+                                floor: this.floor,
+                                department: this.department,
+                                city: this.city,
+                                state: this.state,
+                                cp: this.cp,
+                            },
+                            pageIndex: 0
+                        });
+
+                    } else if (error.message) {
+                        console.log(error.message)
+                    } else {
+                        console.log(error)
+                    }
+                })
             }
         },
         validateForm() {

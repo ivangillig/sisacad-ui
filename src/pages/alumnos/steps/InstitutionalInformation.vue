@@ -61,7 +61,13 @@
 </template>
 
 <script>
+
+import AdminService from '../../../service/AdminService';
+
 export default {
+    created() {
+        this.AdminService = new AdminService();
+    },
     data () {
                 return {
                     email: '',
@@ -74,8 +80,31 @@ export default {
             methods: {
                 nextPage() {
                     this.submitted = true;
-                    if (this.validateForm() ) {
-                        this.$emit('next-page', {formData: {email: this.email, admission_date: this.admission_date, school_cert_destinty: this.school_cert_destinty}, pageIndex: 1});
+
+                    if (this.validateForm()) {
+                        
+                        this.AdminService.getPersonEmail({email: this.email}).then(response => {
+                            if (response.status === 200) {
+                                this.$emit('next-page', {
+                                        formData: {
+                                            email: this.email, 
+                                            admission_date: this.admission_date, 
+                                            school_cert_destinty: this.school_cert_destinty
+                                        }, 
+                                        pageIndex: 1
+                                    });
+                                }
+                        }).catch(error => {
+                            if (error.response.status === 400) {
+                                for (const property in error.response.data) {
+                                    this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 4000 });
+                                }
+                            } else if (error.message) {
+                                console.log(error.message)
+                            } else {
+                                console.log(error)
+                            }
+                        })
                     }
                 },
                 prevPage() {

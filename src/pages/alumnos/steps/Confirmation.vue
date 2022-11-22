@@ -115,7 +115,7 @@ export default {
         complete(formData) {
             var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
             var student = {
-                doc_number: formData.doc_number,
+                    doc_number: formData.doc_number,
                     first_name: formData.first_name, 
                     middle_name: formData.middle_name,
                     first_lastname: formData.first_lastname,
