@@ -15,9 +15,9 @@ import AccordionTab from 'primevue/accordiontab';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
 
+// Added by me
 import store from '../store';
-// import axios from 'axios';
-// import VueAxios from 'vue-axios';
+
 
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
@@ -116,10 +116,9 @@ app.use(PrimeVue, { ripple: true, inputStyle: 'outlined' });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
+
 app.use(store); // localStorage
-
 store.commit('initializeStore')
-
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

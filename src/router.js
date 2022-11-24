@@ -119,27 +119,33 @@ const routes = [
             {
                 path: '/alumnos',
                 name: 'crudalumnos',
-                component: () => import('./pages/alumnos/CrudAlumnos.vue')
+                component: () => import('./pages/alumnos/CrudAlumnos.vue'),
+                meta: { requireLogin: true}
             },
             {
                 path: '/alumnos/nuevoalumno',
                 component: () => import('./pages/alumnos/AddStudent.vue'),
+                meta: { requireLogin: true},
                 children: [
                     {
                         path: '',
-                        component: () => import('./pages/alumnos/steps/PersonalInformation.vue')
+                        component: () => import('./pages/alumnos/steps/PersonalInformation.vue'),
+                        meta: { requireLogin: true}
                     },
                     {
                         path: '/steps/informacioninstitucional',
-                        component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue')
+                        component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue'),
+                        meta: { requireLogin: true}
                     },
                     {
                         path: '/steps/informacionextra',
-                        component: () => import('./pages/alumnos/steps/MedAuthInformation.vue')
+                        component: () => import('./pages/alumnos/steps/MedAuthInformation.vue'),
+                        meta: { requireLogin: true}
                     },
                     {
                         path: '/steps/confirmacion',
-                        component: () => import('./pages/alumnos/steps/Confirmation.vue')
+                        component: () => import('./pages/alumnos/steps/Confirmation.vue'),
+                        meta: { requireLogin: true}
                     },
                 ],
             },

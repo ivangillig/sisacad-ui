@@ -7,8 +7,8 @@
             <div class="p-fluid grid mt-5">
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputText id="first_name" v-model="first_name" type="text" :class="{'p-invalid': validationErrors.first_name && submitted}" />
-                        <small v-show="validationErrors.first_name && submitted" class="p-error">El nombre es obligatorio.</small>
+                        <InputText type="text"  id="first_name" v-model="first_name"  :class="{'p-invalid': validationErrors.first_name && submitted}" />
+                        <small v-show="validationErrors.first_name && submitted" class="p-error">{{msg.first_name}}</small>
                         <label for="first_name">Primer Nombre</label>
                     </span>
                 </div>
@@ -23,7 +23,7 @@
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
                         <InputText id="first_lastname" v-model="first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
-                        <small v-show="validationErrors.first_lastname && submitted" class="p-error">El Apellido es obligatorio.</small>
+                        <small v-show="validationErrors.first_lastname && submitted" class="p-error">{{msg.first_lastname}}</small>
                         <label for="first_lastname">Apellido Paterno</label>
                     </span>
                 </div>
@@ -78,7 +78,7 @@
                     <span class="p-float-label">
                         <InputMask id="doc_number" mask="99.999.999" v-model="doc_number"
                         :class="{'p-invalid': validationErrors.doc_number && submitted}" />
-                        <small v-show="validationErrors.doc_number && submitted" class="p-error">El DNI es obligatorio.</small>
+                        <small v-show="validationErrors.doc_number && submitted" class="p-error">{{msg.doc_number}}</small>
                         <label for="doc_number">DNI</label>
                     </span>
                 </div>
@@ -151,7 +151,7 @@
             <div class="field col-12 md:col-1">
                 <span class="p-float-label">
                 <InputText id="cp" type="text" v-model="cp"/>
-                <label for="cp">Código Postal</label>
+                <label for="cp">CP</label>
                 </span>
             </div>
 
@@ -229,6 +229,8 @@ export default {
             state: null,
             cp: null,
 
+            msg: [],
+
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
                 {name: 'Santa Cruz', value: 2},
@@ -293,18 +295,31 @@ export default {
             }
         },
         validateForm() {
-            if (!this.first_name.trim())
+            if (!this.first_name.trim()){
                 this.validationErrors['first_name'] = true;
-            else
+                this.msg['first_name'] = 'Este campo es obligatorio';
+            }
+            else if (!(/^[a-zA-Z]+$/.test(this.first_name))){
+                    this.msg['first_name'] = 'El nombre solo puede contener letras';
+                    this.validationErrors['first_name'] = true;
+            }else
                 delete this.validationErrors['first_name'];
 
-            if (!this.first_lastname.trim())
+            if (!this.first_lastname.trim()){
                 this.validationErrors['first_lastname'] = true;
+                this.msg['first_lastname'] = 'Este campo es obligatorio';
+            }
+            else if (!(/^[a-zA-Z]+$/.test(this.first_lastname))){
+                    this.msg['first_lastname'] = 'El apellido solo puede contener letras';
+                    this.validationErrors['first_lastname'] = true;
+            }
             else
                 delete this.validationErrors['first_lastname'];
 
-            if (!this.doc_number.trim())
+            if (!this.doc_number.trim()){
                 this.validationErrors['doc_number'] = true;
+                this.msg['doc_number'] = 'Este campo es obligatorio';
+            }
             else
                 delete this.validationErrors['doc_number'];
 

@@ -12,9 +12,9 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-user"></i>
                         </span>
-                        <InputText placeholder="Email institucional" id="email" v-model="email" :class="{'p-invalid': validationErrors.email && submitted}"/>
+                        <InputText placeholder="Email institucional" id="email" type="email"  v-model="email" :class="{'p-invalid': validationErrors.email && submitted}"/>
                     </div>
-                    <small v-show="validationErrors.email && submitted" class="p-error">El email institucional es obligatorio.</small>
+                    <small v-show="validationErrors.email && submitted" class="p-error">{{msg.email}}</small>
                 </div>
 
                 <div class="field col-12 md:col-5">
@@ -73,8 +73,10 @@ export default {
                     email: '',
                     admission_date: null,
                     school_cert_destinty: null,
+
                     submitted: false,
-                    validationErrors: {}
+                    validationErrors: {},
+                    msg: [],
                 }
             },
             methods: {
@@ -99,6 +101,8 @@ export default {
                                 for (const property in error.response.data) {
                                     this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 4000 });
                                 }
+                                this.email = ''
+                                this.submitted = false;
                             } else if (error.message) {
                                 console.log(error.message)
                             } else {
@@ -111,15 +115,20 @@ export default {
                     this.$emit('prev-page', {pageIndex: 1});
                 },
                 validateForm() {
-                    if (!this.email.trim())
+                    if (!this.email.trim()){
                         this.validationErrors['email'] = true;
+                        this.msg['email'] = 'Este campo es obligatorio';
+                    }                        
+                    else if (!(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
+                        this.msg['email'] = 'Dirección de email inválida';
+                        this.validationErrors['email'] = true;
+                    }
                     else
                         delete this.validationErrors['email'];
 
-
                     return !Object.keys(this.validationErrors).length;
-                }
-            }
+                },
+            },
 }
 </script>
 
