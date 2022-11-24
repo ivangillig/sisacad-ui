@@ -224,12 +224,22 @@ const router = createRouter({
     routes,
 });
 
+import axios from "axios";
+
 router.beforeEach((to, from, next) => {
 
     if (to.matched.some(record => record.meta.requireLogin)){        
         if ( !store.state.isAuthenticated ){
             next('/login')
         }else{
+
+            const token = store.state.token
+
+            if (token) {
+                axios.defaults.headers.common['Authorization'] = "Token " + token
+            } else {
+                axios.defaults.headers.common['Authorization'] = ''
+            }
             next()
         }
     } else {

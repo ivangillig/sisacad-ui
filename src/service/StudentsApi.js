@@ -8,19 +8,19 @@ export default class StudentsApi {
     // }
 
     getStudents() {
-        return clienteAxios.get('/alumno/').then(res => res.data);
+        return clienteAxios.get('/secretaria/alumno/').then(res => res.data);
     }
 
     newStudent(student) {
-        return clienteAxios.post('/alumno/', student);
+        return clienteAxios.post('/secretaria/alumno/', student);
     }
 
     updateStudent(id, student) {
-        return clienteAxios.put(`/alumno/${id}/`, student);
+        return clienteAxios.put(`/secretariaalumno/${id}/`, student);
     }
 
     deleteStudent(id) {
-        return clienteAxios.delete(`/alumno/${id}/`);
+        return clienteAxios.delete(`/secretaria/alumno/${id}/`);
     }
 
     // getProductsWithOrdersSmall() {
