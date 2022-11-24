@@ -21,7 +21,7 @@ export default {
 				items: [
 				{
 						label: 'Información Personal',
-						to: '/alumnos/nuevoalumno'
+						to: '/alumnos/nuevoalumno',
 					},
 					{
 						label: 'Información Institucional',
@@ -32,7 +32,7 @@ export default {
 						to: '/steps/informacionextra'
 					},
 					{
-						label: 'Registrar',
+						label: 'Verificar y Registrar',
 						to: '/steps/confirmacion'
 					}
 				],

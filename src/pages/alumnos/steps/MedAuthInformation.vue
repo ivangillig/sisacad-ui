@@ -16,10 +16,32 @@
                 <div class="field col-12 md:col-1">
                 </div>
                 <div class="field col-12 md:col-3">
-                    <h5>Tiene autorización para salir de paseos?</h5>
+                    <h5>Tiene autorización para recibir asistencia médica?</h5>
                 </div>
                 <div class="col-12 md:col-1">
                     <SelectButton v-model="medical_auth" :options="options" optionLabel="name" optionValue="value"
+                    aria-labelledby="single" />
+                </div>
+                <div class="field col-12 md:col-1">
+                </div>
+            </div>
+            <div class="p-fluid grid mt-4">
+                <div class="field col-12 md:col-1">
+                </div>
+                <div class="field col-12 md:col-3">
+                    <h5>Tiene autorización para salir solo del colegio?</h5>
+                </div>
+                <div class="col-12 md:col-1">
+                    <SelectButton v-model="leave_auth" :options="options" optionLabel="name" optionValue="value"
+                    aria-labelledby="single" />
+                </div>
+                <div class="field col-12 md:col-1">
+                </div>
+                <div class="field col-12 md:col-3">
+                    <h5>Tiene autorización para exposición pública?</h5>
+                </div>
+                <div class="col-12 md:col-1">
+                    <SelectButton v-model="public_auth" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -31,75 +53,35 @@
         </Fieldset>
     </div>
 
-    <div class="card">
-        <h5>Domicilio y Contacto</h5>
+    <div class="col-12 mt-2">
+        <Fieldset legend="Tratamientos médicos" :toggleable="true" >
 
-        <div class="p-fluid grid mt-5">
+            <div class="p-fluid grid mt-2">
 
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <Chips v-model="value2" separator="," />
-                    <label for="number">Alergias (separar con , )</label>
-                </span>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <Chips v-model="allergies" separator="," />
+                        <label for="number">Alergias (separar con , )</label>
+                    </span>
+                </div>
+                
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <Chips v-model="medications" separator="," />
+                        <label for="number">Medicamentos que consume (separar con , )</label>
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-12">
+                    <span class="p-float-label">
+                        <Textarea v-model="observations" :autoResize="true" rows="5" cols="30" />
+                        <label for="number">Observaciones (horarios para tomar medicamentos, consideraciones a tener en cuenta)</label>
+                    </span>
+                </div>
+
+                
             </div>
-
-            <div class="field col-12 md:col-2">
-                <span class="p-float-label">
-                    <InputNumber id="number" type="text" v-model="number" :useGrouping="false" />
-                    <label for="number">Número</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-2">
-                <span class="p-float-label">
-                    <InputNumber id="floor" type="text" v-model="floor" showButtons />
-                    <label for="floor">Piso</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-2">
-                <span class="p-float-label">
-                    <InputNumber id="department" type="text" v-model="department" showButtons />
-                    <label for="department">Depto</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-4">
-                <span class="p-float-label">
-                    <InputText id="city" type="text" v-model="city" />
-                    <label for="city">Ciudad</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-3">
-                <span class="p-float-label">
-                    <Dropdown id="state" v-model="state" :options="stateItems" optionLabel="name" optionValue="value"
-                        placeholder="Selecciona una"></Dropdown>
-                    <label for="state">Provincia</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-1">
-                <span class="p-float-label">
-                    <InputText id="cp" type="text" v-model="cp" />
-                    <label for="cp">Código Postal</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-2">
-                <span class="p-float-label">
-                    <InputNumber inputId="phone" v-model="phone" max_length="10" :useGrouping="false" />
-                    <label for="phone">Teléfono Personal</label>
-                </span>
-            </div>
-
-            <div class="field col-12 md:col-2">
-                <span class="p-float-label">
-                    <InputNumber inputId="family_phone" v-model="family_phone" max_length="10" :useGrouping="false" />
-                    <label for="family_phone">Teléfono Familiar</label>
-                </span>
-            </div>
-        </div>
+        </Fieldset>
     </div>
 
 
@@ -113,11 +95,11 @@
 export default {
     data () {
             return {
+                trips_auth: false,
+                medical_auth: false,
+                leave_auth: false,
+                public_auth: false,
                 medical_treatment: null,
-                trips_auth: null,
-                medical_auth: null,
-                leave_auth: null,
-                public_auth: null,
                 
                 medications: '',
                 allergies: '',
@@ -127,35 +109,44 @@ export default {
                 validationErrors: {},
 
                 options: [
-                    { name: 'Si', value: 1 },
-                    { name: 'No', value: 0},
+                    { name: 'Si', value: 'True' },
+                    { name: 'No', value: 'False'},
                     ],
                 }
             },
             methods: {
                 nextPage() {
                     this.submitted = true;
-                    if (this.validateForm() ) {
-                        this.$emit('next-page', {formData: {firstname: this.firstname, lastname: this.lastname, age: this.age}, pageIndex: 2});
-                    }
+                    
+                        this.$emit('next-page', {
+                            formData: {
+                                trips_auth: this.trips_auth, 
+                                medical_auth: this.medical_auth, 
+                                leave_auth: this.leave_auth,
+                                public_auth: this.public_auth,
+                                medications: this.medications ? this.medications.join(): '',
+                                allergies: this.allergies ? this.allergies.join(): '',
+                                observations: this.observations,
+                            }, 
+                            pageIndex: 2
+                        });
                 },
                 prevPage() {
                     this.$emit('prev-page', {pageIndex: 2});
-                },
-                validateForm() {
-                    if (!this.firstname.trim())
-                        this.validationErrors['firstname'] = true;
-                    else
-                        delete this.validationErrors['firstname'];
-
-                    if (!this.lastname.trim())
-                        this.validationErrors['lastname'] = true;
-                    else
-                        delete this.validationErrors['lastname'];
-
-                    return !Object.keys(this.validationErrors).length;
                 }
             }
 }
 </script>
 
+<style lang="scss" >
+.p-selectbutton .p-button.p-highlight {
+    background-color: var(--primary-color);
+	color: var(--primary-color-text);
+    text-align: center;
+}
+
+.p-selectbutton .p-button.p-highlight:hover{
+    background-color: var(--primary-color);
+	color: var(--primary-color-text);
+}
+</style>
