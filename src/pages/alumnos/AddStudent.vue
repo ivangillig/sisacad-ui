@@ -1,5 +1,6 @@
 <template>
 	
+
 	<Toast/>
 	<div class="card card-w-title">
 		<h5>Agregar Nuevo Alumno</h5>
@@ -51,9 +52,12 @@ export default {
             this.$router.push(this.items[event.pageIndex - 1].to);
         },
         complete() {
-
+            
 			
-            this.$toast.add({severity:'success', summary:'Alumno ingresado', life: 3000, detail: 'El alumno ' + this.formObject.first_name + ' ' + this.formObject.first_lastname + ' fue agregado correctamente.'});
+			//this.$toast.add({severity:'success', summary:'Alumno ingresado', life: 3000, detail: 'El alumno ' + this.formObject.first_name + ' ' + this.formObject.first_lastname + ' fue agregado correctamente.'});
+			//this.$router.replace({ name: "crudalumnos" });
+
+
         }
     }
 }

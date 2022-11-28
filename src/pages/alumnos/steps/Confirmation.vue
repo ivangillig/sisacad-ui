@@ -1,5 +1,21 @@
 <template>
 
+    <Dialog v-model:visible="showMessage" :breakpoints="{ '960px': '80vw' }" :style="{ width: '30vw' }" position="top">
+        <div class="flex align-items-center flex-column pt-6 px-3">
+            <i class="pi pi-check-circle" :style="{fontSize: '5rem', color: 'var(--green-500)' }"></i>
+            <h5>Alumno creado correctamente!</h5>
+            <p :style="{lineHeight: 1.5}">
+                El alumno <b>{{formData.first_name}} {{formData.first_lastname}}</b> fue creado correctamente.
+                Se ha enviado un correo a <b>{{formData.email}}</b> para activar su cuenta.
+            </p>
+        </div>
+        <template #footer>
+            <div class="flex justify-content-center">
+                <Button label="OK" @click="toggleDialog" class="p-button-text" />
+            </div>
+        </template>
+    </Dialog>
+
 <div class="col-12 mt-4">
 
     <ScrollPanel style="width: 100%; height: 550px; margin-bottom: 20px;">
@@ -165,7 +181,7 @@ export default {
                     middle_name: formData.middle_name,
                     first_lastname: formData.first_lastname,
                     second_lastname: formData.second_lastname,
-                    birthday: formData.birthdate.toLocaleDateString('es-AR').split("/").reverse().join("-"),
+                    birthday: formData.birthdate ? formData.birthdate.toLocaleDateString('es-AR').split("/").reverse().join("-") : null,
                     birth_place: formData.birth_place,
                     nationality: formData.nationality,
                     gender: formData.gender ? formData.gender.toString() : null,
@@ -178,7 +194,7 @@ export default {
                     city: formData.city,
                     address_state: formData.state,
                     cp: formData.cp,
-                    admission_date: formData.admission_date.toLocaleDateString('es-AR').split("/").reverse().join("-"),
+                    admission_date: formData.admission_date ? formData.admission_date.toLocaleDateString('es-AR').split("/").reverse().join("-") : null,
                     school_cert_destinty: formData.school_cert_destinty,
                     trips_auth: formData.trips_auth, 
                     medical_auth: formData.medical_auth, 
@@ -189,15 +205,14 @@ export default {
                     observations: formData.observations,
                     }
 
-            console.log(student)
-
             this.AuthService.newUser(user).then(response => {
                     if (response.status === 201) {
                         student.user = response.data.user
 
                         this.AdminService.newStudent(student).then(response => {
                             if (response.status === 201) {
-                                this.$emit('complete', this.formData);
+                                this.toggleDialog();
+                                //this.$emit('complete', this.formData);
                             }
                         }).catch(error => {
                             if (error.response) {
@@ -225,6 +240,14 @@ export default {
                     }
             })
 
+        },
+		toggleDialog() {
+            console.log('paso por el toggle')
+            this.showMessage = !this.showMessage;
+        
+            if(!this.showMessage) {
+                this.$router.push({ name: "crudalumnos" });
+            }
         }
     },
 }
