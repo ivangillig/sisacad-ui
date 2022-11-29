@@ -165,9 +165,9 @@ export default {
 	},
 	mounted() {
 
-		if(!this.$store.state.isAuthenticated) {
-			this.$router.replace({ name: "Login" });
-		}
+		// if(!this.$store.state.isAuthenticated) {
+		// 	this.$router.replace({ name: "Login" });
+		// }
 
 		this.AdminService.getNiveles().then(data => this.products = data);
 

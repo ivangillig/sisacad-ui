@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
     state: {
         token: '',
-        isAuthenticated: false
+        isAuthenticated: false,
+        student: {}
     },
     mutations: {
         initializeStore(state){
@@ -23,7 +24,10 @@ export default createStore({
             localStorage.clear()
             state.token = ''
             state.isAuthenticated = false
-        }
+        },
+        studentData (state, payload) {
+            state.student = payload
+          }
         
     },
     actions: {

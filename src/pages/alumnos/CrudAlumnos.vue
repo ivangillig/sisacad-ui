@@ -7,7 +7,7 @@
 					<template v-slot:start>
 						<div class="my-2">
 							<Button label="Agregar Alumno" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-							<Button label="Eliminar" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+							<Button label="Eliminar" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedstudents || !selectedstudents.length" />
 						</div>
 					</template>
 
@@ -16,9 +16,9 @@
 					</template>
 				</Toolbar>
 
-				<DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id" :paginator="true" :rows="10" :filters="filters"
+				<DataTable ref="dt" :value="students" v-model:selection="selectedstudents" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							<h5 class="m-0">Gestionar Alumnos</h5>
@@ -82,29 +82,29 @@
 
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
-							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data)" />
+							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editstudent(slotProps.data)" />
+							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeletestudent(slotProps.data)" />
 						</template>
 					</Column>
 				</DataTable>
 
-				<Dialog v-model:visible="productDialog" :style="{width: '450px'}" header="Detalles del nivel" :modal="true" class="p-fluid">
-					<img :src="'images/product/' + product.image" :alt="product.image" v-if="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
+				<Dialog v-model:visible="studentDialog" :style="{width: '450px'}" header="Detalles del nivel" :modal="true" class="p-fluid">
+					<img :src="'images/student/' + student.image" :alt="student.image" v-if="student.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
 					<div class="field">
 						<label for="name">Nombre</label>
-						<InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{'p-invalid': submitted && !product.name}" />
-						<small class="p-invalid" v-if="submitted && !product.name">El nombre es obligatorio.</small>
+						<InputText id="name" v-model.trim="student.name" required="true" autofocus :class="{'p-invalid': submitted && !student.name}" />
+						<small class="p-invalid" v-if="submitted && !student.name">El nombre es obligatorio.</small>
 					</div>
 
 					<div class="field">
 						<label for="estado" class="mb-3">Estado</label>
-						<Dropdown id="estado" v-model="product.state" :options="statuses" optionLabel="label" placeholder="Seleccione un estado">
+						<Dropdown id="estado" v-model="student.state" :options="statuses" optionLabel="label" placeholder="Seleccione un estado">
 							<template #value="slotProps">
 								<div v-if="slotProps.value && slotProps.value.value">
-									<span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
+									<span :class="'student-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
 								</div>
 								<div v-else-if="slotProps.value && !slotProps.value.value">
-									<span :class="'product-badge status-' +slotProps.value.toLowerCase()">{{slotProps.value}}</span>
+									<span :class="'student-badge status-' +slotProps.value.toLowerCase()">{{slotProps.value}}</span>
 								</div>
 								<span v-else>
 									{{slotProps.placeholder}}
@@ -115,29 +115,29 @@
 					
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveProduct" />
+						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="savestudent" />
 					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deleteProductDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
+				<Dialog v-model:visible="deletestudentDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="product">Está seguro de que desea eliminarlo?</span>
+						<span v-if="student">Está seguro de que desea eliminarlo?</span>
 					</div>
 					<template #footer>
-						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false"/>
-						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteProduct" />
+						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deletestudentDialog = false"/>
+						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deletestudent" />
 					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deleteProductsDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
+				<Dialog v-model:visible="deletestudentsDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="product">Está seguro de que desea eliminar los niveles seleccionados?</span>
+						<span v-if="student">Está seguro de que desea eliminar los niveles seleccionados?</span>
 					</div>
 					<template #footer>
-						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteProductsDialog = false"/>
-						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteSelectedProducts" />
+						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deletestudentsDialog = false"/>
+						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteSelectedstudents" />
 					</template>
 				</Dialog>
 			</div>
@@ -153,12 +153,12 @@ import studentsApi from '../../service/StudentsApi';
 export default {
 	data() {
 		return {
-			products: null,
-			productDialog: false,
-			deleteProductDialog: false,
-			deleteProductsDialog: false,
-			product: {},
-			selectedProducts: null,
+			students: null,
+			studentDialog: false,
+			deletestudentDialog: false,
+			deletestudentsDialog: false,
+			student: {},
+			selectedstudents: null,
 			filters: {},
 			submitted: false,
 			statuses: [
@@ -178,31 +178,31 @@ export default {
 			this.$router.replace({ name: "Login" });
 		}//REVISAR ESTO
 
-		this.studentsApi.getStudents().then(data => this.products = data);
+		this.studentsApi.getStudents().then(data => this.students = data);
 
 	},
 	methods: {
 		openNew() {
 			this.$router.replace({ path: "/alumnos/nuevoalumno" });
-			// this.product = {};
+			// this.student = {};
 			// this.submitted = false;
-			// this.productDialog = true;
+			// this.studentDialog = true;
 		},
 		hideDialog() {
-			this.productDialog = false;
+			this.studentDialog = false;
 			this.submitted = false;
 		},
-		saveProduct() {
+		savestudent() {
 			this.submitted = true;
-			if (this.product.name.trim()) {
-				if (this.product.id) {
-					this.product.state = this.product.state.value ? this.product.state.value: this.product.state;
-					this.products[this.findIndexById(this.product.id)] = this.product;
+			if (this.student.name.trim()) {
+				if (this.student.id) {
+					this.student.state = this.student.state.value ? this.student.state.value: this.student.state;
+					this.students[this.findIndexById(this.student.id)] = this.student;
 
-					this.administracionApi.updateNivel(this.product.id, this.product).then(data => {
+					this.administracionApi.updateNivel(this.student.id, this.student).then(data => {
 					console.log(data)
 						if(data.status === 200){
-							this.administracionApi.getNiveles().then(data => this.products = data);
+							this.administracionApi.getNiveles().then(data => this.students = data);
 							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Nivel actualizado!', life: 3000});
 						}
 						if(data.status === 400){
@@ -212,52 +212,58 @@ export default {
 			
 				}
 				else {
-					this.product.state = this.product.state ? this.product.state.value : 'Activo';
-					this.products.push(this.product);
+					this.student.state = this.student.state ? this.student.state.value : 'Activo';
+					this.students.push(this.student);
 
-					this.administracionApi.newNivel(this.product).then(data => {
+					this.administracionApi.newNivel(this.student).then(data => {
 					if(data.status === 201){
-						this.administracionApi.getNiveles().then(data => this.products = data);
+						this.administracionApi.getNiveles().then(data => this.students = data);
 						this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
 					}});
 				
 
 				
 				
-				//this.administracionApi.getNiveles().then(data => this.products = data);
+				//this.administracionApi.getNiveles().then(data => this.students = data);
 				}
-				this.productDialog = false;
-				this.product = {};
+				this.studentDialog = false;
+				this.student = {};
 			}
 		},
-		editProduct(product) {
-			this.product = {...product};
-			this.productDialog = true;
-		},
-		confirmDeleteProduct(product) {
-			this.product = product;
-			this.deleteProductDialog = true;
-		},
-		deleteProduct() {
+		editstudent(student) {
+			this.student = {...student};
+			//var student1 = JSON.parse(JSON.stringify({...student}))
 
-			this.administracionApi.deleteNivel(this.product.id).then(data => {
+			this.$store.commit('studentData', this.student)
+
+			this.$router.replace({ path: '/alumnos/nuevoalumno'});
+
+			//this.studentDialog = true;
+		},
+		confirmDeletestudent(student) {
+			this.student = student;
+			this.deletestudentDialog = true;
+		},
+		deletestudent() {
+
+			this.administracionApi.deleteNivel(this.student.id).then(data => {
 				if(data.status === 204){
 
-				this.administracionApi.getNiveles().then(data => this.products = data);
+				this.administracionApi.getNiveles().then(data => this.students = data);
 				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel Eliminado', life: 5000});
 				}
 			});
 			
-			this.deleteProductDialog = false;
-			this.product = {};
+			this.deletestudentDialog = false;
+			this.student = {};
 
 
 
 		},
 		findIndexById(id) {
 			let index = -1;
-			for (let i = 0; i < this.products.length; i++) {
-				if (this.products[i].id === id) {
+			for (let i = 0; i < this.students.length; i++) {
+				if (this.students[i].id === id) {
 					index = i;
 					break;
 				}
@@ -276,13 +282,13 @@ export default {
 			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
-			this.deleteProductsDialog = true;
+			this.deletestudentsDialog = true;
 		},
-		deleteSelectedProducts() {
-			this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-			this.deleteProductsDialog = false;
-			this.selectedProducts = null;
-			this.$toast.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
+		deleteSelectedstudents() {
+			this.students = this.students.filter(val => !this.selectedstudents.includes(val));
+			this.deletestudentsDialog = false;
+			this.selectedstudents = null;
+			this.$toast.add({severity:'success', summary: 'Successful', detail: 'students Deleted', life: 3000});
 		},
 		initFilters() {
             this.filters = {

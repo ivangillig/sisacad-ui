@@ -124,8 +124,10 @@ const routes = [
             },
             {
                 path: '/alumnos/nuevoalumno',
+                name: 'nuevoalumno',
                 component: () => import('./pages/alumnos/AddStudent.vue'),
                 meta: { requireLogin: true},
+                props: true,                
                 children: [
                     {
                         path: '',

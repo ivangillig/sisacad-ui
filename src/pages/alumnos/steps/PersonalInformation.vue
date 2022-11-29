@@ -7,7 +7,7 @@
             <div class="p-fluid grid mt-5">
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputText type="text"  id="first_name" v-model="first_name"  :class="{'p-invalid': validationErrors.first_name && submitted}" />
+                        <InputText type="text"  id="first_name" v-model.trim="student.first_name" :class="{'p-invalid': validationErrors.first_name && submitted}" />
                         <small v-show="validationErrors.first_name && submitted" class="p-error">{{msg.first_name}}</small>
                         <label for="first_name">Primer Nombre</label>
                     </span>
@@ -15,38 +15,28 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputText id="middle_name" type="text" v-model="middle_name"/>
+                        <InputText id="middle_name" type="text" v-model.trim="student.middle_name"/>
                         <label for="middle_name">Segundo Nombre</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputText id="first_lastname" v-model="first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
+                        <InputText id="first_lastname" v-model.trim="student.first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
                         <small v-show="validationErrors.first_lastname && submitted" class="p-error">{{msg.first_lastname}}</small>
                         <label for="first_lastname">Apellido Paterno</label>
                     </span>
                 </div>
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputText id="second_lastname" type="text" v-model="second_lastname"/>
+                        <InputText id="second_lastname" type="text" v-model.trim="student.second_lastname" />
                         <label for="second_lastname">Apellido Materno</label>
                     </span>
                 </div>
 
-                <!-- <div class="field col-12 md:col-4">						
-                            <label for="lastname2">Correo Institucional</label>
-                            <div class="p-inputgroup">
-                                <span class="p-inputgroup-addon">
-                                    <i class="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="E-mail" />
-                            </div>
-                        </div> -->
-
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <AutoComplete id="nationality" v-model="nationality" :suggestions="filteredCountries"
+                        <AutoComplete id="nationality" v-model.trim="student.nationality"  :suggestions="filteredCountries"
                         @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
                         <template #item="slotProps">
                             <div class="country-item">
@@ -61,7 +51,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <Calendar id="birthdate" v-model="birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <Calendar id="birthdate" v-model.trim="student.birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                         <label for="birthdate">Fecha de nacimiento</label>
                     </span>
@@ -69,14 +59,14 @@
 
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
-                        <InputText id="birth_place" type="text" v-model="birth_place" />
+                        <InputText id="birth_place" type="text" v-model.trim="student.birth_place" />
                         <label for="birth_place">Lugar de nacimiento</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <InputMask id="doc_number" mask="99.999.999" v-model="doc_number"
+                        <InputMask id="doc_number" mask="99.999.999" v-model.trim="student.doc_number"
                         :class="{'p-invalid': validationErrors.doc_number && submitted}" />
                         <small v-show="validationErrors.doc_number && submitted" class="p-error">{{msg.doc_number}}</small>
                         <label for="doc_number">DNI</label>
@@ -85,16 +75,22 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="p-float-label">
-                        <Dropdown id="gender" v-model="gender" :options="genderOptions" optionLabel="name" optionValue="value"
-                        placeholder="Selecciona uno" />
+                        <Dropdown id="gender" v-model="student.gender" selected="slotProps" :options="genderOptions" optionLabel="label" optionValue="value" placeholder="Selecciona uno" >
+                            <template #value="slotProps">
+                                <div v-if="slotProps.value && slotProps.value.value">
+                                    <span>{{slotProps.value.label}}</span>
+                                </div>
+                                <div v-else-if="slotProps.value && !slotProps.value.value">
+                                    <span>{{slotProps.value}}</span>
+                                </div>
+                                <span v-else>
+                                    {{slotProps.placeholder}}
+                                </span>
+                            </template>                
+                        </Dropdown>
                         <label for="gender">Género</label>
                     </span>
                 </div>
-
-                <!-- <div class="field col-12">
-                            <label for="address">Dirección</label>
-                            <Textarea id="address" rows="4"/>
-                        </div> -->
 
             </div>
         </div>
@@ -107,42 +103,42 @@
 
             <div class="field col-12 md:col-6">
                 <span class="p-float-label">
-                    <InputText id="street" type="text" v-model="street"/>
+                    <InputText id="street" type="text" v-model.trim="student.street"/>
                     <label for="street">Calle</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputNumber id="number" type="text" v-model="number" :useGrouping="false"/>
+                <InputNumber id="number" type="text" v-model.trim="student.number" :useGrouping="false"/>
                 <label for="number">Número</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                <InputNumber id="floor" type="text" v-model="floor" showButtons/>
+                <InputNumber id="floor" type="text" v-model.trim="student.floor" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                    <InputNumber id="department" type="text" v-model="department" showButtons/>
+                    <InputNumber id="department" type="text" v-model.trim="student.department" showButtons/>
                     <label for="department">Depto</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-4">
                 <span class="p-float-label">
-                <InputText id="city" type="text" v-model="city" />
+                <InputText id="city" type="text" v-model.trim="student.city" />
                 <label for="city">Ciudad</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-3">
                 <span class="p-float-label">
-                    <Dropdown id="state" v-model="state" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model.trim="student.state" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -150,21 +146,21 @@
 
             <div class="field col-12 md:col-1">
                 <span class="p-float-label">
-                <InputText id="cp" type="text" v-model="cp"/>
+                <InputText id="cp" type="text" v-model.trim="student.cp"/>
                 <label for="cp">CP</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                    <InputNumber inputId="phone" v-model="phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="phone" v-model.trim="student.phone" max_length="10" :useGrouping="false" />
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
             
             <div class="field col-12 md:col-2">
                 <span class="p-float-label">
-                    <InputNumber inputId="family_phone" v-model="family_phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="family_phone" v-model.trim="student.family_phone" max_length="10" :useGrouping="false" />
                     <label for="family_phone">Teléfono Familiar</label>
                 </span>
             </div>
@@ -204,30 +200,33 @@ export default {
     },
     mounted(){
         this.countryService.getCountries().then(data => this.countries = data);
+
+        this.student = this.$store.state.student;
     },
     data() {
         return {
-            first_name: '',
-            middle_name: null,
-            first_lastname: '',
-            second_lastname: null,
-            selectedCountry: null,
-            birthdate: '',
-            birth_place: null,
-            nationality: '',
-            doc_number: '',
-            filteredCountries: null,
-            gender: '',
-            phone: null,
-            family_phone: null,
+			student: {},
+            // first_name: '',
+            // middle_name: null,
+            // first_lastname: '',
+            // second_lastname: null,
+            // selectedCountry: null,
+            // birthdate: '',
+            // birth_place: null,
+            // nationality: '',
+            // doc_number: '',
+            // filteredCountries: null,
+            // gender: '',
+            // phone: null,
+            // family_phone: null,
 
-            street: null,
-            number: null,
-            floor: null,
-            department: null,
-            city: null,
-            state: null,
-            cp: null,
+            // street: null,
+            // number: null,
+            // floor: null,
+            // department: null,
+            // city: null,
+            // state: null,
+            // cp: null,
 
             msg: [],
 
@@ -239,10 +238,10 @@ export default {
             ],
 
             genderOptions: [
-                {name: 'Sin especificar', value: 1},
-                {name: 'Sin género', value: 2},
-                {name: 'Másculino', value: 3},
-                {name: 'Femenino', value: 4},
+                {label: 'Sin especificar', value: 1},
+                {label: 'Sin género', value: 2},
+                {label: 'Másculino', value: 3},
+                {label: 'Femenino', value: 4},
             ],
             submitted: false,
             validationErrors: {}
@@ -255,7 +254,6 @@ export default {
             
             if (this.validateForm()) {
                 this.AdminService.getPerson(this.doc_number.replaceAll('.', '')).then(response => {
-                    console.log(response.status)
                     if (response.status === 200) {
                         this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
                     }
