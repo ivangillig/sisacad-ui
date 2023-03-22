@@ -39,7 +39,7 @@
 					</Column>
 					<Column field="nombre" header="DNI" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
-							<span class="p-column-title">Nombre</span>
+							<span class="p-column-title">doc_number</span>
 							{{slotProps.data.doc_number}}
 						</template>
 					</Column>
@@ -269,14 +269,6 @@ export default {
 				}
 			}
 			return index;
-		},
-		createId() {
-			let id = '';
-			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			for ( var i = 0; i < 5; i++ ) {
-				id += chars.charAt(Math.floor(Math.random() * chars.length));
-			}
-			return id;
 		},
 		exportCSV() {
 			this.$refs.dt.exportCSV();

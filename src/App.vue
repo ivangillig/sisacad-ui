@@ -63,6 +63,7 @@ export default {
                             label: 'ABM Secretaría', icon: 'pi pi-fw pi-user-edit',
                             items: [
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
+						{label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones'},
 						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
                             ]
                         },

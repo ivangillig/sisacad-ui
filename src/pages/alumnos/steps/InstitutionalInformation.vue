@@ -85,8 +85,10 @@ export default {
 
                     if (this.validateForm()) {
                         
+                        console.log('pasa por aca 1')
                         this.AdminService.getPersonEmail({email: this.email}).then(response => {
                             if (response.status === 200) {
+                        console.log('pasa por aca 2')
                                 this.$emit('next-page', {
                                         formData: {
                                             email: this.email, 

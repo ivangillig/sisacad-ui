@@ -1,27 +1,27 @@
-// import axios from 'axios';
 import clienteAxios from "../config/axios";
 
 export default class StudentsApi {
 
-    // getProductsSmall() {
-    //     return clienteAxios.get('assets/demo/data/products-small.json').then(res => res.data.data);
-    // }
+  getStudents() {
+    return clienteAxios.get('/api/alumnos/')
+      .then(res => res.data);
+  }
 
-    getStudents() {
-        return clienteAxios.get('/secretaria/alumno/').then(res => res.data);
-    }
+  async newStudent(student) {
+    return clienteAxios.post('/secretaria/alumno/', student)
+      .then(res => res.data);
+  }
 
-    newStudent(student) {
-        return clienteAxios.post('/secretaria/alumno/', student);
-    }
+  async updateStudent(id, student) {
+    return clienteAxios.put(`/secretaria/alumno/${id}/`, student)
+      .then(res => res.data);
+  }
 
-    updateStudent(id, student) {
-        return clienteAxios.put(`/secretariaalumno/${id}/`, student);
-    }
+  async deleteStudent(id) {
+    return clienteAxios.delete(`/secretaria/alumno/${id}/`)
+      .then(res => res.data);
+  }
 
-    deleteStudent(id) {
-        return clienteAxios.delete(`/secretaria/alumno/${id}/`);
-    }
 
     // getProductsWithOrdersSmall() {
     //     return clienteAxios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);

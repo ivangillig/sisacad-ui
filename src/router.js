@@ -163,8 +163,14 @@ const routes = [
             // },
             {
                 path: '/administracion/niveles',
-                name: 'crudnivel',
+                name: 'crudNivel',
                 component: () => import('./pages/administracion/CrudNivel.vue'),
+                meta: { requireLogin: true}
+            },
+            {
+                path: '/administracion/divisiones',
+                name: 'crudDivision',
+                component: () => import('./pages/administracion/CrudDivision.vue'),
                 meta: { requireLogin: true}
             },
             {

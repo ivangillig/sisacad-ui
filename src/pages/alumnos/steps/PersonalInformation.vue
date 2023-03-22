@@ -50,16 +50,16 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <Calendar id="birthdate" v-model.trim="student.birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
-                        :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                         <label for="birthdate">Fecha de nacimiento</label>
+                        <Calendar id="birthdate" v-model="student.birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-6">
                     <span class="label-modified">
-                        <InputText id="birth_place" type="text" v-model.trim="student.birth_place" />
                         <label for="birth_place">Lugar de nacimiento</label>
+                        <InputText id="birth_place" type="text" v-model="student.birth_place" />
                     </span>
                 </div>
 
@@ -116,14 +116,14 @@
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="floor" type="text" v-model.trim="student.floor" showButtons/>
+                <InputNumber id="floor" type="text" v-model="student.floor" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber id="department" type="text" v-model.trim="student.department" showButtons/>
+                    <InputNumber id="department" type="text" v-model="student.department" showButtons/>
                     <label for="department">Depto</label>
                 </span>
             </div>
@@ -137,7 +137,7 @@
 
             <div class="field col-12 md:col-3">
                 <span class="label-modified">
-                    <Dropdown id="state" v-model.trim="student.state" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model="student.state" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -261,11 +261,12 @@ export default {
             
             if (this.validateForm()) {
                 this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
-                    if (response.status === 200) {
+                    console.log('asdafa')
+                    if (response && response.success) {
                         this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
                     }
-                }).catch(error => {
-                    if (error.response.status === 404) {
+
+                    else {
 
                         this.$emit('next-page', {
                             formData: {
@@ -291,7 +292,9 @@ export default {
                             pageIndex: 0
                         });
 
-                    } else if (error.message) {
+                    }
+                }).catch(error => {
+                      if (error.message) {
                         console.log(error.message)
                     } else {
                         console.log(error)

@@ -19,7 +19,7 @@
                         <InputText id="email1" v-model="email" type="text" class="w-full mb-3" placeholder="Email" style="padding:1rem;" />
                 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <Password id="password1" :feedback="false" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
+                        <Password id="password1" :feedback="false" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem" @keydown.enter="login"></Password>
                 
                         <div class="flex align-items-center justify-content-between mb-5">
                             <div class="flex align-items-center">

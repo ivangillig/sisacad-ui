@@ -1,39 +1,68 @@
-// import axios from 'axios';
-import clienteAxios from '../config/axios'
-
+import clienteAxios from '../config/axios';
 
 export default class AdminService {
+  async getLevels() {
+    const response = await clienteAxios.get('/api/secretaria/nivel/');
+    return response;
+  }
 
+  async newLevel(level) {
+    const response = await clienteAxios.post('/api/secretaria/nivel/', level);
+    return response;
+  }
 
-    getNiveles() {
-        return clienteAxios.get('/secretaria/nivel/').then(res => res.data);
-    }
+  async updateLevel(id, level) {
+    const response = await clienteAxios.put(`/api/secretaria/nivel/${id}/`, level);
+    return response;
+  }
 
-    newNivel(nivel) {
-        return clienteAxios.post('/secretaria/nivel/', nivel);
-    }
+  async deleteLevel(id) {
+    const response = await clienteAxios.delete(`/api/secretaria/nivel/${id}/`);
+    return response;
+  }
 
-    updateNivel(id, nivel) {
-        return clienteAxios.put(`/secretaria/nivel/${id}/`, nivel);
-    }
+  async deleteMultipleLevels(levelList) {
+    const response = await clienteAxios.post('/api/secretaria/nivel/delete_multiple/', { level_ids: levelList })
+    return response;
+  }
 
-    deleteNivel(id) {
-        return clienteAxios.delete(`/secretaria/nivel/${id}/`);
-    }
+  async getDivisiones() {
+    const response = await clienteAxios.get('/api/secretaria/division/');
+    return response.data;
+  }
 
-    newStudent(student) {
-        return clienteAxios.post('/secretaria/alumno/', student);
-    }
+  async newDivision(division) {
+    const response = await clienteAxios.post('/api/secretaria/division/', division);
+    return response;
+  }
 
+  async updateDivision(id, division) {
+    const response = await clienteAxios.put(`/api/secretaria/division/${id}/`, division);
+    return response;
+  }
 
-    // API Persons
-    getPerson(id) {
-        return clienteAxios.get(`/secretaria/person/${id}/`).then(res => res);
-    }
+  async deleteDivision(id) {
+    const response = await clienteAxios.delete(`/api/secretaria/division/${id}/`);
+    return response;
+  }
 
-    getPersonEmail(email) {
-        return clienteAxios.post('/secretaria/checkemail/', email).then(res => res);
-    }
+  async deleteMultipleDivisions(divisionList) {
+    const response = await clienteAxios.post('/api/secretaria/division/delete_multiple/', { division_ids: divisionList })
+    return response;
+  }
 
+  async newStudent(student) {
+    const response = await clienteAxios.post('/api/secretaria/alumno/', student);
+    return response;
+  }
 
+  async getPerson(id) {
+    const response = await clienteAxios.get(`/api/administracion/person/${id}/`);
+    return response;
+  }
+
+  async getPersonEmail(email) {
+    const response = await clienteAxios.post('/api/administracion/checkemail/', email);
+    return response;
+  }
 }
