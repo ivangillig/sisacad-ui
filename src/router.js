@@ -174,6 +174,18 @@ const routes = [
                 meta: { requireLogin: true}
             },
             {
+                path: '/administracion/modalidades',
+                name: 'crudModalidad',
+                component: () => import('./pages/administracion/CrudModalidad.vue'),
+                meta: { requireLogin: true}
+            },
+            {
+                path: '/administracion/cursos',
+                name: 'crudCurso',
+                component: () => import('./pages/administracion/CrudCurso.vue'),
+                meta: { requireLogin: true}
+            },
+            {
                 path: '/timeline',
                 name: 'timeline',
                 component: () => import('./pages/TimelineDemo.vue')

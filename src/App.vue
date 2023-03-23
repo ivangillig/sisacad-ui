@@ -64,6 +64,8 @@ export default {
                             items: [
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
 						{label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones'},
+						{label: 'Modalidades', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/modalidades'},
+                        {label: 'Cursos', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/cursos'},
 						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
                             ]
                         },

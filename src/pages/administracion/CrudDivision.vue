@@ -122,7 +122,7 @@
 
 <script>
 import {FilterMatchMode} from 'primevue/api';
-import AdminService from '../../service/AdminService';
+import AdminService from '../../service/Secretaria/AdminService';
 
 export default {
 	data() {
@@ -152,7 +152,7 @@ export default {
 		// 	this.$router.replace({ name: "Login" });
 		// }
 
-		this.AdminService.getDivisiones().then(data => this.divisions = data);
+		this.AdminService.getDivisions().then(data => this.divisions = data);
 
 	},
 	methods: {
@@ -174,7 +174,7 @@ export default {
 
 					this.AdminService.updateDivision(this.division.id, this.division).then(data => {
 						if(data.status === 200){
-							this.AdminService.getDivisiones().then(data => this.divisions = data);
+							this.AdminService.getDivisions().then(data => this.divisions = data);
 							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Division actualizada!', life: 3000});
 						}
 						if(data.status === 400){
@@ -189,7 +189,7 @@ export default {
 
 					this.AdminService.newDivision(this.division).then(data => {
 					if(data.status === 201){
-						this.AdminService.getDivisiones().then(data => this.divisions = data);
+						this.AdminService.getDivisions().then(data => this.divisions = data);
 						this.$toast.add({severity:'success', summary: 'Exito', detail: 'Division creada correctamente!', life: 5000});
 					}});
 				
@@ -213,7 +213,7 @@ export default {
 			this.AdminService.deleteDivision(this.division.id).then(data => {
 				if(data.status === 204){
 
-				this.AdminService.getDivisiones().then(data => this.divisions = data);
+				this.AdminService.getDivisions().then(data => this.divisions = data);
 				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Division Eliminado', life: 5000});
 				}
 			});
@@ -247,7 +247,7 @@ export default {
 
 			this.AdminService.deleteMultipleDivisions(divisionList).then(data => {
 				if(data.status === 204){
-					this.AdminService.getDivisiones().then(data => this.divisions = data);
+					this.AdminService.getDivisions().then(data => this.divisions = data);
 					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Las divisiones fueron eliminadas correctamente', life: 4000});
 					this.deleteDivisionsDialog = false;
 					this.selectedDivisions = null;

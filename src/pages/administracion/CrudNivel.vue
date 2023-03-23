@@ -107,7 +107,7 @@
 				<Dialog v-model:visible="deleteLevelsDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="level">Está seguro de que desea eliminar los leveles seleccionados?</span>
+						<span v-if="level">Está seguro de que desea eliminar los niveles seleccionados?</span>
 					</div>
 					<template #footer>
 						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteLevelsDialog = false"/>
@@ -122,7 +122,7 @@
 
 <script>
 import {FilterMatchMode} from 'primevue/api';
-import AdminService from '../../service/AdminService';
+import AdminService from '../../service/Secretaria/AdminService';
 
 export default {
 	data() {
@@ -173,7 +173,7 @@ export default {
 
 					this.AdminService.updateLevel(this.level.id, this.level).then(data => {
 						if(data.status === 200){
-							this.AdminService.getLeveles().then(data => this.levels = data);
+							this.AdminService.getLevels().then(response => this.levels = response.data);
 							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Level actualizada!', life: 3000});
 						}
 						if(data.status === 400){
@@ -196,9 +196,6 @@ export default {
 							})
 						}
 					});
-				
-				
-				//this.administracionApi.getLeveles().then(data => this.levels = data);
 				}
 				this.levelDialog = false;
 				this.level = {};

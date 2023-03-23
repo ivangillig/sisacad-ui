@@ -159,7 +159,7 @@
 <script>
 
 import AuthService from '../../../service/AuthService';
-import AdminService from '../../../service/AdminService';
+import AdminService from '../../../service/Secretaria/AdminService';
 
 export default {
     created() {
