@@ -2,7 +2,7 @@ import clienteAxios from '../../config/axios';
 
 export const getDivisions = async () => {
   const response = await clienteAxios.get('/api/secretaria/division/');
-  return response.data;
+  return response;
 }
 
 export const newDivision = async (division) => {

@@ -180,9 +180,9 @@ const routes = [
                 meta: { requireLogin: true}
             },
             {
-                path: '/administracion/cursos',
-                name: 'crudCurso',
-                component: () => import('./pages/administracion/CrudCurso.vue'),
+                path: '/administracion/grados',
+                name: 'crudGrado',
+                component: () => import('./pages/administracion/CrudGrado.vue'),
                 meta: { requireLogin: true}
             },
             {

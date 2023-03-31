@@ -2,6 +2,7 @@
 import { getLevels, newLevel, updateLevel, deleteLevel, deleteMultipleLevels } from './LevelService';
 import { getDivisions, newDivision, updateDivision, deleteDivision, deleteMultipleDivisions } from './DivisionService';
 import { getSpecialities, newSpeciality, updateSpeciality, deleteSpeciality, deleteMultipleSpecialities } from './SpecialityService'
+import { getGrades, newGrade, updateGrade, deleteGrade, deleteMultipleGrades } from './GradeService';
 
 export default class AdminService {
   async getLevels() {
@@ -62,6 +63,27 @@ export default class AdminService {
 
   async deleteMultipleSpecialities(specialityList) {
     return await deleteMultipleSpecialities(specialityList);
+  }
+
+
+  async getGrades() {
+    return await getGrades();
+  }
+
+  async newGrade(grade) {
+    return await newGrade(grade);
+  }
+
+  async updateGrade(id, grade) {
+    return await updateGrade(id, grade);
+  }
+
+  async deleteGrade(id) {
+    return await deleteGrade(id);
+  }
+
+  async deleteMultipleGrades(gradeList) {
+    return await deleteMultipleGrades(gradeList);
   }
 }
 
