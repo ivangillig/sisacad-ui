@@ -174,8 +174,9 @@ export default {
             this.$emit('prev-page', { pageIndex: 3 });
         },
         complete(formData) {
-            var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
-            var student = {
+            let user = {"email": formData.email, "password1": formData.doc_number.replaceAll('.', ''), "password2": formData.doc_number.replaceAll('.', '') }
+            console.log(user)
+            let student = {
                     doc_number: formData.doc_number,
                     first_name: formData.first_name, 
                     middle_name: formData.middle_name,
@@ -206,7 +207,9 @@ export default {
                     }
 
             this.AuthService.newUser(user).then(response => {
+                    console.log(response)
                     if (response.status === 201) {
+                        console.log(response.data)
                         student.user = response.data.user
 
                         this.AdminService.newStudent(student).then(response => {
@@ -228,17 +231,9 @@ export default {
                         })
                 }
             }).catch(error => {
-                    if( error.response) {
-                     
-                        for (const property in error.response.data) {
-                            this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
-                        }
-                    } else if (error.message) {
-                        console.log(error.message)
-                    } else {
                         console.log(error)
                     }
-            })
+            )
 
         },
 		toggleDialog() {

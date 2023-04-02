@@ -24,20 +24,20 @@
                     <span class="label-modified">
                         <InputText id="first_lastname" required v-model.trim="student.first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
                         <small v-show="validationErrors.first_lastname && submitted" class="p-error">{{msg.first_lastname}}</small>
-                        <label for="first_lastname">Apellido Paterno</label>
+                        <label for="first_lastname">Primer Apellido</label>
                     </span>
                 </div>
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <InputText id="second_lastname" type="text" v-model.trim="student.second_lastname" />
-                        <label for="second_lastname">Apellido Materno</label>
+                        <label for="second_lastname">Segundo Apellido</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <AutoComplete id="nationality" v-model="student.nationality"  :suggestions="filteredCountries"
-                        @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
+                        @complete="searchCountry" :dropdown="true" optionLabel="name" forceSelection>
                         <template #item="slotProps">
                             <div class="country-item">
                                 <div class="ml-2">{{slotProps.item.name}}</div>
@@ -74,7 +74,7 @@
 
                     <div class="field col-12 md:col-3" v-if="(1 > 0)">
                         <span class="label-modified">
-                            <Dropdown id="gender" v-model="student.gender" :options="genderOptions" optionLabel="label" placeholder="Selecciona un género" >
+                            <Dropdown id="gender" v-model="student.gender" :options="genderOptions" optionLabel="label" placeholder="Selecciona un género" class="w-full md:w-14rem" >
                                 <template #value="slotProps">
                                     <div v-if="slotProps.value && slotProps.value.value">
                                         {{slotProps.value.label}}
@@ -145,21 +145,21 @@
 
             <div class="field col-12 md:col-1">
                 <span class="label-modified">
-                <InputText id="cp" type="text" v-model.trim="student.cp"/>
+                <InputText id="cp" type="text" v-model="student.cp"/>
                 <label for="cp">CP</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="phone" v-model.trim="student.phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="phone" v-model="student.phone" max_length="10" :useGrouping="false" />
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
             
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="family_phone" v-model.trim="student.family_phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="family_phone" v-model="student.family_phone" max_length="10" :useGrouping="false" />
                     <label for="family_phone">Teléfono Familiar</label>
                 </span>
             </div>
@@ -198,18 +198,18 @@ export default {
         this.maxDate.setFullYear(nextYear);
     },
     mounted(){
-        this.countryService.getCountries().then(data => this.countries = data);
+        this.countryService.getCountries().then(data => {this.countries = data});
 
         if (this.$store.state.student) { 
             this.student.birthdate = this.$store.state.student.birthdate ? this.$store.state.student.birthdate : null 
             this.student = this.$store.state.student
         } 
-        
-
     },
     data() {
         return {
-			student: {},
+			student: {
+                nationality: null,
+            },
             
             // first_name: '',
             // middle_name: null,
@@ -218,7 +218,7 @@ export default {
             // selectedCountry: null,
             // birthdate: '',
             // birth_place: null,
-            // nationality: '',
+            
             // doc_number: '',
             // filteredCountries: null,
             // gender: '',
@@ -249,25 +249,35 @@ export default {
                 {label: 'Femenino', value: 'Femenino'},
             ],
             submitted: false,
-            validationErrors: {}
+            validationErrors: {},
+            countries: [], // array de países
+            searchQuery: '' // valor de búsqueda del usuario
         }
     },
-    countryService: null,
+     computed: {
+        filteredCountries() {
+            if (!this.searchQuery) {
+                return this.countries;
+            }
+            else {
+                const query = this.searchQuery.toLowerCase();
+                return this.countries.filter(country =>
+                    country.name.toLowerCase().startsWith(query)
+                );
+            }
+        }
+    },
+    //countryService: null,
     methods: {
         nextPage() {
 
-            console.log(this.student.doc_number)
             this.submitted = true;
             
             if (this.validateForm()) {
                 this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
-                    console.log('asdafa')
-                    if (response && response.success) {
+                    if (response && response.data.success === true) {
                         this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
-                    }
-
-                    else {
-
+                    } else {
                         this.$emit('next-page', {
                             formData: {
                                 first_name: this.student.first_name,
@@ -277,7 +287,7 @@ export default {
                                 doc_number: this.student.doc_number,
                                 birthdate: this.student.birthdate,
                                 birth_place: this.student.birth_place,
-                                nationality: this.student.nationality.code,
+                                nationality: this.student.nationality ? this.student.nationality.code : null,
                                 gender: this.student.gender,
                                 phone: this.student.phone,
                                 family_phone: this.student.family_phone,
@@ -334,16 +344,7 @@ export default {
             return !Object.keys(this.validationErrors).length;
         },
         searchCountry(event) {
-            setTimeout(() => {
-                if (!event.query.trim().length) {
-                    this.filteredCountries = [...this.countries];
-                }
-                else {
-                    this.filteredCountries = this.countries.filter((country) => {
-                        return country.name.toLowerCase().startsWith(event.query.toLowerCase());
-                    });
-                }
-            }, 250);
+            this.searchQuery = event.query.trim();
         },
     }
 }
