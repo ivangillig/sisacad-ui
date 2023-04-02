@@ -50,8 +50,8 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <label for="birthdate">Fecha de nacimiento</label>
-                        <Calendar id="birthdate" v-model="student.birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <label for="birthday">Fecha de nacimiento</label>
+                        <Calendar id="birthday" v-model="student.birthday" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                     </span>
                 </div>
@@ -109,7 +109,7 @@
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="number" type="text" v-model.trim="student.number" :useGrouping="false"/>
+                <InputNumber id="number" type="text" v-model="student.number" :useGrouping="false"/>
                 <label for="number">Número</label>
                 </span>
             </div>
@@ -130,14 +130,14 @@
 
             <div class="field col-12 md:col-4">
                 <span class="label-modified">
-                <InputText id="city" type="text" v-model.trim="student.city" />
+                <InputText id="city" type="text" v-model="student.address_city" />
                 <label for="city">Ciudad</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-3">
                 <span class="label-modified">
-                    <Dropdown id="state" v-model="student.state" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model="student.address_state" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -197,41 +197,22 @@ export default {
         this.maxDate.setMonth(nextMonth);
         this.maxDate.setFullYear(nextYear);
     },
-    mounted(){
-        this.countryService.getCountries().then(data => {this.countries = data});
+    mounted() {
+        this.countryService.getCountries().then(data => {this.countries = data})
 
-        if (this.$store.state.student) { 
-            this.student.birthdate = this.$store.state.student.birthdate ? this.$store.state.student.birthdate : null 
+        console.log(this.$store.state.student)
+        if (this.$store.state.student) {
+            const birthday = this.$store.state.student.birthday
             this.student = this.$store.state.student
-        } 
+            this.student.birthday = birthday ? birthday.split('-').reverse().join('-') : null
+        }
+        console.log(this.student)
     },
     data() {
         return {
 			student: {
                 nationality: null,
             },
-            
-            // first_name: '',
-            // middle_name: null,
-            // first_lastname: '',
-            // second_lastname: null,
-            // selectedCountry: null,
-            // birthdate: '',
-            // birth_place: null,
-            
-            // doc_number: '',
-            // filteredCountries: null,
-            // gender: '',
-            // phone: null,
-            // family_phone: null,
-
-            // street: null,
-            // number: null,
-            // floor: null,
-            // department: null,
-            // city: null,
-            // state: null,
-            // cp: null,
 
             msg: [],
 
@@ -245,7 +226,7 @@ export default {
             genderOptions: [
                 {label: 'Sin especificar', value: 'Sin especificar'},
                 {label: 'Sin género', value: 'Sin género'},
-                {label: 'Másculino', value: 'Másculino'},
+                {label: 'Masculino', value: 'Masculino'},
                 {label: 'Femenino', value: 'Femenino'},
             ],
             submitted: false,
@@ -272,12 +253,12 @@ export default {
         nextPage() {
 
             this.submitted = true;
-            
             if (this.validateForm()) {
                 this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
                     if (response && response.data.success === true) {
                         this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
                     } else {
+                        console.log(this.student)
                         this.$emit('next-page', {
                             formData: {
                                 first_name: this.student.first_name,
@@ -285,18 +266,18 @@ export default {
                                 first_lastname: this.student.first_lastname,
                                 second_lastname: this.student.second_lastname,
                                 doc_number: this.student.doc_number,
-                                birthdate: this.student.birthdate,
+                                birthday: this.student.birthday,
                                 birth_place: this.student.birth_place,
                                 nationality: this.student.nationality ? this.student.nationality.code : null,
-                                gender: this.student.gender,
+                                gender: this.student.gender ? this.student.gender.value : null,
                                 phone: this.student.phone,
                                 family_phone: this.student.family_phone,
                                 street: this.student.street,
                                 number: this.student.number,
                                 floor: this.student.floor,
                                 department: this.student.department,
-                                city: this.student.city,
-                                state: this.student.state,
+                                address_city: this.student.address_city,
+                                address_state: this.student.address_state,
                                 cp: this.student.cp,
                             },
                             pageIndex: 0
@@ -304,12 +285,9 @@ export default {
 
                     }
                 }).catch(error => {
-                      if (error.message) {
-                        console.log(error.message)
-                    } else {
                         console.log(error)
                     }
-                })
+                )
             }
         },
         validateForm() {

@@ -2,8 +2,8 @@ import clienteAxios from "../config/axios";
 
 export default class StudentsApi {
 
-  getStudents() {
-    return clienteAxios.get('/api/alumnos/')
+  async getStudents() {
+    return clienteAxios.get('/api/secretaria/alumno/')
       .then(res => res.data);
   }
 
