@@ -34,7 +34,17 @@
                     </span>
                 </div>
 
+
+
                 <div class="field col-12 md:col-3">
+                    <span class="label-modified">
+                        <AutoComplete id="nationality" v-model="student.nationality" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
+                        placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
+                        <label for="state">Nacionalidad</label>
+                    </span>
+                </div>
+
+                <!-- <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <AutoComplete id="nationality" v-model="student.nationality"  :suggestions="filteredCountries"
                         @complete="searchCountry" :dropdown="true" optionLabel="name" forceSelection>
@@ -46,7 +56,7 @@
                     </AutoComplete>
                     <label for="nationality">Nacionalidad</label>
                     </span>
-                </div>
+                </div> -->
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
@@ -181,6 +191,9 @@ export default {
         this.AdminService = new AdminService();
         this.countryService = new CountryService();
 
+        this.countryService.getCountries().then(data => {
+            this.countries = data;
+        });
 
         let today = new Date();
         let month = today.getMonth();
@@ -198,23 +211,36 @@ export default {
         this.maxDate.setFullYear(nextYear);
     },
     mounted() {
-        this.countryService.getCountries().then(data => {this.countries = data})
+        let selectedState = {}
 
-        console.log(this.$store.state.student)
         if (this.$store.state.student) {
             const birthday = this.$store.state.student.birthday
             this.student = this.$store.state.student
             this.student.birthday = birthday ? birthday.split('-').reverse().join('-') : null
+
+            selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
+            if (selectedState) {
+                this.student.address_state = selectedState.value
+            }
         }
-        console.log(this.student)
+
+        this.countryService.getCountries().then(data => {
+            this.countries = data;
+
+            // on editing student, we change code country to name country for dropdown
+            if (this.$store.state.student && this.$store.state.student.id) {
+                const country = this.countries.find(country => country.code === this.$store.state.student.nationality);
+                this.student.nationality = country;
+            }
+        });
     },
     data() {
         return {
+            msg: [],
 			student: {
                 nationality: null,
             },
 
-            msg: [],
 
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
@@ -246,48 +272,49 @@ export default {
                     country.name.toLowerCase().startsWith(query)
                 );
             }
-        }
+        },
     },
     //countryService: null,
     methods: {
         nextPage() {
-
             this.submitted = true;
+            
             if (this.validateForm()) {
-                this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
-                    if (response && response.data.success === true) {
-                        this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
-                    } else {
-                        console.log(this.student)
-                        this.$emit('next-page', {
-                            formData: {
-                                first_name: this.student.first_name,
-                                middle_name: this.student.middle_name,
-                                first_lastname: this.student.first_lastname,
-                                second_lastname: this.student.second_lastname,
-                                doc_number: this.student.doc_number,
-                                birthday: this.student.birthday,
-                                birth_place: this.student.birth_place,
-                                nationality: this.student.nationality ? this.student.nationality.code : null,
-                                gender: this.student.gender ? this.student.gender.value : null,
-                                phone: this.student.phone,
-                                family_phone: this.student.family_phone,
-                                street: this.student.street,
-                                number: this.student.number,
-                                floor: this.student.floor,
-                                department: this.student.department,
-                                address_city: this.student.address_city,
-                                address_state: this.student.address_state,
-                                cp: this.student.cp,
-                            },
-                            pageIndex: 0
-                        });
-
-                    }
-                }).catch(error => {
+                if (this.student && !this.student.id) {
+                    this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
+                        if (response && response.data.success === true) {
+                            this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
+                            return;
+                        }
+                    }).catch(error => {
                         console.log(error)
                     }
-                )
+                    )
+                }
+
+                this.$emit('next-page', {
+                    formData: {
+                        first_name: this.student.first_name,
+                        middle_name: this.student.middle_name,
+                        first_lastname: this.student.first_lastname,
+                        second_lastname: this.student.second_lastname,
+                        doc_number: this.student.doc_number,
+                        birthday: this.student.birthday,
+                        birth_place: this.student.birth_place,
+                        nationality: this.student.nationality ? this.student.nationality.code : null,
+                        gender: this.student.gender ? this.student.gender.value : null,
+                        phone: this.student.phone,
+                        family_phone: this.student.family_phone,
+                        street: this.student.street,
+                        number: this.student.number,
+                        floor: this.student.floor,
+                        department: this.student.department,
+                        address_city: this.student.address_city,
+                        address_state: this.student.address_state,
+                        cp: this.student.cp,
+                    },
+                    pageIndex: 0
+                });
             }
         },
         validateForm() {
