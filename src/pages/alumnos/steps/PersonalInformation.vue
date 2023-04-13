@@ -24,20 +24,30 @@
                     <span class="label-modified">
                         <InputText id="first_lastname" required v-model.trim="student.first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
                         <small v-show="validationErrors.first_lastname && submitted" class="p-error">{{msg.first_lastname}}</small>
-                        <label for="first_lastname">Apellido Paterno</label>
+                        <label for="first_lastname">Primer Apellido</label>
                     </span>
                 </div>
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <InputText id="second_lastname" type="text" v-model.trim="student.second_lastname" />
-                        <label for="second_lastname">Apellido Materno</label>
+                        <label for="second_lastname">Segundo Apellido</label>
                     </span>
                 </div>
 
+
+
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
+                        <AutoComplete id="nationality" v-model="student.nationality" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
+                        placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
+                        <label for="state">Nacionalidad</label>
+                    </span>
+                </div>
+
+                <!-- <div class="field col-12 md:col-3">
+                    <span class="label-modified">
                         <AutoComplete id="nationality" v-model="student.nationality"  :suggestions="filteredCountries"
-                        @complete="searchCountry($event)" :dropdown="true" optionLabel="name" forceSelection>
+                        @complete="searchCountry" :dropdown="true" optionLabel="name" forceSelection>
                         <template #item="slotProps">
                             <div class="country-item">
                                 <div class="ml-2">{{slotProps.item.name}}</div>
@@ -46,12 +56,12 @@
                     </AutoComplete>
                     <label for="nationality">Nacionalidad</label>
                     </span>
-                </div>
+                </div> -->
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <label for="birthdate">Fecha de nacimiento</label>
-                        <Calendar id="birthdate" v-model="student.birthdate" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <label for="birthday">Fecha de nacimiento</label>
+                        <Calendar id="birthday" v-model="student.birthday" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                     </span>
                 </div>
@@ -74,7 +84,7 @@
 
                     <div class="field col-12 md:col-3" v-if="(1 > 0)">
                         <span class="label-modified">
-                            <Dropdown id="gender" v-model="student.gender" :options="genderOptions" optionLabel="label" placeholder="Selecciona un género" >
+                            <Dropdown id="gender" v-model="student.gender" :options="genderOptions" optionLabel="label" placeholder="Selecciona un género" class="w-full md:w-14rem" >
                                 <template #value="slotProps">
                                     <div v-if="slotProps.value && slotProps.value.value">
                                         {{slotProps.value.label}}
@@ -109,7 +119,7 @@
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="number" type="text" v-model.trim="student.number" :useGrouping="false"/>
+                <InputNumber id="number" type="text" v-model="student.number" :useGrouping="false"/>
                 <label for="number">Número</label>
                 </span>
             </div>
@@ -130,14 +140,14 @@
 
             <div class="field col-12 md:col-4">
                 <span class="label-modified">
-                <InputText id="city" type="text" v-model.trim="student.city" />
+                <InputText id="city" type="text" v-model="student.address_city" />
                 <label for="city">Ciudad</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-3">
                 <span class="label-modified">
-                    <Dropdown id="state" v-model="student.state" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model="student.address_state" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -145,21 +155,21 @@
 
             <div class="field col-12 md:col-1">
                 <span class="label-modified">
-                <InputText id="cp" type="text" v-model.trim="student.cp"/>
+                <InputText id="cp" type="text" v-model="student.cp"/>
                 <label for="cp">CP</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="phone" v-model.trim="student.phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="phone" v-model="student.phone" max_length="10" :useGrouping="false" />
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
             
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="family_phone" v-model.trim="student.family_phone" max_length="10" :useGrouping="false" />
+                    <InputNumber inputId="family_phone" v-model="student.family_phone" max_length="10" :useGrouping="false" />
                     <label for="family_phone">Teléfono Familiar</label>
                 </span>
             </div>
@@ -181,6 +191,9 @@ export default {
         this.AdminService = new AdminService();
         this.countryService = new CountryService();
 
+        this.countryService.getCountries().then(data => {
+            this.countries = data;
+        });
 
         let today = new Date();
         let month = today.getMonth();
@@ -197,43 +210,37 @@ export default {
         this.maxDate.setMonth(nextMonth);
         this.maxDate.setFullYear(nextYear);
     },
-    mounted(){
-        this.countryService.getCountries().then(data => this.countries = data);
+    mounted() {
+        let selectedState = {}
 
-        if (this.$store.state.student) { 
-            this.student.birthdate = this.$store.state.student.birthdate ? this.$store.state.student.birthdate : null 
+        if (this.$store.state.student) {
+            const birthday = this.$store.state.student.birthday
             this.student = this.$store.state.student
-        } 
-        
+            this.student.birthday = birthday ? birthday.split('-').reverse().join('-') : null
 
+            selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
+            if (selectedState) {
+                this.student.address_state = selectedState.value
+            }
+        }
+
+        this.countryService.getCountries().then(data => {
+            this.countries = data;
+
+            // on editing student, we change code country to name country for dropdown
+            if (this.$store.state.student && this.$store.state.student.id) {
+                const country = this.countries.find(country => country.code === this.$store.state.student.nationality);
+                this.student.nationality = country;
+            }
+        });
     },
     data() {
         return {
-			student: {},
-            
-            // first_name: '',
-            // middle_name: null,
-            // first_lastname: '',
-            // second_lastname: null,
-            // selectedCountry: null,
-            // birthdate: '',
-            // birth_place: null,
-            // nationality: '',
-            // doc_number: '',
-            // filteredCountries: null,
-            // gender: '',
-            // phone: null,
-            // family_phone: null,
-
-            // street: null,
-            // number: null,
-            // floor: null,
-            // department: null,
-            // city: null,
-            // state: null,
-            // cp: null,
-
             msg: [],
+			student: {
+                nationality: null,
+            },
+
 
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
@@ -245,61 +252,69 @@ export default {
             genderOptions: [
                 {label: 'Sin especificar', value: 'Sin especificar'},
                 {label: 'Sin género', value: 'Sin género'},
-                {label: 'Másculino', value: 'Másculino'},
+                {label: 'Masculino', value: 'Masculino'},
                 {label: 'Femenino', value: 'Femenino'},
             ],
             submitted: false,
-            validationErrors: {}
+            validationErrors: {},
+            countries: [], // array de países
+            searchQuery: '' // valor de búsqueda del usuario
         }
     },
-    countryService: null,
+     computed: {
+        filteredCountries() {
+            if (!this.searchQuery) {
+                return this.countries;
+            }
+            else {
+                const query = this.searchQuery.toLowerCase();
+                return this.countries.filter(country =>
+                    country.name.toLowerCase().startsWith(query)
+                );
+            }
+        },
+    },
+    //countryService: null,
     methods: {
         nextPage() {
-
-            console.log(this.student.doc_number)
             this.submitted = true;
             
             if (this.validateForm()) {
-                this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
-                    console.log('asdafa')
-                    if (response && response.success) {
-                        this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
-                    }
-
-                    else {
-
-                        this.$emit('next-page', {
-                            formData: {
-                                first_name: this.student.first_name,
-                                middle_name: this.student.middle_name,
-                                first_lastname: this.student.first_lastname,
-                                second_lastname: this.student.second_lastname,
-                                doc_number: this.student.doc_number,
-                                birthdate: this.student.birthdate,
-                                birth_place: this.student.birth_place,
-                                nationality: this.student.nationality.code,
-                                gender: this.student.gender,
-                                phone: this.student.phone,
-                                family_phone: this.student.family_phone,
-                                street: this.student.street,
-                                number: this.student.number,
-                                floor: this.student.floor,
-                                department: this.student.department,
-                                city: this.student.city,
-                                state: this.student.state,
-                                cp: this.student.cp,
-                            },
-                            pageIndex: 0
-                        });
-
-                    }
-                }).catch(error => {
-                      if (error.message) {
-                        console.log(error.message)
-                    } else {
+                if (this.student && !this.student.id) {
+                    this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
+                        if (response && response.data.success === true) {
+                            this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
+                            return;
+                        }
+                    }).catch(error => {
                         console.log(error)
                     }
-                })
+                    )
+                }
+
+                this.$emit('next-page', {
+                    formData: {
+                        first_name: this.student.first_name,
+                        middle_name: this.student.middle_name,
+                        first_lastname: this.student.first_lastname,
+                        second_lastname: this.student.second_lastname,
+                        doc_number: this.student.doc_number,
+                        birthday: this.student.birthday,
+                        birth_place: this.student.birth_place,
+                        nationality: this.student.nationality ? this.student.nationality.code : null,
+                        gender: this.student.gender ? this.student.gender.value : null,
+                        phone: this.student.phone,
+                        family_phone: this.student.family_phone,
+                        street: this.student.street,
+                        number: this.student.number,
+                        floor: this.student.floor,
+                        department: this.student.department,
+                        address_city: this.student.address_city,
+                        address_state: this.student.address_state,
+                        cp: this.student.cp,
+                    },
+                    pageIndex: 0
+                });
             }
         },
         validateForm() {
@@ -334,16 +349,7 @@ export default {
             return !Object.keys(this.validationErrors).length;
         },
         searchCountry(event) {
-            setTimeout(() => {
-                if (!event.query.trim().length) {
-                    this.filteredCountries = [...this.countries];
-                }
-                else {
-                    this.filteredCountries = this.countries.filter((country) => {
-                        return country.name.toLowerCase().startsWith(event.query.toLowerCase());
-                    });
-                }
-            }, 250);
+            this.searchQuery = event.query.trim();
         },
     }
 }

@@ -82,13 +82,11 @@ export default {
             methods: {
                 nextPage() {
                     this.submitted = true;
-
                     if (this.validateForm()) {
                         
-                        console.log('pasa por aca 1')
                         this.AdminService.getPersonEmail({email: this.email}).then(response => {
+                            console.log(response)
                             if (response.status === 200) {
-                        console.log('pasa por aca 2')
                                 this.$emit('next-page', {
                                         formData: {
                                             email: this.email, 
@@ -99,6 +97,7 @@ export default {
                                     });
                                 }
                         }).catch(error => {
+                            console.log(error)
                             if (error.response.status === 400) {
                                 for (const property in error.response.data) {
                                     this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 4000 });
@@ -121,7 +120,7 @@ export default {
                         this.validationErrors['email'] = true;
                         this.msg['email'] = 'Este campo es obligatorio';
                     }                        
-                    else if (!(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
+                    else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
                         this.msg['email'] = 'Dirección de email inválida';
                         this.validationErrors['email'] = true;
                     }

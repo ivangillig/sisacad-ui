@@ -1,6 +1,8 @@
 export default class CountryService {
 
-    getCountries() {
-        return fetch('data/countries.json').then(res => res.json()).then(d => d.data);
+    async getCountries() {
+        const response = await fetch('data/countries.json');
+        const json = await response.json();
+        return json.data;
     }
 }

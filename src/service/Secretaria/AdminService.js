@@ -2,6 +2,9 @@
 import { getLevels, newLevel, updateLevel, deleteLevel, deleteMultipleLevels } from './LevelService';
 import { getDivisions, newDivision, updateDivision, deleteDivision, deleteMultipleDivisions } from './DivisionService';
 import { getSpecialities, newSpeciality, updateSpeciality, deleteSpeciality, deleteMultipleSpecialities } from './SpecialityService'
+import { getGrades, newGrade, updateGrade, deleteGrade, deleteMultipleGrades } from './GradeService';
+import { getPerson, getPersonEmail } from './UserService';
+import { newStudent } from './StudentService';
 
 export default class AdminService {
   async getLevels() {
@@ -63,19 +66,38 @@ export default class AdminService {
   async deleteMultipleSpecialities(specialityList) {
     return await deleteMultipleSpecialities(specialityList);
   }
+
+
+  async getGrades() {
+    return await getGrades();
+  }
+
+  async newGrade(grade) {
+    return await newGrade(grade);
+  }
+
+  async updateGrade(id, grade) {
+    return await updateGrade(id, grade);
+  }
+
+  async deleteGrade(id) {
+    return await deleteGrade(id);
+  }
+
+  async deleteMultipleGrades(gradeList) {
+    return await deleteMultipleGrades(gradeList);
+  }
+
+  async getPerson(id) {
+    return await getPerson(id);
+  }
+
+  async getPersonEmail(email) {
+    return await getPersonEmail(email);
 }
 
-  // async newStudent(student) {
-  //   const response = await clienteAxios.post('/api/secretaria/alumno/', student);
-  //   return response;
-  // }
+  async newStudent(student) {
+    return await newStudent(student)
+  }
 
-  // async getPerson(id) {
-  //   const response = await clienteAxios.get(`/api/administracion/person/${id}/`);
-  //   return response;
-  // }
-
-  // async getPersonEmail(email) {
-  //   const response = await clienteAxios.post('/api/administracion/checkemail/', email);
-  //   return response;
-  // }
+}

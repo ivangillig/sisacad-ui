@@ -1,16 +1,16 @@
 # Partimos de una base oficial de NodeJs
-FROM node:16.18.1-alpine
+FROM node:18.12.1-alpine
 
-ENV CONTAINER_PATH /var/www/sisacad-app
+ENV CONTAINER_PATH /var/www/sisacad-ui
 
 WORKDIR $CONTAINER_PATH
 #RUN mkdir /sisacad-app
 
-WORKDIR /sisacad-app
+WORKDIR /sisacad-ui
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --force
 
 COPY . .
 

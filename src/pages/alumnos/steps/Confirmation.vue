@@ -3,11 +3,15 @@
     <Dialog v-model:visible="showMessage" :breakpoints="{ '960px': '80vw' }" :style="{ width: '30vw' }" position="top">
         <div class="flex align-items-center flex-column pt-6 px-3">
             <i class="pi pi-check-circle" :style="{fontSize: '5rem', color: 'var(--green-500)' }"></i>
-            <h5>Alumno creado correctamente!</h5>
-            <p :style="{lineHeight: 1.5}">
-                El alumno <b>{{formData.first_name}} {{formData.first_lastname}}</b> fue creado correctamente.
-                Se ha enviado un correo a <b>{{formData.email}}</b> para activar su cuenta.
-            </p>
+            <h5>Alumn{{ formData.gender === 'Masculino' ? 'o' : formData.gender === 'Femenino' ? 'a' : 'x' }} 
+                    cread{{ formData.gender === 'Masculino' ? 'o' : formData.gender === 'Femenino' ? 'a' : 'x' }} 
+                    correctamente!</h5>
+                <p :style="{ lineHeight: 1.5 }">
+                    {{ formData.gender === 'Femenino' ? 'La' : 'El' }} alumn{{ formData.gender === 'Masculino' ? 'o' : formData.gender === 'Femenino' ? 'a' : 'x' }} 
+                        {{ formData.first_name }} {{ formData.first_lastname }} fue 
+                        cread{{ formData.gender === 'Masculino' ? 'o' : formData.gender === 'Femenino' ? 'a' : 'x' }} correctamente.
+                    Se ha enviado un correo a <b>{{ formData.email }}</b> para activar su cuenta.
+                </p>
         </div>
         <template #footer>
             <div class="flex justify-content-center">
@@ -44,8 +48,8 @@
                     <b>{{formData.nationality ? formData.nationality : '-'}}</b>
                 </div>
                 <div class="field col-12 md:col-3">
-                    <label for="birthdate">Fecha de nacimiento</label>
-                    <b>{{formData.birthdate ? formData.birthdate.toLocaleDateString('es-AR') : '-'}}</b>
+                    <label for="birthday">Fecha de nacimiento</label>
+                    <b>{{formData.birthday ? formData.birthday.toLocaleDateString('es-AR') : '-'}}</b>
                 </div>
                 <div class="field col-12 md:col-3">
                     <label for="birth_place">Lugar de nacimiento</label>
@@ -83,11 +87,11 @@
                 </div>
                 <div class="field col-12 md:col-1">
                     <label for="city">Ciudad</label>
-                    <b>{{formData.city ? formData.city : '-'}}</b>
+                    <b>{{formData.address_city ? formData.address_city : '-'}}</b>
                 </div>
                 <div class="field col-12 md:col-2">
                     <label for="state">Provincia</label>
-                    <b>{{formData.state ? formData.state : '-'}}</b>
+                    <b>{{formData.address_state ? formData.address_state : '-'}}</b>
                 </div>
                 <div class="field col-12 md:col-2">
                     <label for="cp">Código Postal</label>
@@ -162,6 +166,11 @@ import AuthService from '../../../service/AuthService';
 import AdminService from '../../../service/Secretaria/AdminService';
 
 export default {
+    data() {
+        return {
+            showMessage: false,
+        }
+    },
     created() {
         this.AuthService = new AuthService();
         this.AdminService = new AdminService();
@@ -174,14 +183,14 @@ export default {
             this.$emit('prev-page', { pageIndex: 3 });
         },
         complete(formData) {
-            var user = {email: formData.email, password1: formData.doc_number.replaceAll('.', ''), password2: formData.doc_number.replaceAll('.', '') }
-            var student = {
-                    doc_number: formData.doc_number,
+            let user = {"email": formData.email, "password1": formData.doc_number.replaceAll('.', ''), "password2": formData.doc_number.replaceAll('.', '') }
+            let student = {
+                    doc_number: formData.doc_number.replaceAll('.', ''),
                     first_name: formData.first_name, 
                     middle_name: formData.middle_name,
                     first_lastname: formData.first_lastname,
                     second_lastname: formData.second_lastname,
-                    birthday: formData.birthdate ? formData.birthdate.toLocaleDateString('es-AR').split("/").reverse().join("-") : null,
+                    birthday: formData.birthday ? formData.birthday.toLocaleDateString('es-AR').split("/").reverse().join("-") : null,
                     birth_place: formData.birth_place,
                     nationality: formData.nationality,
                     gender: formData.gender ? formData.gender.toString() : null,
@@ -191,8 +200,8 @@ export default {
                     number: formData.number,
                     floor: formData.floor ? formData.floor.toString() : null,
                     department: formData.department ? formData.department.toString() : null,
-                    city: formData.city,
-                    address_state: formData.state,
+                    address_city: formData.address_city,
+                    address_state: formData.address_state,
                     cp: formData.cp,
                     admission_date: formData.admission_date ? formData.admission_date.toLocaleDateString('es-AR').split("/").reverse().join("-") : null,
                     school_cert_destinty: formData.school_cert_destinty,
@@ -207,11 +216,11 @@ export default {
 
             this.AuthService.newUser(user).then(response => {
                     if (response.status === 201) {
-                        student.user = response.data.user
-
+                        student.user = response.data.id
+                        
                         this.AdminService.newStudent(student).then(response => {
                             if (response.status === 201) {
-                                this.toggleDialog();
+                                this.showMessage = true;
                                 //this.$emit('complete', this.formData);
                             }
                         }).catch(error => {
@@ -228,21 +237,12 @@ export default {
                         })
                 }
             }).catch(error => {
-                    if( error.response) {
-                     
-                        for (const property in error.response.data) {
-                            this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
-                        }
-                    } else if (error.message) {
-                        console.log(error.message)
-                    } else {
                         console.log(error)
                     }
-            })
+            )
 
         },
 		toggleDialog() {
-            console.log('paso por el toggle')
             this.showMessage = !this.showMessage;
         
             if(!this.showMessage) {

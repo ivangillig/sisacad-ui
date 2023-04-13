@@ -2,14 +2,14 @@ version: "3.9"
    
 services:
   web:
-    container_name: sisacad-app
-    image: sisacad-app
+    container_name: Sisacad_UI
+    image: sisacad-ui
     build:
       context: .
       #dockerfile: .docker/node.development.dockerfile
     volumes:
-      - .:/var/www/sisacad-app
-      - /var/www/sisacad-app/node_modules
+      - .:/var/www/sisacad-ui
+      - /var/www/sisacad-ui/node_modules
     environment:
       - npm_config_unsafe_perm=true
     ports:
