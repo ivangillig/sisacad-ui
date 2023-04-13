@@ -7,7 +7,7 @@
 					<template v-slot:start>
 						<div class="my-2">
 							<Button label="Agregar Alumno" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-							<Button label="Eliminar" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedstudents || !selectedstudents.length" />
+							<Button label="Eliminar" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedStudents || !selectedStudents.length" />
 						</div>
 					</template>
 
@@ -16,7 +16,7 @@
 					</template>
 				</Toolbar>
 
-				<DataTable ref="dt" :value="students" v-model:selection="selectedstudents" dataKey="id" :paginator="true" :rows="10" :filters="filters"
+				<DataTable ref="dt" :value="students" v-model:selection="selectedStudents" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
 							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students" responsiveLayout="scroll">
 					<template #header>
@@ -83,7 +83,7 @@
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
 							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editstudent(slotProps.data)" />
-							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeletestudent(slotProps.data)" />
+							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteStudent(slotProps.data)" />
 						</template>
 					</Column>
 				</DataTable>
@@ -113,31 +113,27 @@
 						</Dropdown>
 					</div>
 					
-					<template #footer>
-						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="savestudent" />
-					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deletestudentDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
+				<Dialog v-model:visible="deleteStudentDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="student">Está seguro de que desea eliminarlo?</span>
 					</div>
 					<template #footer>
-						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deletestudentDialog = false"/>
-						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deletestudent" />
+						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteStudentDialog = false"/>
+						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteStudent" />
 					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deletestudentsDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
+				<Dialog v-model:visible="deleteStudentsDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="student">Está seguro de que desea eliminar los niveles seleccionados?</span>
+						<span v-if="student">Está seguro de que desea eliminar los alumnos seleccionados?</span>
 					</div>
 					<template #footer>
-						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deletestudentsDialog = false"/>
-						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteSelectedstudents" />
+						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteStudentsDialog = false"/>
+						<Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteSelectedStudents" />
 					</template>
 				</Dialog>
 			</div>
@@ -155,10 +151,10 @@ export default {
 		return {
 			students: null,
 			studentDialog: false,
-			deletestudentDialog: false,
-			deletestudentsDialog: false,
+			deleteStudentDialog: false,
+			deleteStudentsDialog: false,
 			student: {},
-			selectedstudents: null,
+			selectedStudents: null,
 			filters: {},
 			submitted: false,
 			statuses: [
@@ -184,51 +180,10 @@ export default {
 	methods: {
 		openNew() {
 			this.$router.replace({ path: "/alumnos/nuevoalumno" });
-			// this.student = {};
-			// this.submitted = false;
-			// this.studentDialog = true;
 		},
 		hideDialog() {
 			this.studentDialog = false;
 			this.submitted = false;
-		},
-		savestudent() {
-			this.submitted = true;
-			if (this.student.name.trim()) {
-				if (this.student.id) {
-					this.student.state = this.student.state.value ? this.student.state.value: this.student.state;
-					this.students[this.findIndexById(this.student.id)] = this.student;
-
-					this.administracionApi.updateNivel(this.student.id, this.student).then(data => {
-					console.log(data)
-						if(data.status === 200){
-							this.administracionApi.getNiveles().then(data => this.students = data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Nivel actualizado!', life: 3000});
-						}
-						if(data.status === 400){
-							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
-						}
-					});
-			
-				}
-				else {
-					this.student.state = this.student.state ? this.student.state.value : 'Activo';
-					this.students.push(this.student);
-
-					this.administracionApi.newNivel(this.student).then(data => {
-					if(data.status === 201){
-						this.administracionApi.getNiveles().then(data => this.students = data);
-						this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
-					}});
-				
-
-				
-				
-				//this.administracionApi.getNiveles().then(data => this.students = data);
-				}
-				this.studentDialog = false;
-				this.student = {};
-			}
 		},
 		editstudent(student) {
 			//this.student = {...student};
@@ -240,25 +195,20 @@ export default {
 
 			//this.studentDialog = true;
 		},
-		confirmDeletestudent(student) {
+		confirmDeleteStudent(student) {
 			this.student = student;
-			this.deletestudentDialog = true;
+			this.deleteStudentDialog = true;
 		},
-		deletestudent() {
-
-			this.administracionApi.deleteNivel(this.student.id).then(data => {
+		deleteStudent() {
+			this.studentsApi.deleteStudent(this.student.id).then(data => {
 				if(data.status === 204){
-
-				this.administracionApi.getNiveles().then(data => this.students = data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel Eliminado', life: 5000});
+					this.studentsApi.getStudents().then(data => this.students = data);
+					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Alumno eliminado', life: 5000});
 				}
 			});
 			
-			this.deletestudentDialog = false;
+			this.deleteStudentDialog = false;
 			this.student = {};
-
-
-
 		},
 		findIndexById(id) {
 			let index = -1;
@@ -274,13 +224,25 @@ export default {
 			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
-			this.deletestudentsDialog = true;
+			this.deleteStudentsDialog = true;
 		},
-		deleteSelectedstudents() {
-			this.students = this.students.filter(val => !this.selectedstudents.includes(val));
-			this.deletestudentsDialog = false;
-			this.selectedstudents = null;
-			this.$toast.add({severity:'success', summary: 'Successful', detail: 'students Deleted', life: 3000});
+		deleteSelectedStudents() {
+			const studentsList = [];
+			this.selectedStudents.forEach(student => {
+				studentsList.push(student.id)
+			});
+
+			this.AdminService.deleteMultipleStudents(studentsList).then(data => {
+				if(data.status === 204){
+					this.AdminService.getStudents().then(response => this.students = response.data);
+					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Los alumnos fueron eliminadas correctamente', life: 4000});
+					this.deleteStudentsDialog = false;
+					this.selectedStudents = null;
+				}
+				else{
+					this.$toast.add({severity:'error', summary: 'Error', detail: data, life: 4000});
+				}
+			});
 		},
 		initFilters() {
             this.filters = {

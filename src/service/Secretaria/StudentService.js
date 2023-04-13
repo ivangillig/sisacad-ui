@@ -5,3 +5,4 @@ export const newStudent = async (student) => {
     return response;
 }
    
+

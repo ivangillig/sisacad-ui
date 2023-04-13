@@ -3,23 +3,13 @@ import clienteAxios from "../config/axios";
 export default class StudentsApi {
 
   async getStudents() {
-    return clienteAxios.get('/api/secretaria/alumno/')
-      .then(res => res.data);
-  }
-
-  async newStudent(student) {
-    return clienteAxios.post('/secretaria/alumno/', student)
-      .then(res => res.data);
-  }
-
-  async updateStudent(id, student) {
-    return clienteAxios.put(`/secretaria/alumno/${id}/`, student)
-      .then(res => res.data);
+    const response = await clienteAxios.get('/api/secretaria/alumno/');
+    return response.data;
   }
 
   async deleteStudent(id) {
-    return clienteAxios.delete(`/secretaria/alumno/${id}/`)
-      .then(res => res.data);
+    const response = await clienteAxios.delete(`/api/secretaria/alumno/${id}/`);
+    return response;
   }
 
 
