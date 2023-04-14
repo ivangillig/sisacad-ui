@@ -232,9 +232,9 @@ export default {
 				studentsList.push(student.id)
 			});
 
-			this.AdminService.deleteMultipleStudents(studentsList).then(data => {
+			this.studentsApi.deleteMultipleStudents(studentsList).then(data => {
 				if(data.status === 204){
-					this.AdminService.getStudents().then(response => this.students = response.data);
+					this.studentsApi.getStudents().then(response => this.students = response.data);
 					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Los alumnos fueron eliminadas correctamente', life: 4000});
 					this.deleteStudentsDialog = false;
 					this.selectedStudents = null;

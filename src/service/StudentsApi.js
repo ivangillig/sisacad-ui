@@ -12,7 +12,10 @@ export default class StudentsApi {
     return response;
   }
 
-
+  async deleteMultipleStudents (studentsList) {
+    const response = await clienteAxios.post('/api/secretaria/alumno/delete_multiple/', { students_ids: studentsList })
+    return response;
+  }
     // getProductsWithOrdersSmall() {
     //     return clienteAxios.get('assets/demo/data/products-orders-small.json').then(res => res.data.data);
     // }
