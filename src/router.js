@@ -204,11 +204,6 @@ const routes = [
                 path: '/blocks',
                 name: 'blocks',
                 component: () => import('./components/BlocksDemo.vue')
-            },
-            {
-                path: '/icons',
-                name: 'icons',
-                component: () => import('./components/IconsDemo.vue')
             }
         ]
     },
