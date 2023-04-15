@@ -39,7 +39,7 @@ sudo docker-compose up
 
 #### Para acceder a la consola del docker, escribir en otra terminal:
 ```sh
-sudo docker exec -it Sisacad-UI sh
+sudo docker exec -it Sisacad_UI sh
 ```
 
 <br>
