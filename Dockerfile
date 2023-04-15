@@ -10,28 +10,10 @@ WORKDIR /sisacad-ui
 
 COPY package*.json ./
 
-RUN npm install --force
+RUN npm i --legacy-peer-deps --force
 
 COPY . .
 
 EXPOSE 8080
 
 CMD ["npm", "run", "serve"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
