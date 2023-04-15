@@ -1,5 +1,7 @@
 # Sistema Académico - UI
 
+Trabajo final para la tecnicatura universitaria en programación de la **UTN - Río Grande**
+
 Aplicación front end para la gestión y administración de un sistema escolar a través de una API desarrollada en Python y Django/DRF.
 
 ##### Link al repositorio backend -> https://github.com/ivangillig/sisacad-api
