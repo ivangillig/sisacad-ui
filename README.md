@@ -36,5 +36,5 @@ pass: admin
 <br>
 <br>
 
-#### Link al repositorio frontend
-https://github.com/ivangillig/sisacad-ui
+#### Link al repositorio backend
+https://github.com/ivangillig/sisacad-api
