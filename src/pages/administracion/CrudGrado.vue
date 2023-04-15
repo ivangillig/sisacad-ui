@@ -279,7 +279,7 @@ export default {
 				{const level = this.levels.find(level => level.name === grade.level);
 				this.grade.level = level.id
 
-				if (grade.level === 'Secundario'){ 
+				if (grade.level === 'Secundaria'){ 
 					this.showSpecialitiesDropdown = true;
 				}
 			}
@@ -358,7 +358,7 @@ export default {
 		showDivision(levelId) {
 			const selectedLevel = this.levels.find(level => level.id === levelId);
 			
-			if (selectedLevel.name == 'Secundario'){
+			if (selectedLevel.name == 'Secundaria'){
 				this.showSpecialitiesDropdown = true;
 			} else {
 				this.showSpecialitiesDropdown = false;
