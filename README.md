@@ -11,7 +11,7 @@ git clone https://gitlab.com/ivan.gillig/sisacad-ui
 ```
 Luego acceder a la carpeta del proyecto 
 ```sh
-cd sisacad-api
+cd sisacad-ui
 ```
 
 #### 2- Construcción de imagen docker
