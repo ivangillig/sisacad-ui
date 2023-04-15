@@ -9,7 +9,7 @@ services:
       #dockerfile: .docker/node.development.dockerfile
     volumes:
       - .:/var/www/sisacad-ui
-      - /var/www/sisacad-ui/node_modules
+      #- /var/www/sisacad-ui/node_modules
     environment:
       - npm_config_unsafe_perm=true
     ports:
