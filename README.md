@@ -22,9 +22,17 @@ sudo docker-compose build
 ```sh
 sudo docker-compose up
 ```
-#### 3.2- Si se quiere probar la aplicación sin levantar el docker se puede hacer con el siguiente comando:
+
+<br>
+
+#### Si se quiere probar la aplicación sin levantar el docker se puede hacer con el siguiente comando:
 ```sh
 npm run serve
+```
+
+#### Para acceder a la consola del docker, escribir en otra terminal:
+```sh
+sudo docker exec -it Sisacad-UI sh
 ```
 #### Users de prueba
 **Admin**
