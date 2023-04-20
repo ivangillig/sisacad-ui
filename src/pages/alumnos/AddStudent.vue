@@ -1,9 +1,9 @@
 <template>
 	
-
+	<!-- {{this.$store.student.name}} -->
 	<Toast/>
 	<div class="card card-w-title">
-		<h5>A{{this.props}}gregar Nuevo Alumno</h5>
+		<h5>{{this.$store.state.student.id ? 'Editar' : 'Agregar Nuevo'}}  Alumno</h5>
 		<p>Completa la información personal e institucional del alumno </p>
 		<Steps :model="items" :readonly="true" />
 		<router-view v-slot="{ Component }" :formData="formObject" @prevPage="prevPage($event)" @nextPage="nextPage($event)"
@@ -17,6 +17,10 @@
 
 <script>
 export default {
+	// beforeRouteLeave(to, from, next) {
+	// 	this.$store.commit('clearStudent');
+	// 	next();
+	// },
 	data() {
 			return {
 				items: [

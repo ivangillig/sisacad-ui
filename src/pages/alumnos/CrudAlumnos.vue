@@ -175,10 +175,10 @@ export default {
 		}//REVISAR ESTO
 
 		this.studentsApi.getStudents().then(data => this.students = data);
-
 	},
 	methods: {
 		openNew() {
+			this.$store.commit('clearStudent');
 			this.$router.replace({ path: "/alumnos/nuevoalumno" });
 		},
 		hideDialog() {

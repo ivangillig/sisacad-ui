@@ -4,7 +4,9 @@ export default createStore({
     state: {
         token: '',
         isAuthenticated: false,
-        student: {}
+        student: {
+            id: null,
+        }
     },
     mutations: {
         initializeStore(state){
@@ -27,7 +29,10 @@ export default createStore({
         },
         studentData (state, payload) {
             state.student = payload
-          }
+        },
+        clearStudent(state) {
+            state.student = {};
+        }
         
     },
     actions: {

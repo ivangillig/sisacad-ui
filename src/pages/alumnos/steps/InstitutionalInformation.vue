@@ -12,7 +12,8 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-user"></i>
                         </span>
-                        <InputText placeholder="Email institucional" id="email" type="email"  v-model="email" :class="{'p-invalid': validationErrors.email && submitted}"/>
+                        
+                        <InputText placeholder="Email institucional" id="email" type="email" v-model="student.email" disabled="!!student.id" :class="{'p-invalid': validationErrors.email && submitted}"/>
                     </div>
                     <small v-show="validationErrors.email && submitted" class="p-error">{{msg.email}}</small>
                 </div>
@@ -26,7 +27,7 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-building"></i>
                         </span>
-                        <InputText id="school_cert_destinty" v-model="school_cert_destinty" placeholder="Por ej: Gobierno de la provicia de Tierra Del Fuego" />
+                        <InputText id="school_cert_destinty" v-model="student.school_cert_destinty" placeholder="Por ej: Gobierno de la provicia de Tierra Del Fuego" />
                     </div>
                 </div>
 
@@ -39,7 +40,7 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-calendar"></i>
                         </span>
-                        <Calendar id="admission_date" v-model="admission_date" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <Calendar id="admission_date" v-model="student.admission_date" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" placeholder="dd-mm-aaaa"/>
                     </div>
                 </div>
@@ -65,67 +66,73 @@
 import AdminService from '../../../service/Secretaria/AdminService';
 
 export default {
+    mounted() {
+        if (this.$store.state.student) {
+            this.student = this.$store.state.student
+        }
+        console.log(this.student)
+    },
     created() {
         this.AdminService = new AdminService();
     },
     data () {
-                return {
-                    email: '',
-                    admission_date: null,
-                    school_cert_destinty: null,
+            return {
+                student: {
+                },
+                //email: '',
+                //admission_date: null,
+                //school_cert_destinty: null,
 
-                    submitted: false,
-                    validationErrors: {},
-                    msg: [],
-                }
+                submitted: false,
+                validationErrors: {},
+                msg: [],
+            }
             },
             methods: {
                 nextPage() {
-                    this.submitted = true;
-                    if (this.validateForm()) {
-                        
-                        this.AdminService.getPersonEmail({email: this.email}).then(response => {
-                            console.log(response)
-                            if (response.status === 200) {
-                                this.$emit('next-page', {
-                                        formData: {
-                                            email: this.email, 
-                                            admission_date: this.admission_date, 
-                                            school_cert_destinty: this.school_cert_destinty
-                                        }, 
-                                        pageIndex: 1
+                            this.submitted = true;
+                            if (this.validateForm()) {
+                                if (this.student && !this.$store.state.student.id) {
+                                    console.log(this.student)
+                                    this.AdminService.getPersonEmail({ email: this.student.email }).then(response => {
+                                        if (response && response.data.success === true) {
+                                            this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: response.data.message.toString(), life: 4000 });
+                                            this.email = ''
+                                            this.submitted = false;
+                                            return;
+                                        }
+                                    }).catch(error => {
+                                        console.log(error);
+                                        return;
                                     });
                                 }
-                        }).catch(error => {
-                            console.log(error)
-                            if (error.response.status === 400) {
-                                for (const property in error.response.data) {
-                                    this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 4000 });
-                                }
-                                this.email = ''
-                                this.submitted = false;
-                            } else if (error.message) {
-                                console.log(error.message)
-                            } else {
-                                console.log(error)
+
+                            this.$emit('next-page', {
+                                formData: {
+                                    email: this.student.email,
+                                    admission_date: this.student.admission_date,
+                                    school_cert_destinty: this.student.school_cert_destinty
+                                },
+                                pageIndex: 1
+                            });
                             }
-                        })
-                    }
                 },
                 prevPage() {
                     this.$emit('prev-page', {pageIndex: 1});
                 },
                 validateForm() {
-                    if (!this.email.trim()){
-                        this.validationErrors['email'] = true;
-                        this.msg['email'] = 'Este campo es obligatorio';
-                    }                        
-                    else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
-                        this.msg['email'] = 'Dirección de email inválida';
-                        this.validationErrors['email'] = true;
-                    }
-                    else
+                    if(!this.$store.state.student.id){
+                        if (!this.student.email || !this.student.email.trim()){
+                            this.validationErrors['email'] = true;
+                            this.msg['email'] = 'Este campo es obligatorio';
+                        }                        
+                        else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
+                            this.msg['email'] = 'Dirección de email inválida';
+                            this.validationErrors['email'] = true;
+                        }
+                        else
                         delete this.validationErrors['email'];
+                    }
 
                     return !Object.keys(this.validationErrors).length;
                 },
