@@ -13,7 +13,7 @@
                             <i class="pi pi-user"></i>
                         </span>
                         
-                        <InputText placeholder="Email institucional" id="email" type="email" v-model="student.email" disabled="!!student.id" :class="{'p-invalid': validationErrors.email && submitted}"/>
+                        <InputText placeholder="Email institucional" id="email" type="email" v-model="student.email" :disabled="student.id !== null && student.id !== undefined" :class="{'p-invalid': validationErrors.email && submitted}"/>
                     </div>
                     <small v-show="validationErrors.email && submitted" class="p-error">{{msg.email}}</small>
                 </div>
@@ -70,7 +70,6 @@ export default {
         if (this.$store.state.student) {
             this.student = this.$store.state.student
         }
-        console.log(this.student)
     },
     created() {
         this.AdminService = new AdminService();
@@ -79,10 +78,6 @@ export default {
             return {
                 student: {
                 },
-                //email: '',
-                //admission_date: null,
-                //school_cert_destinty: null,
-
                 submitted: false,
                 validationErrors: {},
                 msg: [],

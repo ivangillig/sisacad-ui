@@ -10,7 +10,7 @@
                     <h5>Tiene autorización para salir de paseos?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="trips_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton v-model="student.trips_auth" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -19,7 +19,7 @@
                     <h5>Tiene autorización para recibir asistencia médica?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="medical_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton v-model="student.medical_auth" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -32,7 +32,7 @@
                     <h5>Tiene autorización para salir solo del colegio?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="leave_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton v-model="student.leave_auth" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -41,7 +41,7 @@
                     <h5>Tiene autorización para exposición pública?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="public_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton v-model="student.public_auth" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -93,12 +93,24 @@
 
 <script>
 export default {
+    mounted() {
+        if (this.$store.state.student) {
+            this.student = this.$store.state.student
+
+            this.student.trips_auth = (this.student.trips_auth == true) ? 'True' : 'False';
+            this.student.medical_auth = (this.student.medical_auth == true) ? 'True' : 'False';
+            this.student.public_auth = (this.student.public_auth == true) ? 'True' : 'False';
+            this.student.leave_auth = (this.student.leave_auth == true) ? 'True' : 'False';
+        }
+    },
     data () {
             return {
-                trips_auth: false,
-                medical_auth: false,
-                leave_auth: false,
-                public_auth: false,
+                student: {
+                    trips_auth: false,
+                    medical_auth: false,
+                    leave_auth: false,
+                    public_auth: false,
+                },
                 medical_treatment: null,
                 
                 medications: '',
