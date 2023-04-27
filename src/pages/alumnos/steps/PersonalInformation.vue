@@ -278,43 +278,42 @@ export default {
     methods: {
         nextPage() {
             this.submitted = true;
-            
+
             if (this.validateForm()) {
+                const formData = {
+                    first_name: this.student.first_name,
+                    middle_name: this.student.middle_name,
+                    first_lastname: this.student.first_lastname,
+                    second_lastname: this.student.second_lastname,
+                    doc_number: this.student.doc_number,
+                    birthday: this.student.birthday,
+                    birth_place: this.student.birth_place,
+                    nationality: this.student.nationality ? this.student.nationality.code : null,
+                    gender: this.student.gender ? this.student.gender.value : null,
+                    phone: this.student.phone,
+                    family_phone: this.student.family_phone,
+                    street: this.student.street,
+                    number: this.student.number,
+                    floor: this.student.floor,
+                    department: this.student.department,
+                    address_city: this.student.address_city,
+                    address_state: this.student.address_state,
+                    cp: this.student.cp,
+                };
+
                 if (this.student && !this.student.id) {
                     this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
                         if (response && response.data.success === true) {
                             this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
-                            return;
+                        } else {
+                            this.$emit('next-page', { formData, pageIndex: 0 });
                         }
                     }).catch(error => {
-                        console.log(error)
-                    }
-                    )
+                        console.log(error);
+                    });
+                } else {
+                    this.$emit('next-page', { formData, pageIndex: 0 });
                 }
-
-                this.$emit('next-page', {
-                    formData: {
-                        first_name: this.student.first_name,
-                        middle_name: this.student.middle_name,
-                        first_lastname: this.student.first_lastname,
-                        second_lastname: this.student.second_lastname,
-                        doc_number: this.student.doc_number,
-                        birthday: this.student.birthday,
-                        birth_place: this.student.birth_place,
-                        nationality: this.student.nationality ? this.student.nationality.code : null,
-                        gender: this.student.gender ? this.student.gender.value : null,
-                        phone: this.student.phone,
-                        family_phone: this.student.family_phone,
-                        street: this.student.street,
-                        number: this.student.number,
-                        floor: this.student.floor,
-                        department: this.student.department,
-                        address_city: this.student.address_city,
-                        address_state: this.student.address_state,
-                        cp: this.student.cp,
-                    },
-                    pageIndex: 0
-                });
             }
         },
         validateForm() {

@@ -82,56 +82,60 @@ export default {
                 validationErrors: {},
                 msg: [],
             }
-            },
-            methods: {
-                nextPage() {
-                            this.submitted = true;
-                            if (this.validateForm()) {
-                                if (this.student && !this.$store.state.student.id) {
-                                    console.log(this.student)
-                                    this.AdminService.getPersonEmail({ email: this.student.email }).then(response => {
-                                        if (response && response.data.success === true) {
-                                            this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: response.data.message.toString(), life: 4000 });
-                                            this.email = ''
-                                            this.submitted = false;
-                                            return;
-                                        }
-                                    }).catch(error => {
-                                        console.log(error);
-                                        return;
-                                    });
-                                }
-
-                            this.$emit('next-page', {
-                                formData: {
-                                    email: this.student.email,
-                                    admission_date: this.student.admission_date,
-                                    school_cert_destinty: this.student.school_cert_destinty
-                                },
-                                pageIndex: 1
-                            });
-                            }
-                },
-                prevPage() {
-                    this.$emit('prev-page', {pageIndex: 1});
-                },
-                validateForm() {
-                    if(!this.$store.state.student.id){
-                        if (!this.student.email || !this.student.email.trim()){
-                            this.validationErrors['email'] = true;
-                            this.msg['email'] = 'Este campo es obligatorio';
-                        }                        
-                        else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))){
-                            this.msg['email'] = 'Dirección de email inválida';
-                            this.validationErrors['email'] = true;
-                        }
-                        else
-                        delete this.validationErrors['email'];
+    },
+    methods: {
+        nextPage() {
+            this.submitted = true;
+            
+            if (this.validateForm()) {
+                if (this.student && !this.student.id) {
+                console.log(this.student);
+                this.AdminService.getPersonEmail({ email: this.student.email }).then(response => {
+                    if (response && response.data.success === true) {
+                    this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: response.data.message.toString(), life: 4000 });
+                    this.email = '';
+                    this.submitted = false;
+                    } else {
+                    this.emitNextPage();
                     }
-
-                    return !Object.keys(this.validationErrors).length;
-                },
+                }).catch(error => {
+                    console.log(error);
+                });
+                } else {
+                this.emitNextPage();
+                }
+            }
+        },
+        emitNextPage() {
+        this.$emit('next-page', {
+            formData: {
+            email: this.student.email,
+            admission_date: this.student.admission_date,
+            school_cert_destinty: this.student.school_cert_destinty
             },
+            pageIndex: 1
+        });
+        },
+        prevPage() {
+            this.$emit('prev-page', {pageIndex: 1});
+        },
+        validateForm() {
+            if(!this.$store.state.student.id){
+                if (!this.student.email || !this.student.email.trim()){
+                    this.validationErrors['email'] = true;
+                    this.msg['email'] = 'Este campo es obligatorio';
+                }                        
+                else if (!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.student.email))){
+                    this.msg['email'] = 'Dirección de email inválida';
+                    this.validationErrors['email'] = true;
+                }
+                else
+                delete this.validationErrors['email'];
+            }
+
+            return !Object.keys(this.validationErrors).length;
+        },
+    },
 }
 </script>
 

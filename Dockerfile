@@ -1,5 +1,5 @@
 # Partimos de una base oficial de NodeJs
-FROM node:18.12.1-alpine
+FROM node:18.15.0-alpine
 
 ENV CONTAINER_PATH /var/www/sisacad-ui
 
