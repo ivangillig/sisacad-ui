@@ -95,7 +95,7 @@
                                     <span v-else>
                                         {{slotProps.placeholder}}
                                     </span>
-                                </template>                
+                                </template>
                             </Dropdown>
                             <label for="gender">Género</label>
                         </span>
@@ -166,7 +166,6 @@
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
-            
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
                     <InputNumber inputId="family_phone" v-model="student.family_phone" max_length="10" :useGrouping="false" />

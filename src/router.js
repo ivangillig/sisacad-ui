@@ -70,28 +70,6 @@ const routes = [
                 component: () => import('./components/MediaDemo.vue')
             },
             {
-                path: '/menu',
-                component: () => import('./components/MenuDemo.vue'),
-                children: [
-                    {
-                        path: '',
-                        component: () => import('./components/menu/PersonalDemo.vue')
-                    },
-                    {
-                        path: '/menu/seat',
-                        component: () => import('./components/menu/SeatDemo.vue')
-                    },
-                    {
-                        path: '/menu/payment',
-                        component: () => import('./components/menu/PaymentDemo.vue')
-                    },
-                    {
-                        path: '/menu/confirmation',
-                        component: () => import('./components/menu/ConfirmationDemo.vue')
-                    },
-                ],
-            },
-            {
                 path: '/messages',
                 name: 'messages',
                 component: () => import('./components/MessagesDemo.vue')
@@ -127,7 +105,7 @@ const routes = [
                 name: 'nuevoalumno',
                 component: () => import('./pages/alumnos/AddStudent.vue'),
                 meta: { requireLogin: true},
-                props: true,                
+                props: true,
                 children: [
                     {
                         path: '',
@@ -150,6 +128,12 @@ const routes = [
                         meta: { requireLogin: true}
                     },
                 ],
+            },
+            {
+                path: '/asociar-alumnos',
+                name: 'addStudentToGrade',
+                component: () => import('./pages/cursos/AddStudentToGrade.vue'),
+                meta: { requireLogin: true}
             },
             // {
             //     path: '/alumnos/pagocuota',

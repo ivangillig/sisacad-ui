@@ -3,8 +3,9 @@ import { getLevels, newLevel, updateLevel, deleteLevel, deleteMultipleLevels } f
 import { getDivisions, newDivision, updateDivision, deleteDivision, deleteMultipleDivisions } from './DivisionService';
 import { getSpecialities, newSpeciality, updateSpeciality, deleteSpeciality, deleteMultipleSpecialities } from './SpecialityService'
 import { getGrades, newGrade, updateGrade, deleteGrade, deleteMultipleGrades } from './GradeService';
+import { getCourses, newCourse, updateCourse, deleteCourse, deleteMultipleCourses } from './CoursesService';
 import { getPerson, getPersonEmail } from './UserService';
-import { newStudent } from './StudentService';
+import { newStudent, getStudents, deleteStudent, deleteMultipleStudents } from './StudentService';
 
 export default class AdminService {
   async getLevels() {
@@ -26,7 +27,7 @@ export default class AdminService {
   async deleteMultipleLevels(levelList) {
     return await deleteMultipleLevels(levelList);
   }
-  
+
   async getDivisions() {
     return await getDivisions();
   }
@@ -67,7 +68,6 @@ export default class AdminService {
     return await deleteMultipleSpecialities(specialityList);
   }
 
-
   async getGrades() {
     return await getGrades();
   }
@@ -94,10 +94,42 @@ export default class AdminService {
 
   async getPersonEmail(email) {
     return await getPersonEmail(email);
-}
+  }
 
   async newStudent(student) {
     return await newStudent(student)
+  }
+
+  async getStudents() {
+    return await getStudents()
+  }
+
+  async deleteStudent(id) {
+    return await deleteStudent(id)
+  }
+
+  async deleteMultipleStudents(studentsList) {
+    return await deleteMultipleStudents(studentsList)
+  }
+
+  async getCourses() {
+    return await getCourses();
+  }
+
+  async newCourse(course) {
+    return await newCourse(course);
+  }
+
+  async updateCourse(id, course) {
+    return await updateCourse(id, course);
+  }
+
+  async deleteCourse(id) {
+    return await deleteCourse(id);
+  }
+
+  async deleteMultipleCourses(courseList) {
+    return await deleteMultipleCourses(courseList);
   }
 
 }

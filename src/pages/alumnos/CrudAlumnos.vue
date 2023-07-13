@@ -144,7 +144,7 @@
 
 <script>
 import {FilterMatchMode} from 'primevue/api';
-import studentsApi from '../../service/StudentsApi';
+import studentsApi from '../../service/Secretaria/AdminService';
 
 export default {
 	data() {
