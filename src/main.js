@@ -18,7 +18,6 @@ import AvatarGroup from 'primevue/avatargroup';
 // Added by me
 import store from '../store';
 
-
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
 import Button from 'primevue/button';
@@ -118,7 +117,7 @@ app.use(ToastService);
 app.use(router);
 
 app.use(store); // localStorage
-store.commit('initializeStore')
+store.dispatch('initializeStore')
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

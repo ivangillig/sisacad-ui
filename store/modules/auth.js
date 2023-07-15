@@ -1,14 +1,17 @@
 import axios from "axios";
 
 const state = {
+  token: '',
+  isAuthenticated: false,
   user: null,
   posts: null,
 };
 
 const getters = {
-  isAuthenticated: (state) => !!state.user,
+  isAuthenticated: (state) => state.isAuthenticated,
   StatePosts: (state) => state.posts,
   StateUser: (state) => state.user,
+  Token: (state) => state.token,
 };
 
 const actions = {
@@ -39,6 +42,14 @@ const actions = {
     let user = null;
     commit("logout", user);
   },
+
+  initializeStore({commit}) {
+    if (localStorage.getItem('token')){
+      commit("setToken", localStorage.getItem('token'))
+    } else {
+      commit("removeToken")
+    }
+  }
 };
 
 const mutations = {
@@ -49,9 +60,23 @@ const mutations = {
   setPosts(state, posts) {
     state.posts = posts;
   },
-  logout(state, user) {
-    state.user = user;
+  
+  logout(state) {
+    localStorage.clear()
+    state.user = null;
+    state.token = '';
+    state.isAuthenticated = false;
   },
+
+  setToken(state,token){
+    state.token = token
+    state.isAuthenticated = true
+  },
+
+  removeToken(state){
+    state.token = ''
+    state.isAuthenticated = false
+  }
 };
 
 export default {

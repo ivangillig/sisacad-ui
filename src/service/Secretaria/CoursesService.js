@@ -10,6 +10,11 @@ export const newCourse = async (course) => {
   return response;
 }
 
+export const getCourse = async (id) => {
+  const response = await clienteAxios.put(`/api/secretaria/curso/${id}/`);
+  return response;
+}
+
 export const updateCourse = async (id, course) => {
   const response = await clienteAxios.put(`/api/secretaria/curso/${id}/`, course);
   return response;

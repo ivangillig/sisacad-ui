@@ -66,7 +66,6 @@ export default {
                         if(response.status == 200){
 
                             const body = response.data
-                            
                             localStorage.setItem('email', body.email)
                             localStorage.setItem('first name', body.first_name)
                             localStorage.setItem('last name', body.first_lastname)
