@@ -170,9 +170,9 @@ export default {
 	},
 	mounted() {
 
-		if(!this.$store.state.isAuthenticated) {
+		if(!this.$store.state.auth.isAuthenticated) {
 			this.$router.replace({ name: "Login" });
-		}//REVISAR ESTO
+		}
 
 		this.studentsApi.getStudents().then(data => this.students = data);
 	},
@@ -206,7 +206,7 @@ export default {
 					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Alumno eliminado', life: 5000});
 				}
 			});
-			
+
 			this.deleteStudentDialog = false;
 			this.student = {};
 		},

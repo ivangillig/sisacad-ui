@@ -1,5 +1,6 @@
 <template>
     <div class="grid">
+        <Toast/>
         <div class="card col-12 md:col-8 flex flex-col md:flex-row md:items-center">
             <div class="mr-4">
                 <h5>Curso lectivo</h5>
@@ -101,23 +102,19 @@ export default {
             if (this.selectedCourse && this.selectedStudent) {
                 const courseStudentData = {
                     course: this.selectedCourse.id,
-                    student: this.selectedStudent,
+                    student: this.selectedStudent.id,
                     add_date: new Date().toISOString().slice(0, 10),
             };
 
             try {
-               
                 const response = await this.courseStudentService.createCourseStudent(courseStudentData);
-                console.log('ID del course_students creado:', response.data.id);
-
-                // Aquí puedes realizar acciones adicionales después de crear el course_student
-
-                // Limpiar los campos seleccionados
-                this.selectedCourse = null;
+                if(response.status === 201){
+                    this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
+                    this.$store.dispatch('loadStudentsForCourse', this.selectedCourse.id);
+				}
                 this.selectedStudent = null;
-                this.autoFilteredValue = [];
             } catch (error) {
-                console.error('Error al crear el course_students:', error);
+                this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.detail, life: 5000});
             }
             }
         },

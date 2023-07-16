@@ -55,11 +55,10 @@ export default {
                 }
 
                 clienteAxios.post('auth/login/', formData).then(response =>{
-                    
                     const token = response.data.key
 
                     this.$store.commit('setToken', token)
-
+                    console.log(token)
                     clienteAxios.defaults.headers.common['Authorization'] = "Token " + token
 
                     clienteAxios.get('auth/user/').then(response =>{
