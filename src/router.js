@@ -135,16 +135,12 @@ const routes = [
                 component: () => import('./pages/cursos/AddStudentToGrade.vue'),
                 meta: { requireLogin: true}
             },
-            // {
-            //     path: '/alumnos/pagocuota',
-            //     name: 'pagocuota',
-            //     component: () => import('./pages/PagoCuota.vue')
-            // },
-            // {
-            //     path: '/docentes',
-            //     name: 'cruddocentes',
-            //     component: () => import('./pages/CrudDocentes.vue')
-            // },
+            {
+                path: '/administracion/curso_lectivo',
+                name: 'crudCursoLectivo',
+                component: () => import('./pages/administracion/CrudCourseByYear.vue'),
+                meta: { requireLogin: true}
+            },
             {
                 path: '/administracion/niveles',
                 name: 'crudNivel',

@@ -90,10 +90,11 @@ export default {
                     label: 'Grados',
                     items: [
                         {
+                            label: 'Curso lectivo', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/curso_lectivo'
+                        },
+                        {
                             label: 'Alta de alumno en curso', icon: 'pi pi-fw pi-user-edit', to: '/asociar-alumnos'
                         },
-						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
-						//{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
 					]
                 },
                 /*
@@ -104,18 +105,7 @@ export default {
 						{label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/input'},
                         {label: "Float Label", icon: "pi pi-fw pi-bookmark", to: "/floatlabel"},
                         {label: "Invalid State", icon: "pi pi-fw pi-exclamation-circle", to: "/invalidstate"},
-						{label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/button'},
-						{label: 'Table', icon: 'pi pi-fw pi-table', to: '/table'},
-						{label: 'List', icon: 'pi pi-fw pi-list', to: '/list'},
-						{label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/tree'},
-						{label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/panel'},
-						{label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/overlay'},
-                        {label: "Media", icon: "pi pi-fw pi-image", to: "/media"},
-						{label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/menu'},
-						{label: 'Message', icon: 'pi pi-fw pi-comment', to: '/messages'},
-						{label: 'File', icon: 'pi pi-fw pi-file', to: '/file'},
-						{label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/chart'},
-						{label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/misc'},
+
 					]
 				},
                 {
@@ -180,26 +170,7 @@ export default {
                                 },
                             ]
                         },
-                        {
-                            label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                {
-                                    label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                    items: [
-                                        {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-                                        {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'},
-                                        {label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-bookmark'},
-                                    ]
-                                },
-                                {
-                                    label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                    items: [
-                                        {label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'},
-                                        {label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-bookmark'}
-                                    ]
-                                }
-                            ]
-                        }
+                        
                     ]
                 },
                 */
