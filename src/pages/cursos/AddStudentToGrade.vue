@@ -3,7 +3,7 @@
         <Toast/>
         <div class="card col-12 md:col-8 flex flex-col md:flex-row md:items-center">
             <div class="mr-4">
-                <h5>Curso lectivo</h5>
+                <h5>Curso lectivo {{ actualYear }}</h5>
                 <Dropdown class="w-full" v-model="selectedCourse" :options="courses" optionLabel="name"
                     placeholder="Select a course" />
             </div>
@@ -21,7 +21,7 @@
 
     <div class="col-12">
         <div class="card">
-            <h5>Alumnos en el curso</h5>
+            <h5>Alumnos en el curso{{ selectedCourse ? ': ' + selectedCourse.name : '' }}</h5>
             <DataTable :value="studentsByGrade" :rows="5" :paginator="true" responsiveLayout="scroll">
                 <Column field="document" header="Documento" :sortable="true" style="width: 35%"></Column>
                 <Column field="name" header="Nombre" :sortable="true" style="width: 35%"></Column>
@@ -48,9 +48,12 @@ export default {
     created(){
         this.adminService = new adminService();
         this.courseStudentService = new CourseStudentService();
+        this.actualYear = new Date().getFullYear();
+
     },
     data() {
         return {
+            actualYear: null,
             selectedCourse: null,
             selectedStudent: null,
             courses: [],

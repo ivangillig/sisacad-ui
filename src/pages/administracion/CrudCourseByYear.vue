@@ -1,3 +1,4 @@
+<!-- eslint-disable no-mixed-spaces-and-tabs -->
 <template>
 	<div class="grid">
 		<div class="col-12">
@@ -32,31 +33,38 @@
 
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editLevel(slotProps.data)" />
 							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteLevel(slotProps.data)" />
 						</template>
 					</Column>
 				</DataTable>
 
-				<Dialog v-model:visible="levelDialog" :style="{width: '450px'}" header="Detalles del course" :modal="true" class="p-fluid">
+				<Dialog v-model:visible="levelDialog" :style="{width: '450px'}" header="Nuevo curso lectivo" :modal="true" class="p-fluid">
 					<!-- <img :src="'images/course/' + course.image" :alt="course.image" v-if="course.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" /> -->
 					<div class="field">
-						<label for="name">Nombre</label>
-						<InputText id="name" v-model.trim="course.name" required="true" autofocus 
-							:class="{'p-invalid': submitted && !course.name}" 
-							@keydown.enter="saveLevel" />
-						<small class="p-invalid" v-if="submitted && !course.name">El nombre es obligatorio.</small>
+						<label for="name">Grado</label>
+						<Dropdown class="w-full" v-model="selectedGrade" :options="grades" optionLabel="largeName" :class="{'p-invalid': submitted && !selectedGrade}"
+							placeholder="Seleccione un grado" />
+							<small class="p-invalid" v-if="submitted && !selectedGrade">El grado es obligatorio.</small>
 					</div>
 
 					<div class="field">
-							<label for="state">Estado</label>
-							<Dropdown id="state" v-model="course.state" :options="states_list" optionLabel="label" optionValue="value"
-							placeholder="Selecciona una"></Dropdown>
+                        <label for="year">Año</label>
+						<Calendar v-model="courseYear" view="year" dateFormat="yy" required="true" autofocus
+							:class="{'p-invalid': submitted && !courseYear}"
+							@keydown.enter="saveGrade" />
+							<small class="p-invalid" v-if="submitted && !courseYear">El año es obligatorio.</small>
+                    </div>
+
+					<div class="field">
+							<label for="shift">Turno</label>
+							<Dropdown id="shift" v-model="courseShift" :options="shift_list" optionLabel="label" optionValue="value"
+							placeholder="Selecciona una" :class="{'p-invalid': submitted && !courseShift}" />
+							<small class="p-invalid" v-if="submitted && !courseShift">El turno es obligatorio.</small>
 					</div>
 
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveLevel" />
+						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveGrade" />
 					</template>
 				</Dialog>
 
@@ -86,12 +94,16 @@ export default {
 		return {
 			levelDialog: false,
 			deleteLevelDialog: false,
-			course: { 'name': '', 'state': true},
+			courseYear: null,
+			selectedGrade: null,
+			courseShift: null,
+			grade: [],
 			filters: {},
 			submitted: false,
-			states_list: [
-				{label: 'Activo', value: true},
-				{label: 'Inactivo', value: false},
+			shift_list: [
+				{label: 'Mañana', value: 'Mañana'},
+				{label: 'Tarde', value: 'Tarde'},
+				{label: 'Noche', value: 'Noche'},
 			]
 		}
 	},
@@ -102,12 +114,8 @@ export default {
 	},
 	mounted() {
 		this.$store.dispatch('getCourses');
+		this.$store.dispatch('getGrades');
 	},
-	watch: {
-        state(courses) {
-            console.log('Nuevo estado de courses:', courses);
-        },
-    },
 	methods: {
 		openNew() {
 			this.submitted = false;
@@ -117,45 +125,30 @@ export default {
 			this.levelDialog = false;
 			this.submitted = false;
 		},
-		saveLevel() {
+		async saveGrade() {
 			this.submitted = true;
-			if (this.course.name.trim()) {
-				if (this.course.id) {
-					this.course.state = this.course.state.value ? this.course.state.value: this.course.state;
-					this.courses[this.findIndexById(this.course.id)] = this.course;
 
-					this.AdminService.updateLevel(this.course.id, this.course).then(data => {
-						if(data.status === 200){
-							this.AdminService.getLevels().then(response => this.courses = response.data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Curso actualizado!', life: 3000});
-						}
-						if(data.status === 400){
-							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
-						}
-					});
-				}
-				else {
-					//this.course.state = this.course.state ? this.course.state.value : 'Activo';
-					this.courses.push(this.course);
+			if (this.selectedGrade && this.courseYear && this.courseShift) {
+					const courseData = {
+						grade: this.selectedGrade.id,
+						academic_year: this.courseYear.getFullYear(),
+						shift: this.courseShift
+				};
 
-					this.AdminService.newLevel(this.course).then(data => {
-						if(data.status === 201){
-							this.AdminService.getLevels().then(response => {
-								if(response.status === 200){
-									this.courses = response.data;
-									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Curso creado correctamente!', life: 5000});
-								}
-							})
-						}
-					});
+
+            try {
+                const response = await this.AdminService.newCourse(courseData);
+                if(response.status === 201){
+                    this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
+					this.levelDialog = false;
+                    this.$store.dispatch('getCourses');
 				}
-				this.levelDialog = false;
-				this.course = {};
+                this.selectedStudent = null;
+            } catch (error) {
+                this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.detail, life: 5000});
+            }
+			this.course = {};
 			}
-		},
-		editLevel(course) {
-			this.course = {...course};
-			this.levelDialog = true;
 		},
 		confirmDeleteLevel(course) {
 			this.course = course;
@@ -183,20 +176,33 @@ export default {
 			}
 			return index;
 		},
-		confirmDeleteSelected() {
-			this.deleteLevelsDialog = true;
-		},
+		// confirmDeleteSelected() {
+		// 	this.deleteLevelsDialog = true;
+		// },
 		initFilters() {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
         }
     },
-		computed: {
+		watch: {
+        selectedGrade(newGrade) {
+            if(newGrade) {
+                this.selectedGrade = newGrade;
+            } else {
+                this.selectedGrade = null;
+            }
+        },
+		courseYear(year){
+			this.courseYear = year;
+		}
+    },
+    computed: {
         ...mapState({
-            courses: state => state.course.courses
+            grades: state => state.grade.grades,
+			courses: state => state.course.courses
         }),
-	}
+    },
 }
 </script>
 

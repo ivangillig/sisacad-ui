@@ -6,7 +6,7 @@ export const getCourses = async () => {
 }
 
 export const newCourse = async (course) => {
-  const response = await clienteAxios.post('/api/secretaria/curso/create_course/', course);
+  const response = await clienteAxios.post('/api/secretaria/curso/', course);
   return response;
 }
 
