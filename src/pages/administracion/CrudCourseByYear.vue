@@ -145,7 +145,7 @@ export default {
 				}
                 this.selectedStudent = null;
             } catch (error) {
-                this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.detail, life: 5000});
+                this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.error, life: 5000});
             }
 			this.course = {};
 			}
@@ -156,13 +156,14 @@ export default {
 		},
 		deleteLevel() {
 
-			this.AdminService.deleteLevel(this.course.id).then(data => {
+			this.AdminService.deleteCourse(this.course.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getLevels().then(response => this.courses = response.data);
 				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Curso Eliminado', life: 5000});
 				}
 			});
 			this.deleteLevelDialog = false;
+			this.$store.dispatch('getCourses');
 			this.course = {};
 
 		},

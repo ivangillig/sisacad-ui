@@ -48,17 +48,16 @@ export default {
         }
     },
         methods: {
-            login() {
+            async login() {
                 const formData = {
                     email: this.email,
                     password: this.password
                 }
 
-                clienteAxios.post('auth/login/', formData).then(response =>{
+                await clienteAxios.post('auth/login/', formData).then(response =>{
                     const token = response.data.key
 
                     this.$store.commit('setToken', token)
-                    console.log(token)
                     clienteAxios.defaults.headers.common['Authorization'] = "Token " + token
 
                     clienteAxios.get('auth/user/').then(response =>{
@@ -78,7 +77,7 @@ export default {
 
                 }).catch(error => {
                     if( error.response) {
-                        
+
                         for (const property in error.response.data) {
                             this.$toast.add({severity:'error', summary: 'Hubo un error', detail: error.response.data[property].toString(), life: 3000});
                         }

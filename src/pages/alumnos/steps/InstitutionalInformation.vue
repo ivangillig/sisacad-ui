@@ -86,10 +86,9 @@ export default {
     methods: {
         nextPage() {
             this.submitted = true;
-            
+
             if (this.validateForm()) {
                 if (this.student && !this.student.id) {
-                console.log(this.student);
                 this.AdminService.getPersonEmail({ email: this.student.email }).then(response => {
                     if (response && response.data.success === true) {
                     this.$toast.add({ severity: 'error', summary: 'Hubo un error', detail: response.data.message.toString(), life: 4000 });

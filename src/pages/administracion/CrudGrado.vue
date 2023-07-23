@@ -234,8 +234,6 @@ export default {
 				return;
 			}
 
-			console.log(this.grade)
-
 			this.submitted = true;
 			if (this.grade.name.trim()) {
 				if (this.grade.id) {
@@ -251,12 +249,11 @@ export default {
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
 						}
 					});
-			
+
 				}
 				else {
 					//this.grade.state = this.grade.state ? this.grade.state.value : 'Activo';
 					//this.grades.push(this.grade);
-					console.log(this.grade)
 					this.SecretaryService.newGrade(this.grade).then(data => {
 						if(data.status === 201){
 							this.SecretaryService.getGrades().then(response => {

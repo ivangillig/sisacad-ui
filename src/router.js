@@ -223,11 +223,10 @@ import axios from "axios";
 
 router.beforeEach((to, from, next) => {
 
-    if (to.matched.some(record => record.meta.requireLogin)){        
+    if (to.matched.some(record => record.meta.requireLogin)){
         if ( !store.state.auth.isAuthenticated ){
             next('/login')
         }else{
-
             const token = store.state.auth.token
 
             if (token) {
