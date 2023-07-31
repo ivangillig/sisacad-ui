@@ -11,7 +11,7 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import('./components/Dashboard.vue'),
+                component: () => import('./pages/Home.vue'),
                 meta: { requireLogin: true}
             },
             {
@@ -227,17 +227,19 @@ router.beforeEach((to, from, next) => {
         if ( !store.state.auth.isAuthenticated ){
             next('/login')
         }else{
-            const token = store.state.auth.token
+            // Recupera el token del localStorage
+            const token = localStorage.getItem('token')
 
             if (token) {
-                axios.defaults.headers.common['Authorization'] = "Token " + token
+                axios.defaults.headers.common['Authorization'] = "Token " + token;
+                next();
             } else {
-                axios.defaults.headers.common['Authorization'] = ''
+                axios.defaults.headers.common['Authorization'] = '';
+                next('/login');
             }
-            next()
         }
     } else {
-        next() // does not require auth, call next()
+        next(); // does not require auth, call next()
     }
 })
 

@@ -5,12 +5,12 @@
             <div class="mr-4">
                 <h5>Curso lectivo {{ actualYear }}</h5>
                 <Dropdown class="w-full" v-model="selectedCourse" :options="courses" optionLabel="name"
-                    placeholder="Select a course" />
+                    placeholder="Seleccione un curso" />
             </div>
             <div class="mr-4 mt-4 md:mt-0">
                 <h5>Alumno</h5>
                 <div class="filter-container">
-                    <AutoComplete class="mr-4" placeholder="Search" id="dd" :dropdown="true" :multiple="false"
+                    <AutoComplete class="mr-4" placeholder="Buscar" id="dd" :dropdown="true" :multiple="false"
                         v-model="selectedStudent" :suggestions="autoFilteredValue" @complete="searchStudent($event)"
                         @select="onSelectStudent($event)" field="name" />
                     <Button label="Agregar alumno al curso" @click="nextPage()" icon="pi pi-angle-right" icon-pos="right" />

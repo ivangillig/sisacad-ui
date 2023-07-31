@@ -36,12 +36,12 @@ export default {
             overlayMenuActive: false,
             mobileMenuActive: false,
             menu : [
-                {
-                    label: 'Home',
-                    items: [{
-                        label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
-                    }]
-                },
+                // {
+                //     label: 'Home',
+                //     items: [{
+                //         label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
+                //     }]
+                // },
                 /**
                 {
                     label: 'Docentes',
@@ -122,24 +122,21 @@ export default {
                         {label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://www.primefaces.org/primeflex/', target: '_blank'},
                     ]
                 },
-                */
-
 				{
 					label: 'Pages', icon: 'pi pi-fw pi-clone',
 					items: [
-                         /*
-                         {
-                           label: 'Alumnos', icon: 'pi pi-fw pi-user-edit',
+                        /*
+                        {
+                        label: 'Alumnos', icon: 'pi pi-fw pi-user-edit',
                             items: [
 						{label: 'ABM Alumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
-                                
                             ]
                         },
 						{label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/crud'},
 						{label: 'CrudAlumnos', icon: 'pi pi-fw pi-user-edit', to: '/alumnos'},
 						{label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/timeline'},
                         {label: 'Landing', icon: 'pi pi-fw pi-globe', to: '/landing'},*/
-                        {label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login'},]},
+                        //{label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login'},]},
                         /*
                         {label: 'Error', icon: 'pi pi-fw pi-times-circle', to: '/error'},
                         {label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', to: '/notfound'},
@@ -170,7 +167,6 @@ export default {
                                 },
                             ]
                         },
-                        
                     ]
                 },
                 */
@@ -281,9 +277,7 @@ export default {
         'AppFooter': AppFooter,
     },
     beforeCreate(){
-        //this.$store.commit('initializeStore')
-        
-        const token = this.$store.state.token
+        const token = localStorage.getItem('token')
 
         if (token) {
             axios.defaults.headers.common['Authorization'] = "Token " + token

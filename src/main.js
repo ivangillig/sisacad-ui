@@ -100,10 +100,21 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 
 import CodeHighlight from './AppCodeHighlight';
 import BlockViewer from './BlockViewer';
-// import clienteAxios from './config/axios';
+import axios from './config/axios';
 
 router.beforeEach(function(to, from, next) {
     window.scrollTo(0, 0);
+
+    const token = localStorage.getItem('token')
+
+            if (token) {
+                axios.defaults.headers.common['Authorization'] = "Token " + token;
+                next();
+            } else {
+                axios.defaults.headers.common['Authorization'] = '';
+                next('/login');
+            }
+
     next();
 });
 
@@ -114,10 +125,10 @@ app.config.globalProperties.$appState = reactive({ theme: 'lara-light-indigo', d
 app.use(PrimeVue, { ripple: true, inputStyle: 'outlined' });
 app.use(ConfirmationService);
 app.use(ToastService);
-app.use(router);
 
 app.use(store); // localStorage
 store.dispatch('initializeStore')
+app.use(router);
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
