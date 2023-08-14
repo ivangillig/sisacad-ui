@@ -14,7 +14,7 @@
 
 				<DataTable ref="dt" :value="courses" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} courses" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} cursos" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							<h5 class="m-0">Administrar Cursos por año</h5>
@@ -194,8 +194,8 @@ export default {
                 this.selectedGrade = null;
             }
         },
-		courseYear(year){
-			this.courseYear = year;
+		paymentDate(date){
+			this.paymentDate = date;
 		}
     },
     computed: {

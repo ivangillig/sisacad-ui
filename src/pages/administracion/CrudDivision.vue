@@ -18,7 +18,7 @@
 
 				<DataTable ref="dt" :value="divisions" v-model:selection="selectedDivisions" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} divisions" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} divisiones" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							<h5 class="m-0">Administrar Divisiónes</h5>
@@ -30,7 +30,7 @@
 					</template>
 
 					<Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-					
+
 					<Column field="id" header="ID" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">ID</span>
@@ -175,13 +175,12 @@ export default {
 					this.AdminService.updateDivision(this.division.id, this.division).then(data => {
 						if(data.status === 200){
 							this.AdminService.getDivisions().then(response => this.divisions = response.data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Division actualizada!', life: 3000});
+							this.$toast.add({severity:'success', summary: 'Exito', detail: 'División actualizada!', life: 3000});
 						}
 						if(data.status === 400){
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
 						}
 					});
-			
 				}
 				else {
 					//this.division.state = this.division.state ? this.division.state.value : 'Activo';
@@ -190,10 +189,8 @@ export default {
 					this.AdminService.newDivision(this.division).then(data => {
 					if(data.status === 201){
 						this.AdminService.getDivisions().then(response => this.divisions = response.data);
-						this.$toast.add({severity:'success', summary: 'Exito', detail: 'Division creada correctamente!', life: 5000});
+						this.$toast.add({severity:'success', summary: 'Exito', detail: 'División creada correctamente!', life: 5000});
 					}});
-				
-				
 				//this.administracionApi.getDivisiones().then(data => this.divisions = data);
 				}
 				this.divisionDialog = false;
@@ -214,7 +211,7 @@ export default {
 				if(data.status === 204){
 
 				this.AdminService.getDivisions().then(response => this.divisions = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Division Eliminado', life: 5000});
+				this.$toast.add({severity:'success', summary: 'Exito', detail: 'División Eliminada', life: 5000});
 				}
 			});
 			

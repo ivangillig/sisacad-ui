@@ -59,13 +59,19 @@ export default {
                     label: 'Administracion',
                     items: [
                         {
-                            label: 'ABM Secretaría', icon: 'pi pi-fw pi-user-edit',
+                            label: 'ABM Secretaría', icon: 'pi pi-fw pi-th-large',
                             items: [
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
 						{label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones'},
 						{label: 'Modalidades', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/modalidades'},
                         {label: 'Años', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/grados'},
 						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+                            ]
+                        },
+                        {
+                            label: 'Cuotas/Matriculas', icon: 'pi pi-fw pi-money-bill',
+                            items: [
+						{label: 'Registrar pago', icon: 'pi pi-fw pi-plus-circle', to: '/administracion/pagos'},
                             ]
                         },
 						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
@@ -90,12 +96,16 @@ export default {
                     label: 'Grados',
                     items: [
                         {
-                            label: 'Curso lectivo', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/curso_lectivo'
+                            label: 'Cursos lectivos', icon: 'pi pi-fw pi-user-edit',
+                            items: [
+                        {
+                            label: 'Listado de cursos', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/curso_lectivo'
                         },
                         {
                             label: 'Alta de alumno en curso', icon: 'pi pi-fw pi-user-edit', to: '/asociar-alumnos'
                         },
-					]
+                    ]
+                }]
                 },
                 /*
 				{

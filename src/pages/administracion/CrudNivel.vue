@@ -18,7 +18,7 @@
 
 				<DataTable ref="dt" :value="levels" v-model:selection="selectedLevels" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} levels" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} niveles" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							<h5 class="m-0">Administrar Niveles</h5>
@@ -30,7 +30,7 @@
 					</template>
 
 					<Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-					
+
 					<Column field="id" header="ID" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">ID</span>
@@ -174,13 +174,13 @@ export default {
 					this.AdminService.updateLevel(this.level.id, this.level).then(data => {
 						if(data.status === 200){
 							this.AdminService.getLevels().then(response => this.levels = response.data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Level actualizada!', life: 3000});
+							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Nivel actualizado correctamente', life: 3000});
 						}
 						if(data.status === 400){
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
 						}
 					});
-			
+
 				}
 				else {
 					//this.level.state = this.level.state ? this.level.state.value : 'Activo';
@@ -191,7 +191,7 @@ export default {
 							this.AdminService.getLevels().then(response => {
 								if(response.status === 200){
 									this.levels = response.data;
-									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Level creada correctamente!', life: 5000});
+									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
 								}
 							})
 						}
@@ -214,10 +214,10 @@ export default {
 			this.AdminService.deleteLevel(this.level.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getLevels().then(response => this.levels = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Level Eliminado', life: 5000});
+				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel eliminado correctamente', life: 5000});
 				}
 			});
-			
+
 			this.deleteLevelDialog = false;
 			this.level = {};
 

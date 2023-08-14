@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import App from './App.vue';
-import store from '../store';
 
 const routes = [
     {
@@ -166,6 +165,12 @@ const routes = [
                 meta: { requireLogin: true}
             },
             {
+                path: '/administracion/pagos',
+                name: 'pagos',
+                component: () => import('./pages/administracion/payments/StudentFeePayment.vue'),
+                meta: { requireLogin: true}
+            },
+            {
                 path: '/timeline',
                 name: 'timeline',
                 component: () => import('./pages/TimelineDemo.vue')
@@ -219,6 +224,7 @@ const router = createRouter({
     routes,
 });
 
+import store from '../store';
 import axios from "axios";
 
 router.beforeEach((to, from, next) => {

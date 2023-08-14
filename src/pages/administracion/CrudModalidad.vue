@@ -18,7 +18,7 @@
 
 				<DataTable ref="dt" :value="specialities" v-model:selection="selectedSpecialities" dataKey="id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} specialities" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} modalidades" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							<h5 class="m-0">Administrar Modalidades</h5>
@@ -30,7 +30,7 @@
 					</template>
 
 					<Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-					
+
 					<Column field="id" header="ID" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">ID</span>
