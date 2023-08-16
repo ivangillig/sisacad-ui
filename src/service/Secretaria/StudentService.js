@@ -20,4 +20,7 @@ export const deleteMultipleStudents = async  (studentsList) => {
     return response;
 }
 
-
+export const createNewPaymentAndPaymentStudent = async (formData) => {
+    const response = await clienteAxios.post('/api/pagos-completos/', formData);
+    return response;
+}

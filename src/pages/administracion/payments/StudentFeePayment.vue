@@ -128,28 +128,26 @@ export default {
             this.selectedStudent = student.id;
         },
         async onUpload(paymentReceipt) {
-            
-			this.submitted = true;
-            console.log(this.paymentType)
-            
-            if (this.paymentDate && this.paymentAmount && this.paymentType && paymentReceipt.files) {
-					const newPayment = {
-						payment_date: this.paymentDate,
-						amount: this.paymentAmount,
-						payment_type: this.paymentType,
-                        file: paymentReceipt.files[0]
-				};
 
+			this.submitted = true;
+
+            if (this.paymentDate && this.paymentAmount && this.paymentType && paymentReceipt.files) {
+                const formData = new FormData();
+                formData.append('payment_date', this.paymentDate);
+                formData.append('amount', this.paymentAmount);
+                formData.append('payment_type', this.paymentType);
+                formData.append('file', paymentReceipt.files[0]);
+                formData.append('student_id', this.selectedStudentId);
 
             try {
-                console.log(newPayment)
-                //const response = await this.AdminService.newCourse(courseData);
-                // if(response.status === 201){
-                //     this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
-				// 	this.levelDialog = false;
-                //     this.$store.dispatch('getCourses');
-				// }
-                // this.selectedStudent = null;
+                console.log(formData)
+                const response = await this.AdminService.createNewPaymentAndPaymentStudent(formData);
+                if(response.status === 201){
+                    this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
+					this.newPaymentDialog = false;
+                    //this.$store.dispatch('getPayments');
+				}
+                this.selectedStudent = null;
             } catch (error) {
                 this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.error, life: 5000});
             }

@@ -5,7 +5,7 @@ import { getSpecialities, newSpeciality, updateSpeciality, deleteSpeciality, del
 import { getGrades, newGrade, updateGrade, deleteGrade, deleteMultipleGrades } from './GradeService';
 import { getCourses, newCourse, updateCourse, deleteCourse, deleteMultipleCourses, getCourse } from './CoursesService';
 import { getPerson, getPersonEmail } from './UserService';
-import { newStudent, getStudents, deleteStudent, deleteMultipleStudents } from './StudentService';
+import { newStudent, getStudents, deleteStudent, deleteMultipleStudents, createNewPaymentAndPaymentStudent } from './StudentService';
 
 export default class AdminService {
   async getLevels() {
@@ -110,6 +110,10 @@ export default class AdminService {
 
   async deleteMultipleStudents(studentsList) {
     return await deleteMultipleStudents(studentsList)
+  }
+
+  async createNewPaymentAndPaymentStudent(formData) {
+    return await createNewPaymentAndPaymentStudent(formData)
   }
 
   async getCourses() {
