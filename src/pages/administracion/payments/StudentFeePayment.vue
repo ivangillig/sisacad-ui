@@ -8,8 +8,7 @@
                     <AutoComplete class="mr-4 flex-grow" placeholder="Buscar" id="dd" :dropdown="true" :multiple="false"
                         v-model="selectedStudent" :suggestions="autoFilteredValue" @complete="searchStudent($event)"
                         @select="onSelectStudent($event)" field="name" />
-
-                    <Button label="Agregar Curso" icon="pi pi-plus" class="p-button-success mr-2" @click="openNewPayment" />
+                    <Button label="Cargar comprobante" icon="pi pi-plus" @click="openNewPayment()" />
                 </div>
             </div>
         </div>
@@ -27,8 +26,7 @@
 					<div class="field">
                         <label for="year">Fecha de pago</label>
 						<Calendar v-model="paymentDate" view="date" dateFormat="yy-mm-dd" required="true" autofocus
-                        :class="{'p-invalid': submitted && !paymentDate}"
-                        @keydown.enter="saveGrade" />
+                        :class="{'p-invalid': submitted && !paymentDate}" />
                         <small class="p-invalid" v-if="submitted && !paymentDate">La fecha de pago es obligatoria.</small>
                     </div>
 
@@ -36,8 +34,7 @@
 						<label for="paymentAmount">Importe</label>
 
                         <InputNumber id="paymentAmount" v-model="paymentAmount" inputId="currency-germany" mode="currency" currency="USD" locale="de-DE" required="true" autofocus
-							:class="{'p-invalid': submitted && !paymentAmount}"
-							@keydown.enter="saveLevel" />
+							:class="{'p-invalid': submitted && !paymentAmount}" />
 						<small class="p-invalid" v-if="submitted && !paymentAmount">El importe es obligatorio.</small>
 					</div>
 
@@ -73,6 +70,7 @@
 import adminService from './../../../service/Secretaria/AdminService';
 import CourseStudentService from '../../../service/Secretaria/CurseByYear';
 import { mapState } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
     created(){
@@ -130,41 +128,43 @@ export default {
         async onUpload(paymentReceipt) {
 
 			this.submitted = true;
+            let formData = new FormData();
 
             if (this.paymentDate && this.paymentAmount && this.paymentType && paymentReceipt.files) {
-                const formData = new FormData();
-                formData.append('payment_date', this.paymentDate);
+                const formattedDate = dayjs(this.payment_date).format('YYYY-MM-DD');
+
+                formData.append('payment_date', formattedDate);
                 formData.append('amount', this.paymentAmount);
                 formData.append('payment_type', this.paymentType);
                 formData.append('file', paymentReceipt.files[0]);
-                formData.append('student_id', this.selectedStudentId);
-
+                formData.append('student_id', this.selectedStudent.id);
             try {
-                console.log(formData)
-                const response = await this.AdminService.createNewPaymentAndPaymentStudent(formData);
+                const response = await this.adminService.createNewPaymentAndPaymentStudent(formData);
                 if(response.status === 201){
                     this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
 					this.newPaymentDialog = false;
-                    //this.$store.dispatch('getPayments');
+                    this.$store.dispatch('loadPaymentsByStudent');
 				}
                 this.selectedStudent = null;
             } catch (error) {
-                this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.error, life: 5000});
+                if (error && error.response && error.response.data && error.response.data.error) {
+                    this.$toast.add({severity:'error', summary: 'Error', detail: error.response.data.error, life: 5000});
+                }
             }
 			this.course = {};
 			}
         },
     },
     watch: {
-        // selectedCourse(newCourse) {
-        //     if(newCourse) {
-        //         this.$store.dispatch('loadStudentsForCourse', newCourse.id);
-        //     } else {
-        //         this.$store.commit('setStudentsByGrade', []);
-        //     }
-        // },
+        selectedStudent(student) {
+            if(student) {
+                this.$store.dispatch('loadPaymentsByStudent', student.id);
+            } else {
+                this.$store.commit('setPaymentsByStudent', []);
+            }
+        },
         state(newStudents) {
-            console.log('Nuevo estado de studentsByGrade:', newStudents);
+            console.log('Nuevo estado de students:', newStudents);
         },
     },
     computed: {

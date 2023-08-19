@@ -24,3 +24,8 @@ export const createNewPaymentAndPaymentStudent = async (formData) => {
     const response = await clienteAxios.post('/api/pagos-completos/', formData);
     return response;
 }
+
+export const getPaymentsByStudent = async (studentId) => {
+    const response = await clienteAxios.get(`/api/pagos-completos/payments_by_student/?student_id=${studentId}`);
+    return response;
+}
