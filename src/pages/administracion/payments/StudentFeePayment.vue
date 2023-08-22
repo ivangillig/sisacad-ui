@@ -170,8 +170,11 @@ export default {
                     const response = await this.adminService.createNewPaymentAndPaymentStudent(formData);
                     if (response.status === 201) {
                         this.$toast.add({ severity: 'success', summary: 'Exito', detail: response.data.message, life: 5000 });
+
+                        this.paymentDate = null,
+                        this.paymentAmount = null,
+                        this.paymentType = null,
                         this.newPaymentDialog = false;
-                        this.$store.dispatch('loadPaymentsByStudent');
                     }
                     this.selectedStudent = null;
                 } catch (error) {
