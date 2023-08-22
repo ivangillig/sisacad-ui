@@ -32,13 +32,17 @@ const actions = {
     },
     async loadPaymentsByStudent({ commit }, studentId) {
         let service = new adminService();
+        const filePrefix = process.env.VUE_APP_FILE_PREFIX || 'http://localhost:8000';
         try {
             let response = await service.getPaymentsByStudent(studentId);
             let students = response.data.map(item => ({
                 id: item.id,
-                student: `${item.student.first_name} ${item.student.first_lastname}`,
+                student: `${item.student_details.first_name} ${item.student_details.first_lastname}`,
                 created_at: item.created_date,
-                payment: item.payment
+                payment: {
+                    ...item.payment_details,
+                    file: filePrefix + item.payment_details.file
+                }
             }));
             commit('setPaymentsByStudent', students);
         } catch (error) {
@@ -53,6 +57,9 @@ const mutations = {
     },
     clearStudent(state) {
         state.student = {};
+    },
+    clearPayments(state) {
+        state.paymentsByStudent = [];
     },
     setStudentsByGrade(state, students) {
         state.studentsByGrade = students;
