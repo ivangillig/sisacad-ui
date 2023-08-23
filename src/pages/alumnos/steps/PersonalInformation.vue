@@ -182,56 +182,39 @@
 </template>
 
 <script>
-import CountryService from '../../../service/CountryService'
 import AdminService from '../../../service/Secretaria/AdminService';
+import { mapState, mapActions } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
     created() {
         this.AdminService = new AdminService();
-        this.countryService = new CountryService();
 
-        this.countryService.getCountries().then(data => {
-            this.countries = data;
-        });
+        // Establecer la fecha mínima como 1 de enero de 1980
+        this.minDate = dayjs('1980-01-01').toDate();
 
-        let today = new Date();
-        let month = today.getMonth();
-        let year = today.getFullYear();
-        //let prevMonth = (month === 0) ? 11 : month -1;
-        //let prevYear = (prevMonth === 11) ? year - 1 : year;
-        let nextMonth = (month === 11) ? 0 : month + 1;
-        let nextYear = (nextMonth === 0) ? year + 1 : year;
-        this.minDate = new Date();
-        this.minDate.setDate(1)
-        this.minDate.setMonth(0);
-        this.minDate.setFullYear(1980);
-        this.maxDate = new Date();
-        this.maxDate.setMonth(nextMonth);
-        this.maxDate.setFullYear(nextYear);
+        // Establecer la fecha máxima como el primer día del próximo mes
+        this.maxDate = dayjs().add(1, 'month').startOf('month').toDate();
     },
     mounted() {
-        let selectedState = {}
+        this.fetchCountries();
 
-        if (this.$store.state.student) {
-            const birthday = this.$store.state.student.birthday
-            this.student = this.$store.state.student
-            this.student.birthday = birthday ? birthday.split('-').reverse().join('-') : null
+        if (this.studentInfo) {
+            const birthday = this.studentInfo.birthday;
+            this.student = this.studentInfo;
+            this.student.birthday = birthday ? dayjs(birthday).format('DD-MM-YYYY') : null;
 
-            selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
+            const selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
             if (selectedState) {
-                this.student.address_state = selectedState.value
+                this.student.address_state = selectedState.value;
             }
-        }
-
-        this.countryService.getCountries().then(data => {
-            this.countries = data;
 
             // on editing student, we change code country to name country for dropdown
-            if (this.$store.state.student && this.$store.state.student.id) {
-                const country = this.countries.find(country => country.code === this.$store.state.student.nationality);
+            if (this.studentInfo && this.studentInfo.id) {
+                const country = this.countries.find(country => country.code === this.studentInfo.nationality);
                 this.student.nationality = country;
             }
-        });
+        }
     },
     data() {
         return {
@@ -256,11 +239,11 @@ export default {
             ],
             submitted: false,
             validationErrors: {},
-            countries: [], // array de países
-            searchQuery: '' // valor de búsqueda del usuario
+            countries: [],
+            searchQuery: ''
         }
     },
-     computed: {
+    computed: {
         filteredCountries() {
             if (!this.searchQuery) {
                 return this.countries;
@@ -272,9 +255,14 @@ export default {
                 );
             }
         },
+        ...mapState('student', ['studentInfo', 'countries']),
     },
     //countryService: null,
     methods: {
+        ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
+        saveInfo() {
+            this.updatePersonalInfo(this.localInfo);
+        },
         nextPage() {
             this.submitted = true;
 

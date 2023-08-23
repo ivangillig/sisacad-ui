@@ -1,12 +1,20 @@
 import CourseStudentService from '../../src/service/Secretaria/CurseByYear';
 import adminService from '../../src/service/Secretaria/AdminService';
+import CountryService from '../../src/service/CountryService';
 
 const state = {
     student: {
         id: null,
     },
     studentsByGrade: [],
-    paymentsByStudent: []
+    paymentsByStudent: [],
+    studentInfo: {
+        personal: {},
+        institutional: {},
+        medAuth: {},
+        confirmation: {}
+    },
+    countries: [],
 };
 
 const getters = {
@@ -49,6 +57,35 @@ const actions = {
             console.error('Error al obtener los pagos del estudiante:', error);
         }
     },
+    async fetchCountries({ commit }) {
+        try {
+            let service = new CountryService();
+            const response = await service.getCountries();
+            commit('SET_COUNTRIES', response);
+        } catch (error) {
+            console.error('Error al obtener los países:', error);
+        }
+    },
+    async checkStudentByDNI(dni) {
+        try {
+            const response = await adminService.getPerson(dni);
+            return response.data.success;
+        } catch (error) {
+          // Manejar errores
+        }
+    },
+    updatePersonalInfo({ commit }, info) {
+        commit('SET_PERSONAL_INFO', info);
+    },
+    updateInstitutionalInfo({ commit }, info) {
+        commit('SET_INSTITUTIONAL_INFO', info);
+    },
+    updateMedAuthInfo({ commit }, info) {
+        commit('SET_MEDAUTH_INFO', info);
+    },
+    updateConfirmationInfo({ commit }, info) {
+        commit('SET_CONFIRMATION_INFO', info);
+    }
 };
 
 const mutations = {
@@ -67,9 +104,25 @@ const mutations = {
     setPaymentsByStudent(state, payments) {
         state.paymentsByStudent = payments;
     },
+    SET_PERSONAL_INFO(state, payload) {
+        state.studentInfo.personal = payload;
+    },
+    SET_INSTITUTIONAL_INFO(state, payload) {
+        state.studentInfo.institutional = payload;
+    },
+    SET_MEDAUTH_INFO(state, payload) {
+        state.studentInfo.medAuth = payload;
+    },
+    SET_CONFIRMATION_INFO(state, payload) {
+        state.studentInfo.confirmation = payload;
+    },
+    SET_COUNTRIES(state, countries) {
+        state.countries = countries;
+    },
 };
 
 export default {
+    namespaced: true,
     state,
     getters,
     actions,
