@@ -38,7 +38,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <AutoComplete id="nationality" v-model="student.nationality" autocomplete="off" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
+                        <AutoComplete id="nationality" v-model="student.nationality" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
                         placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
                         <label for="state">Nacionalidad</label>
                     </span>
@@ -255,10 +255,7 @@ export default {
                 );
             }
         },
-        ...mapState({
-            countries: state => state.student.countries,
-            studentInfo: state => state.student.studentInfo
-        }),
+        ...mapState('student', ['studentInfo', 'countries']),
         },
     //countryService: null,
     methods: {
