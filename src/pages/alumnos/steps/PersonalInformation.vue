@@ -38,7 +38,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <AutoComplete id="nationality" v-model="student.nationality" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
+                        <AutoComplete id="nationality" v-model="student.nationality" autocomplete="off" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
                         placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
                         <label for="state">Nacionalidad</label>
                     </span>
@@ -246,17 +246,20 @@ export default {
     computed: {
         filteredCountries() {
             if (!this.searchQuery) {
-                return this.countries;
+                return this.$store.state.student.countries;
             }
             else {
                 const query = this.searchQuery.toLowerCase();
-                return this.countries.filter(country =>
+                return this.$store.state.student.countries.filter(country =>
                     country.name.toLowerCase().startsWith(query)
                 );
             }
         },
-        ...mapState('student', ['studentInfo', 'countries']),
-    },
+        ...mapState({
+            countries: state => state.student.countries,
+            studentInfo: state => state.student.studentInfo
+        }),
+        },
     //countryService: null,
     methods: {
         ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
