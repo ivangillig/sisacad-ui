@@ -223,7 +223,6 @@ export default {
                 nationality: null,
             },
 
-
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
                 {name: 'Santa Cruz', value: 2},
@@ -255,10 +254,22 @@ export default {
                 );
             }
         },
+        nationalityCode() {
+            return this.$store.state.student.studentInfo.nationality;
+        },
+        genderValue() {
+            return this.$store.state.student.studentInfo.gender;
+        },
         ...mapState('student', ['studentInfo', 'countries']),
         },
     //countryService: null,
     methods: {
+        onNationalitySelected(selectedNationality) {
+            this.$store.commit('student/SET_NATIONALITY', selectedNationality.code);
+        },
+        onGenderSelected(selectedGender) {
+            this.$store.commit('student/SET_GENDER', selectedGender.value);
+        },
         ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
         saveInfo() {
             this.updatePersonalInfo(this.localInfo);
@@ -267,7 +278,7 @@ export default {
             this.submitted = true;
 
             if (this.validateForm()) {
-                const formData = {
+                const studentData = {
                     first_name: this.student.first_name,
                     middle_name: this.student.middle_name,
                     first_lastname: this.student.first_lastname,
@@ -288,18 +299,19 @@ export default {
                     cp: this.student.cp,
                 };
 
+                this.$store.commit('student/SET_PERSONAL_INFO', studentData);
+
                 if (this.student && !this.student.id) {
-                    this.AdminService.getPerson(this.student.doc_number.replaceAll('.', '')).then(response => {
-                        if (response && response.data.success === true) {
-                            this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un alumno/a con ese documento', life: 4000 });
+                    this.$store.dispatch('person/fetchPersonByDNI', this.student.doc_number).then(() => {
+                        const personData = this.$store.getters['person/getPersonData'];
+                        if (personData && personData.success === true) {
+                            this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un usuario/a con ese documento', life: 4000 });
                         } else {
-                            this.$emit('next-page', { formData, pageIndex: 0 });
+                            this.$emit('next-page', { pageIndex: 0 });
                         }
-                    }).catch(error => {
-                        console.log(error);
                     });
                 } else {
-                    this.$emit('next-page', { formData, pageIndex: 0 });
+                    this.$emit('next-page', { pageIndex: 0 });
                 }
             }
         },

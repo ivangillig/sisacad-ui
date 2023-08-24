@@ -5,6 +5,8 @@ import CountryService from '../../src/service/CountryService';
 const state = {
     student: {
         id: null,
+        confirmation: {},
+        nationality: null,
     },
     studentsByGrade: [],
     paymentsByStudent: [],
@@ -12,7 +14,6 @@ const state = {
         personal: {},
         institutional: {},
         medAuth: {},
-        confirmation: {}
     },
     countries: [],
 };
@@ -119,6 +120,12 @@ const mutations = {
     SET_COUNTRIES(state, countries) {
         state.countries = countries;
     },
+    SET_NATIONALITY(state, code) {
+        state.studentInfo.nationality = code;
+    },
+    SET_GENDER(state, value) {
+        state.studentInfo.gender = value;
+    }
 };
 
 export default {
