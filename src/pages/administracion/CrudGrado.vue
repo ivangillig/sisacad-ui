@@ -77,7 +77,7 @@
 							</div>
 						</template>
 					</Column>
-					
+
 					<Column field="created_at" header="Fecha Creado" headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">Fecha Creado</span>
@@ -123,7 +123,7 @@
 							<Dropdown id="state" v-model="grade.state" :options="states_list" optionLabel="label" optionValue="value"
 							placeholder="Selecciona uno"></Dropdown>
 					</div>
-					
+
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
 						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveGrade" />

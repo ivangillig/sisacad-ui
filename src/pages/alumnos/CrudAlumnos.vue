@@ -75,7 +75,7 @@
 					<!-- <Column field="created_by" header="Creado por" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">Creado por</span>
-							{{slotProps.data.created_by.nombre1}} 
+							{{slotProps.data.created_by.nombre1}}
 							{{slotProps.data.created_by.apellido1}}
 						</template>
 					</Column> -->
@@ -189,7 +189,7 @@ export default {
 			//this.student = {...student};
 			//var student1 = JSON.parse(JSON.stringify({...student}))
 
-			this.$store.commit('studentData', {...student})
+			this.$store.commit('setStudentData', {...student})
 
 			this.$router.replace({ path: '/alumnos/nuevoalumno'});
 

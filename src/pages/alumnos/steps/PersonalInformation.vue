@@ -6,12 +6,12 @@
 
             <div class="p-fluid grid mt-5">
                 <div class="field col-12 md:col-3">
-                    <span class="label-modified">
-                        <InputText type="text" required id="first_name" v-model.trim="student.first_name" :class="{'p-invalid': validationErrors.first_name && submitted}" />
-                        <small v-show="validationErrors.first_name && submitted" class="p-error">{{msg.first_name}}</small>
-                        <label for="first_name">Primer Nombre</label>
-                    </span>
-                </div>
+                        <span class="label-modified">
+                            <InputText type="text" required id="first_name" v-model.trim="student.first_name" @input="handleInputChange" :class="{ 'p-invalid': validationErrors.first_name && submitted }" />
+                            <small v-show="validationErrors.first_name && submitted" class="p-error">{{ msg.first_name }}</small>
+                            <label for="first_name">Primer Nombre</label>
+                        </span>
+                    </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
@@ -43,20 +43,6 @@
                         <label for="state">Nacionalidad</label>
                     </span>
                 </div>
-
-                <!-- <div class="field col-12 md:col-3">
-                    <span class="label-modified">
-                        <AutoComplete id="nationality" v-model="student.nationality"  :suggestions="filteredCountries"
-                        @complete="searchCountry" :dropdown="true" optionLabel="name" forceSelection>
-                        <template #item="slotProps">
-                            <div class="country-item">
-                                <div class="ml-2">{{slotProps.item.name}}</div>
-                            </div>
-                        </template>
-                    </AutoComplete>
-                    <label for="nationality">Nacionalidad</label>
-                    </span>
-                </div> -->
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
@@ -188,6 +174,10 @@ import dayjs from 'dayjs';
 
 export default {
     created() {
+        if (this.studentData) {
+            this.student = { ...this.studentData };
+        }
+
         this.AdminService = new AdminService();
 
         // Establecer la fecha mínima como 1 de enero de 1980
@@ -197,6 +187,7 @@ export default {
         this.maxDate = dayjs().add(1, 'month').startOf('month').toDate();
     },
     mounted() {
+        console.log(this.student)
         this.fetchCountries();
 
         if (this.studentInfo) {
@@ -219,10 +210,8 @@ export default {
     data() {
         return {
             msg: [],
-			student: {
-                nationality: null,
-            },
 
+            student: {},
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
                 {name: 'Santa Cruz', value: 2},
@@ -240,6 +229,14 @@ export default {
             validationErrors: {},
             countries: [],
             searchQuery: ''
+        }
+    },
+    watch: {
+        studentData(newVal) {
+            if (newVal) {
+                this.student = { ...newVal };
+            }
+            console.log(newVal)
         }
     },
     computed: {
@@ -260,19 +257,21 @@ export default {
         genderValue() {
             return this.$store.state.student.studentInfo.gender;
         },
-        ...mapState('student', ['studentInfo', 'countries']),
+        ...mapState('student', ['studentData', 'countries']),
         },
     //countryService: null,
     methods: {
+        ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
+        handleInputChange(event) {
+            const fieldName = event.target.name;
+            const value = event.target.value;
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
+        },
         onNationalitySelected(selectedNationality) {
             this.$store.commit('student/SET_NATIONALITY', selectedNationality.code);
         },
         onGenderSelected(selectedGender) {
             this.$store.commit('student/SET_GENDER', selectedGender.value);
-        },
-        ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
-        saveInfo() {
-            this.updatePersonalInfo(this.localInfo);
         },
         nextPage() {
             this.submitted = true;
@@ -299,12 +298,12 @@ export default {
                     cp: this.student.cp,
                 };
 
-                this.$store.commit('student/SET_PERSONAL_INFO', studentData);
+                this.$store.commit('student/setStudentData', studentData);
 
                 if (this.student && !this.student.id) {
                     this.$store.dispatch('person/fetchPersonByDNI', this.student.doc_number).then(() => {
                         const personData = this.$store.getters['person/getPersonData'];
-                        if (personData && personData.success === true) {
+                        if (personData && personData.success) {
                             this.$toast.add({ severity: 'error', summary: 'Verifique el DNI', detail: 'Ya existe un usuario/a con ese documento', life: 4000 });
                         } else {
                             this.$emit('next-page', { pageIndex: 0 });
@@ -364,7 +363,7 @@ export default {
 }
 
 .label-modified label{
-    top: -.75rem;   
+    top: -.75rem;
     font-size: 12px;
     position: absolute;
     margin-top: -.5rem;

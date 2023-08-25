@@ -200,7 +200,7 @@ export default {
     },
     computed: {
         ...mapState({
-            paymentsByStudent: state => state.student.paymentsByStudent
+            paymentsByStudent: state => state.payment.paymentsByStudent
         }),
     },
 };

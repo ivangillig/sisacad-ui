@@ -1,63 +1,28 @@
-import CourseStudentService from '../../src/service/Secretaria/CurseByYear';
 import adminService from '../../src/service/Secretaria/AdminService';
 import CountryService from '../../src/service/CountryService';
 
 const state = {
-    student: {
+    studentData: {
         id: null,
         confirmation: {},
         nationality: null,
     },
-    studentsByGrade: [],
-    paymentsByStudent: [],
-    studentInfo: {
-        personal: {},
-        institutional: {},
-        medAuth: {},
-    },
+    // studentInfo: {
+    //     personal: {},
+    //     institutional: {},
+    //     medAuth: {},
+    // },
     countries: [],
 };
 
 const getters = {
-    getStudentData: (state) => state.student,
-    getStudentsByGrade: (state) => state.studentsByGrade,
-    getPaymentsByStudent: (state) => state.paymentsByStudent,
+    getStudentData: (state) => state.studentData,
+    mappedStudent: (state) => {
+        return state.studentData;
+    },
 };
 
 const actions = {
-    async loadStudentsForCourse({ commit }, courseId) {
-        let service = new CourseStudentService();
-        try {
-            let response = await service.getStudentsInCourse(courseId);
-            let students = response.data.map(student => ({
-                document: student.student.doc_number,
-                name: `${student.student.first_name} ${student.student.first_lastname}`,
-                created_at: student.add_date,
-            }));
-            commit('setStudentsByGrade', students);
-        } catch (error) {
-            console.error('Error al obtener los estudiantes del curso:', error);
-        }
-    },
-    async loadPaymentsByStudent({ commit }, studentId) {
-        let service = new adminService();
-        const filePrefix = process.env.VUE_APP_FILE_PREFIX || 'http://localhost:8000';
-        try {
-            let response = await service.getPaymentsByStudent(studentId);
-            let students = response.data.map(item => ({
-                id: item.id,
-                student: `${item.student_details.first_name} ${item.student_details.first_lastname}`,
-                created_at: item.created_date,
-                payment: {
-                    ...item.payment_details,
-                    file: filePrefix + item.payment_details.file
-                }
-            }));
-            commit('setPaymentsByStudent', students);
-        } catch (error) {
-            console.error('Error al obtener los pagos del estudiante:', error);
-        }
-    },
     async fetchCountries({ commit }) {
         try {
             let service = new CountryService();
@@ -91,29 +56,20 @@ const actions = {
 
 const mutations = {
     setStudentData (state, payload) {
-        state.student = payload
+        state.studentData = { ...state.studentData, ...payload }
     },
     clearStudent(state) {
-        state.student = {};
+        state.studentData = {};
     },
-    clearPayments(state) {
-        state.paymentsByStudent = [];
-    },
-    setStudentsByGrade(state, students) {
-        state.studentsByGrade = students;
-    },
-    setPaymentsByStudent(state, payments) {
-        state.paymentsByStudent = payments;
-    },
-    SET_PERSONAL_INFO(state, payload) {
-        state.studentInfo.personal = payload;
-    },
-    SET_INSTITUTIONAL_INFO(state, payload) {
-        state.studentInfo.institutional = payload;
-    },
-    SET_MEDAUTH_INFO(state, payload) {
-        state.studentInfo.medAuth = payload;
-    },
+    // SET_PERSONAL_INFO(state, payload) {
+    //     state.studentInfo.personal = payload;
+    // },
+    // SET_INSTITUTIONAL_INFO(state, payload) {
+    //     state.studentInfo.institutional = payload;
+    // },
+    // SET_MEDAUTH_INFO(state, payload) {
+    //     state.studentInfo.medAuth = payload;
+    // },
     SET_CONFIRMATION_INFO(state, payload) {
         state.studentInfo.confirmation = payload;
     },
@@ -121,11 +77,17 @@ const mutations = {
         state.countries = countries;
     },
     SET_NATIONALITY(state, code) {
-        state.studentInfo.nationality = code;
+        state.studentData.nationality = code;
     },
     SET_GENDER(state, value) {
-        state.studentInfo.gender = value;
-    }
+        state.studentData.gender = value;
+    },
+    UPDATE_STUDENT_FIELD(state, { field, value }) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (state.studentData.hasOwnProperty(field)) {
+            state.studentData[field] = value;
+        }
+    },
 };
 
 export default {

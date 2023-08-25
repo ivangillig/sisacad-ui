@@ -8,7 +8,7 @@ const state = {
 };
 
 const getters = {
-    getCourseData: (state) => state.student,
+    getCourseData: (state) => state.course,
 };
 
 const actions = {
@@ -31,12 +31,6 @@ const actions = {
 };
 
 const mutations = {
-    setStudentData (state, payload) {
-        state.student = payload
-    },
-    clearStudent(state) {
-        state.student = {};
-    },
     setCoursesData(state, courses) {
         state.courses = courses;
     },

@@ -1,3 +1,4 @@
+import CourseStudentService from '../../src/service/Secretaria/CurseByYear';
 import AdminService from '../../src/service/Secretaria/AdminService';
 
 const state = {
@@ -5,10 +6,12 @@ const state = {
         id: null,
     },
     grades: [],
+    studentsByGrade: [],
 };
 
 const getters = {
     //getGradeData: (state) => state.student,
+    getStudentsByGrade: (state) => state.studentsByGrade,
 };
 
 const actions = {
@@ -30,11 +33,28 @@ const actions = {
             console.error('Error al obtener los grados:', error);
         }
     },
+    async loadStudentsForCourse({ commit }, courseId) {
+        let service = new CourseStudentService();
+        try {
+            let response = await service.getStudentsInCourse(courseId);
+            let students = response.data.map(student => ({
+                document: student.student.doc_number,
+                name: `${student.student.first_name} ${student.student.first_lastname}`,
+                created_at: student.add_date,
+            }));
+            commit('setStudentsByGrade', students);
+        } catch (error) {
+            console.error('Error al obtener los estudiantes del curso:', error);
+        }
+    },
 };
 
 const mutations = {
     setGradesData(state, grades) {
         state.grades = grades;
+    },
+    setStudentsByGrade(state, students) {
+        state.studentsByGrade = students;
     },
 };
 

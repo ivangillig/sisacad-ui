@@ -60,7 +60,7 @@ const mutations = {
   setPosts(state, posts) {
     state.posts = posts;
   },
-  
+
   logout(state) {
     localStorage.clear()
     state.user = null;

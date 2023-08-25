@@ -1,5 +1,5 @@
 <template>
-    <div class="grid">
+    <div class="col-10">
         <Toast/>
         <div class="card col-12 md:col-8 flex flex-col md:flex-row md:items-center">
             <div class="mr-4">

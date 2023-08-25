@@ -5,13 +5,15 @@ import student from './modules/student';
 import course from './modules/course';
 import grade from './modules/grade';
 import person from './modules/person';
+import payment from './modules/payment';
 
 export default createStore({
     modules: {
         auth,
-        student,
         course,
         grade,
-        person
+        payment,
+        person,
+        student,
     },
 });

@@ -200,9 +200,9 @@ export default {
     },
     computed: {
         ...mapState({
-            grades: state => state.grade.grades,
+			grades: state => state.grade.grades,
 			courses: state => state.course.courses
-        }),
+		}),
     },
 }
 </script>

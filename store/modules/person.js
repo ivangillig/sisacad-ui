@@ -16,6 +16,8 @@ const actions = {
             const response = await service.getPerson(dni.replaceAll('.', ''));
             if (response && response.data.success) {
                 commit('SET_PERSON_DATA', response.data);
+            }else{
+                commit('CLEAR_PERSON_DATA');
             }
         } catch (error) {
             console.error('Error al obtener datos de la persona:', error);
@@ -26,6 +28,9 @@ const actions = {
 const mutations = {
     SET_PERSON_DATA(state, data) {
         state.personData = data;
+    },
+    CLEAR_PERSON_DATA(state) {
+        state.personData = {};
     },
 };
 

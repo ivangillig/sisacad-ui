@@ -137,7 +137,7 @@ const routes = [
             {
                 path: '/administracion/curso_lectivo',
                 name: 'crudCursoLectivo',
-                component: () => import('./pages/administracion/CrudCourseByYear.vue'),
+                component: () => import('./pages/cursos/CrudCourseByYear.vue'),
                 meta: { requireLogin: true}
             },
             {
