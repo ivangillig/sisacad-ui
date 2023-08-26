@@ -2,7 +2,7 @@ import adminService from '../../src/service/Secretaria/AdminService';
 import CountryService from '../../src/service/CountryService';
 
 const state = {
-    studentData: {
+    student: {
         id: null,
         confirmation: {},
         nationality: null,
@@ -16,8 +16,8 @@ const state = {
 };
 
 const getters = {
-    getStudentData: (state) => {
-        return state.studentData;
+    getStudent: (state) => {
+        return state.student;
     },
 };
 
@@ -55,10 +55,10 @@ const actions = {
 
 const mutations = {
     setStudentData (state, payload) {
-        state.studentData = { ...state.studentData, ...payload }
+        state.student = { ...state.student, ...payload }
     },
     clearStudent(state) {
-        state.studentData = {};
+        state.student = {};
     },
     // SET_PERSONAL_INFO(state, payload) {
     //     state.studentInfo.personal = payload;
@@ -76,15 +76,15 @@ const mutations = {
         state.countries = countries;
     },
     SET_NATIONALITY(state, code) {
-        state.studentData.nationality = code;
+        state.student.nationality = code;
     },
     SET_GENDER(state, value) {
-        state.studentData.gender = value;
+        state.student.gender = value;
     },
     UPDATE_STUDENT_FIELD(state, { field, value }) {
         // eslint-disable-next-line no-prototype-builtins
-        if (state.studentData.hasOwnProperty(field)) {
-            state.studentData[field] = value;
+        if (state.student.hasOwnProperty(field)) {
+            state.student[field] = value;
         }
     },
 };

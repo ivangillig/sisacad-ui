@@ -176,9 +176,9 @@ export default {
     created() {
         this.AdminService = new AdminService();
 
-        if (this.studentData) {
-            this.student = { ...this.studentData };
-        }
+        // if (this.student) {
+        //     this.student = { ...this.student };
+        // }
 
         // Establecer la fecha mínima como 1 de enero de 1980
         this.minDate = dayjs('1980-01-01').toDate();
@@ -210,7 +210,6 @@ export default {
         return {
             msg: [],
 
-            student: {},
             stateItems: [
                 {name: 'Tierra Del Fuego', value: 1},
                 {name: 'Santa Cruz', value: 2},
@@ -226,16 +225,7 @@ export default {
             ],
             submitted: false,
             validationErrors: {},
-            countries: [],
             searchQuery: ''
-        }
-    },
-    watch: {
-        studentData(newVal) {
-            if (newVal) {
-                this.student = { ...newVal };
-            }
-            console.log(newVal)
         }
     },
     computed: {
@@ -256,7 +246,7 @@ export default {
         genderValue() {
             return this.$store.state.student.studentInfo.gender;
         },
-        ...mapState('student', ['studentData', 'countries']),
+        ...mapState('student', ['student', 'countries']),
         },
     //countryService: null,
     methods: {
