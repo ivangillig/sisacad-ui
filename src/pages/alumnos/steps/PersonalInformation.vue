@@ -174,11 +174,11 @@ import dayjs from 'dayjs';
 
 export default {
     created() {
+        this.AdminService = new AdminService();
+
         if (this.studentData) {
             this.student = { ...this.studentData };
         }
-
-        this.AdminService = new AdminService();
 
         // Establecer la fecha mínima como 1 de enero de 1980
         this.minDate = dayjs('1980-01-01').toDate();
@@ -187,7 +187,6 @@ export default {
         this.maxDate = dayjs().add(1, 'month').startOf('month').toDate();
     },
     mounted() {
-        console.log(this.student)
         this.fetchCountries();
 
         if (this.studentInfo) {

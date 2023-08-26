@@ -189,7 +189,7 @@ export default {
 			//this.student = {...student};
 			//var student1 = JSON.parse(JSON.stringify({...student}))
 
-			this.$store.commit('setStudentData', {...student})
+			this.$store.commit('student/setStudentData', {...student})
 
 			this.$router.replace({ path: '/alumnos/nuevoalumno'});
 

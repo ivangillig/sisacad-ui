@@ -16,8 +16,7 @@ const state = {
 };
 
 const getters = {
-    getStudentData: (state) => state.studentData,
-    mappedStudent: (state) => {
+    getStudentData: (state) => {
         return state.studentData;
     },
 };
