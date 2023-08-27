@@ -100,23 +100,23 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 
 import CodeHighlight from './AppCodeHighlight';
 import BlockViewer from './BlockViewer';
-import axios from './config/axios';
+// import axios from './config/axios';
 
-router.beforeEach(function(to, from, next) {
-    window.scrollTo(0, 0);
+// router.beforeEach(function(to, from, next) {
+//     window.scrollTo(0, 0);
 
-    const token = localStorage.getItem('token')
+//     const token = localStorage.getItem('token')
 
-            if (token) {
-                axios.defaults.headers.common['Authorization'] = "Token " + token;
-                next();
-            } else {
-                axios.defaults.headers.common['Authorization'] = '';
-                next('/login');
-            }
+//             if (token) {
+//                 axios.defaults.headers.common['Authorization'] = "Token " + token;
+//                 next();
+//             } else {
+//                 axios.defaults.headers.common['Authorization'] = '';
+//                 next('/login');
+//             }
 
-    next();
-});
+//     next();
+// });
 
 const app = createApp(AppWrapper);
 

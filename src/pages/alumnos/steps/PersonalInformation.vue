@@ -15,39 +15,44 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <InputText id="middle_name" type="text" v-model.trim="student.middle_name"/>
+                        <InputText id="middle_name" type="text" v-model.trim="student.middle_name" @input="handleInputChange" />
                         <label for="middle_name">Segundo Nombre</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <InputText id="first_lastname" required v-model.trim="student.first_lastname" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
+                        <InputText id="first_lastname" required v-model.trim="student.first_lastname" @input="handleInputChange" type="text" :class="{'p-invalid': validationErrors.first_lastname && submitted}" />
                         <small v-show="validationErrors.first_lastname && submitted" class="p-error">{{msg.first_lastname}}</small>
                         <label for="first_lastname">Primer Apellido</label>
                     </span>
                 </div>
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <InputText id="second_lastname" type="text" v-model.trim="student.second_lastname" />
+                        <InputText id="second_lastname" type="text" v-model.trim="student.second_lastname" @input="handleInputChange" />
                         <label for="second_lastname">Segundo Apellido</label>
                     </span>
                 </div>
 
-
+                <!-- <div class="field col-12 md:col-3">
+                    <span class="label-modified">
+                        <AutoComplete id="nationality" v-model="student.nationality" @select="handleAutoCompleteChange('nationality', $event)" :suggestions="filteredCountries" 
+                        :options="countries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
+                        <label for="state">Nacionalidad</label>
+                    </span>
+                </div> -->
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <AutoComplete id="nationality" v-model="student.nationality" :suggestions="filteredCountries" :options="countries" optionLabel="name" optionValue="code"
-                        placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
-                        <label for="state">Nacionalidad</label>
+                        <Dropdown id="nationality" v-model="student.nationality" :options="countries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" :editable="true" @change="handleDropdownChange('nationality', $event)"></Dropdown>
+                        <label for="nationality">Nacionalidad</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <label for="birthday">Fecha de nacimiento</label>
-                        <Calendar id="birthday" v-model="student.birthday" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <Calendar id="birthday" v-model="student.birthday" @update:modelValue="handleInputChange({ target: { id: 'birthday', value: $event } })" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" :showIcon="true" placeholder="dd-mm-aaaa"/>
                     </span>
                 </div>
@@ -55,37 +60,25 @@
                 <div class="field col-12 md:col-6">
                     <span class="label-modified">
                         <label for="birth_place">Lugar de nacimiento</label>
-                        <InputText id="birth_place" type="text" v-model="student.birth_place" />
+                        <InputText id="birth_place" type="text" v-model="student.birth_place" @input="handleInputChange"/>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <InputMask id="doc_number" required mask="99.999.999" v-model.trim="student.doc_number"
+                        <InputMask id="doc_number" required mask="99.999.999" v-model.trim="student.doc_number" @input="handleInputChange"
                         :class="{'p-invalid': validationErrors.doc_number && submitted}" />
                         <small v-show="validationErrors.doc_number && submitted" class="p-error">{{msg.doc_number}}</small>
                         <label for="doc_number">DNI</label>
                     </span>
                 </div>
 
-                    <div class="field col-12 md:col-3" v-if="(1 > 0)">
-                        <span class="label-modified">
-                            <Dropdown id="gender" v-model="student.gender" :options="genderOptions" optionLabel="label" placeholder="Selecciona un género" class="w-full md:w-14rem" >
-                                <template #value="slotProps">
-                                    <div v-if="slotProps.value && slotProps.value.value">
-                                        {{slotProps.value.label}}
-                                    </div>
-                                    <div v-else-if="slotProps.value && !slotProps.value.value">
-                                        {{slotProps.value}}
-                                    </div>
-                                    <span v-else>
-                                        {{slotProps.placeholder}}
-                                    </span>
-                                </template>
-                            </Dropdown>
-                            <label for="gender">Género</label>
-                        </span>
-                    </div>
+                <div class="field col-12 md:col-3">
+                    <span class="label-modified">
+                        <Dropdown id="gender" v-model="student.gender" :options="genderOptions" @change="handleDropdownChange('gender', $event.value)"  optionLabel="label" placeholder="Selecciona un género" class="w-full md:w-14rem"></Dropdown>
+                        <label for="gender">Género</label>
+                    </span>
+                </div>
 
             </div>
         </div>
@@ -98,42 +91,42 @@
 
             <div class="field col-12 md:col-6">
                 <span class="label-modified">
-                    <InputText id="street" type="text" v-model.trim="student.street"/>
+                    <InputText id="street" type="text" v-model.trim="student.street" @input="handleInputChange" />
                     <label for="street">Calle</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="number" type="text" v-model="student.number" :useGrouping="false"/>
+                    <InputNumber id="number" type="text" min="0" v-model="student.number" @update:modelValue="handleNumberInputChange('number', $event)"/>
                 <label for="number">Número</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="floor" type="text" v-model="student.floor" showButtons/>
+                <InputNumber id="floor" type="text" min="0" v-model="student.floor" @update:modelValue="handleNumberInputChange('number', $event)" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber id="department" type="text" v-model="student.department" showButtons/>
+                    <InputNumber id="department" type="text" min="0" v-model="student.department" @update:modelValue="handleNumberInputChange('number', $event)" showButtons/>
                     <label for="department">Depto</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-4">
                 <span class="label-modified">
-                <InputText id="city" type="text" v-model="student.address_city" />
+                <InputText id="city" type="text" v-model="student.address_city" @input="handleInputChange" />
                 <label for="city">Ciudad</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-3">
                 <span class="label-modified">
-                    <Dropdown id="state" v-model="student.address_state" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model="student.address_state" @change="handleDropdownChange('address_state', $event)" :options="stateItems" optionLabel="name" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -141,20 +134,20 @@
 
             <div class="field col-12 md:col-1">
                 <span class="label-modified">
-                <InputText id="cp" type="text" v-model="student.cp"/>
+                <InputText id="cp" type="text" v-model="student.cp" @input="handleInputChange" />
                 <label for="cp">CP</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="phone" v-model="student.phone" max_length="10" :useGrouping="false" />
+                    <InputText inputId="phone" v-model="student.phone" @input="handleInputChange" max_length="10" :useGrouping="false" />
                     <label for="phone">Teléfono Personal</label>
                 </span>
             </div>
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber inputId="family_phone" v-model="student.family_phone" max_length="10" :useGrouping="false" />
+                    <InputText inputId="family_phone" v-model="student.family_phone" @input="handleInputChange" max_length="10" :useGrouping="false" />
                     <label for="family_phone">Teléfono Familiar</label>
                 </span>
             </div>
@@ -176,9 +169,6 @@ export default {
     created() {
         this.AdminService = new AdminService();
 
-        // if (this.student) {
-        //     this.student = { ...this.student };
-        // }
 
         // Establecer la fecha mínima como 1 de enero de 1980
         this.minDate = dayjs('1980-01-01').toDate();
@@ -189,10 +179,7 @@ export default {
     mounted() {
         this.fetchCountries();
 
-        if (this.studentInfo) {
-            const birthday = this.studentInfo.birthday;
-            this.student = this.studentInfo;
-            this.student.birthday = birthday ? dayjs(birthday).format('DD-MM-YYYY') : null;
+        if (this.student && this.student.id) {
 
             const selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
             if (selectedState) {
@@ -252,16 +239,35 @@ export default {
     methods: {
         ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
         handleInputChange(event) {
-            const fieldName = event.target.name;
-            const value = event.target.value;
+            const fieldName = event.target.id;
+            let value;
+
+            if (fieldName === 'birthday') {
+                value = dayjs(event.target.value).format('YYYY-DD-MM')
+            } else {
+                value = event.target.value;
+            }
+
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
+        },
+        handleNumberInputChange(fieldName, value) {
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
+        },
+        handleAutoCompleteChange(fieldName, event) {
+            console.log('asdasd')
+            const selectedCountry = event.value; // o event, dependiendo de la estructura del evento
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: selectedCountry });
+        },
+        handleDropdownChange(fieldName, event) {
+            const value = event.value; // Puede que necesites ajustar esto según la estructura del evento
             this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
         },
         onNationalitySelected(selectedNationality) {
             this.$store.commit('student/SET_NATIONALITY', selectedNationality.code);
         },
-        onGenderSelected(selectedGender) {
-            this.$store.commit('student/SET_GENDER', selectedGender.value);
-        },
+        // onGenderSelected(selectedGender) {
+        //     this.$store.commit('student/SET_GENDER', selectedGender.value);
+        // },
         nextPage() {
             this.submitted = true;
 
