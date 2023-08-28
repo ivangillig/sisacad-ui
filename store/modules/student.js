@@ -6,12 +6,12 @@ const state = {
         id: null,
         confirmation: {},
         nationality: null,
+        trips_auth: false,
+        medical_auth: false,
+        public_auth: false,
+        leave_auth: false,
+
     },
-    // studentInfo: {
-    //     personal: {},
-    //     institutional: {},
-    //     medAuth: {},
-    // },
     countries: [],
 };
 
@@ -60,15 +60,6 @@ const mutations = {
     clearStudent(state) {
         state.student = {};
     },
-    // SET_PERSONAL_INFO(state, payload) {
-    //     state.studentInfo.personal = payload;
-    // },
-    // SET_INSTITUTIONAL_INFO(state, payload) {
-    //     state.studentInfo.institutional = payload;
-    // },
-    // SET_MEDAUTH_INFO(state, payload) {
-    //     state.studentInfo.medAuth = payload;
-    // },
     SET_CONFIRMATION_INFO(state, payload) {
         state.studentInfo.confirmation = payload;
     },

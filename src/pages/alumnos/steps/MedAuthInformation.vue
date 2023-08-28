@@ -3,7 +3,6 @@
         <Fieldset legend="Autorizaciones" :toggleable="true" >
 
             <div class="p-fluid grid mt-4">
-                
                 <div class="field col-12 md:col-1">
                 </div>
                 <div class="field col-12 md:col-3">
@@ -46,7 +45,6 @@
                 </div>
                 <div class="field col-12 md:col-1">
                 </div>
-                
             </div>
 
 
@@ -64,7 +62,7 @@
                         <label for="number">Alergias (separar con , )</label>
                     </span>
                 </div>
-                
+
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
                         <Chips v-model="medications" separator="," />
@@ -79,7 +77,6 @@
                     </span>
                 </div>
 
-                
             </div>
         </Fieldset>
     </div>
@@ -92,10 +89,13 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
     mounted() {
-        if (this.$store.state.student) {
-            this.student = this.$store.state.student
+        console.log(this.student)
+        if (this.student && this.student.id) {
 
             this.student.trips_auth = (this.student.trips_auth == true) ? 'True' : 'False';
             this.student.medical_auth = (this.student.medical_auth == true) ? 'True' : 'False';
@@ -104,49 +104,39 @@ export default {
         }
     },
     data () {
-            return {
-                student: {
-                    trips_auth: false,
-                    medical_auth: false,
-                    leave_auth: false,
-                    public_auth: false,
-                },
-                medical_treatment: null,
-                
-                medications: '',
-                allergies: '',
-                observations: '',
+        return {
+            submitted: false,
+            validationErrors: {},
 
-                submitted: false,
-                validationErrors: {},
-
-                options: [
-                    { name: 'Si', value: 'True' },
-                    { name: 'No', value: 'False'},
-                    ],
-                }
-            },
-            methods: {
-                nextPage() {
-                    this.submitted = true;
-                    
-                        this.$emit('next-page', {
-                            formData: {
-                                trips_auth: this.trips_auth, 
-                                medical_auth: this.medical_auth, 
-                                leave_auth: this.leave_auth,
-                                public_auth: this.public_auth,
-                                medications: this.medications ? this.medications.join(): '',
-                                allergies: this.allergies ? this.allergies.join(): '',
-                                observations: this.observations,
-                            }, 
-                            pageIndex: 2
-                        });
-                },
-                prevPage() {
-                    this.$emit('prev-page', {pageIndex: 2});
-                }
-            }
+            options: [
+                { name: 'Si', value: 'True' },
+                { name: 'No', value: 'False'},
+                ],
+        }
+    },
+    methods: {
+        nextPage() {
+            this.submitted = true;
+                this.$emit('next-page', {
+                    formData: {
+                        trips_auth: this.trips_auth, 
+                        medical_auth: this.medical_auth, 
+                        leave_auth: this.leave_auth,
+                        public_auth: this.public_auth,
+                        medications: this.medications ? this.medications.join(): '',
+                        allergies: this.allergies ? this.allergies.join(): '',
+                        observations: this.observations,
+                    }, 
+                    pageIndex: 2
+                });
+        },
+        prevPage() {
+            this.$emit('prev-page', {pageIndex: 2});
+        }
+    },
+    computed: {
+        ...mapState('student', ['student', 'countries']),
+    },
 }
 </script>
 

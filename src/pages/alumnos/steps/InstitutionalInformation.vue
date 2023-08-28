@@ -12,7 +12,7 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-user"></i>
                         </span>
-                        
+
                         <InputText placeholder="Email institucional" id="email" type="email" v-model="student.email" :disabled="student.id !== null && student.id !== undefined" :class="{'p-invalid': validationErrors.email && submitted}"/>
                     </div>
                     <small v-show="validationErrors.email && submitted" class="p-error">{{msg.email}}</small>
@@ -27,7 +27,7 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-building"></i>
                         </span>
-                        <InputText id="school_cert_destinty" v-model="student.school_cert_destinty" placeholder="Por ej: Gobierno de la provicia de Tierra Del Fuego" />
+                        <InputText id="school_cert_destinty" v-model="student.school_cert_destinty" @input="handleInputChange" placeholder="Por ej: Gobierno de la provicia de Tierra Del Fuego" />
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-calendar"></i>
                         </span>
-                        <Calendar id="admission_date" v-model="student.admission_date" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
+                        <Calendar id="admission_date" v-model="student.admission_date" @update:modelValue="handleInputChange({ target: { id: 'admission_date', value: $event } })" :minDate="minDate" :maxDate="maxDate" dateFormat="dd-mm-yy"
                         :showButtonBar="true" placeholder="dd-mm-aaaa"/>
                     </div>
                 </div>
@@ -48,10 +48,8 @@
             </div>
         </div>
 </div>
-            
     <div class="flex align-items-center py-5 px-3">
         <div class="p-fluid">
-            
         </div>
         </div>
 
@@ -65,6 +63,7 @@
 
 import AdminService from '../../../service/Secretaria/AdminService';
 import { mapState } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
     mounted() {
@@ -86,6 +85,18 @@ export default {
         ...mapState('student', ['student']),
     },
     methods: {
+        handleInputChange(event) {
+            const fieldName = event.target.id;
+            let value;
+
+            if (fieldName === 'admission_date') {
+                value = dayjs(event.target.value).format('YYYY-DD-MM')
+            } else {
+                value = event.target.value;
+            }
+
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
+        },
         nextPage() {
             this.submitted = true;
 

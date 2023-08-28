@@ -66,7 +66,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <InputMask id="doc_number" required mask="99.999.999" v-model.trim="student.doc_number" @input="handleInputChange"
+                        <InputMask id="doc_number" required mask="99.999.999" v-model.trim="student.doc_number" :disabled="student.id !== null && student.id !== undefined" @input="handleInputChange"
                         :class="{'p-invalid': validationErrors.doc_number && submitted}" />
                         <small v-show="validationErrors.doc_number && submitted" class="p-error">{{msg.doc_number}}</small>
                         <label for="doc_number">DNI</label>
@@ -75,7 +75,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <Dropdown id="gender" v-model="student.gender" :options="genderOptions" @change="handleDropdownChange('gender', $event.value)"  optionLabel="label" placeholder="Selecciona un género" class="w-full md:w-14rem"></Dropdown>
+                        <Dropdown id="gender" v-model="student.gender" :options="genderOptions" @change="handleDropdownChange('gender', $event)" optionLabel="label" optionValue="value" placeholder="Selecciona un género" class="w-full md:w-14rem"></Dropdown>
                         <label for="gender">Género</label>
                     </span>
                 </div>
@@ -126,7 +126,7 @@
 
             <div class="field col-12 md:col-3">
                 <span class="label-modified">
-                    <Dropdown id="state" v-model="student.address_state" @change="handleDropdownChange('address_state', $event)" :options="stateItems" optionLabel="name" optionValue="value"
+                    <Dropdown id="state" v-model="student.address_state" @change="handleDropdownChange('address_state', $event)" :options="stateItems" optionLabel="label" optionValue="value"
                     placeholder="Selecciona una"></Dropdown>
                     <label for="state">Provincia</label>
                 </span>
@@ -166,30 +166,27 @@ import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
 
 export default {
+    beforeUnmount() {
+        this.$store.commit('clearStudent');
+    },
     created() {
         this.AdminService = new AdminService();
 
-
-        // Establecer la fecha mínima como 1 de enero de 1980
         this.minDate = dayjs('1980-01-01').toDate();
-
-        // Establecer la fecha máxima como el primer día del próximo mes
         this.maxDate = dayjs().add(1, 'month').startOf('month').toDate();
     },
     mounted() {
         this.fetchCountries();
 
         if (this.student && this.student.id) {
-
             const selectedState = this.stateItems.find(state => state.value == parseInt(this.student.address_state));
             if (selectedState) {
                 this.student.address_state = selectedState.value;
             }
 
-            // on editing student, we change code country to name country for dropdown
-            if (this.studentInfo && this.studentInfo.id) {
-                const country = this.countries.find(country => country.code === this.studentInfo.nationality);
-                this.student.nationality = country;
+            const selectedGender = this.genderOptions.find(option => option.value == parseInt(this.student.gender));
+            if (selectedGender) {
+                this.student.gender = selectedGender.value;
             }
         }
     },
@@ -198,17 +195,17 @@ export default {
             msg: [],
 
             stateItems: [
-                {name: 'Tierra Del Fuego', value: 1},
-                {name: 'Santa Cruz', value: 2},
-                {name: 'Chubut', value: 3},
-                {name: 'Buenos Aires', value: 4},
+                {label: 'Tierra Del Fuego', value: 1},
+                {label: 'Santa Cruz', value: 2},
+                {label: 'Chubut', value: 3},
+                {label: 'Buenos Aires', value: 4},
             ],
 
             genderOptions: [
-                {label: 'Sin especificar', value: 'Sin especificar'},
-                {label: 'Sin género', value: 'Sin género'},
-                {label: 'Masculino', value: 'Masculino'},
-                {label: 'Femenino', value: 'Femenino'},
+                {label: 'Sin especificar', value: '1'},
+                {label: 'Sin género', value: '2'},
+                {label: 'Masculino', value: '3'},
+                {label: 'Femenino', value: '4'},
             ],
             submitted: false,
             validationErrors: {},
@@ -227,15 +224,8 @@ export default {
                 );
             }
         },
-        nationalityCode() {
-            return this.$store.state.student.studentInfo.nationality;
-        },
-        genderValue() {
-            return this.$store.state.student.studentInfo.gender;
-        },
         ...mapState('student', ['student', 'countries']),
         },
-    //countryService: null,
     methods: {
         ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo']),
         handleInputChange(event) {
@@ -254,47 +244,20 @@ export default {
             this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
         },
         handleAutoCompleteChange(fieldName, event) {
-            console.log('asdasd')
-            const selectedCountry = event.value; // o event, dependiendo de la estructura del evento
+            const selectedCountry = event.value;
             this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: selectedCountry });
         },
         handleDropdownChange(fieldName, event) {
-            const value = event.value; // Puede que necesites ajustar esto según la estructura del evento
+            const value = event.value;
             this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
         },
         onNationalitySelected(selectedNationality) {
             this.$store.commit('student/SET_NATIONALITY', selectedNationality.code);
         },
-        // onGenderSelected(selectedGender) {
-        //     this.$store.commit('student/SET_GENDER', selectedGender.value);
-        // },
         nextPage() {
             this.submitted = true;
 
             if (this.validateForm()) {
-                const studentData = {
-                    first_name: this.student.first_name,
-                    middle_name: this.student.middle_name,
-                    first_lastname: this.student.first_lastname,
-                    second_lastname: this.student.second_lastname,
-                    doc_number: this.student.doc_number,
-                    birthday: this.student.birthday,
-                    birth_place: this.student.birth_place,
-                    nationality: this.student.nationality ? this.student.nationality.code : null,
-                    gender: this.student.gender ? this.student.gender.value : null,
-                    phone: this.student.phone,
-                    family_phone: this.student.family_phone,
-                    street: this.student.street,
-                    number: this.student.number,
-                    floor: this.student.floor,
-                    department: this.student.department,
-                    address_city: this.student.address_city,
-                    address_state: this.student.address_state,
-                    cp: this.student.cp,
-                };
-
-                this.$store.commit('student/setStudentData', studentData);
-
                 if (this.student && !this.student.id) {
                     this.$store.dispatch('person/fetchPersonByDNI', this.student.doc_number).then(() => {
                         const personData = this.$store.getters['person/getPersonData'];
