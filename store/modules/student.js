@@ -78,6 +78,19 @@ const mutations = {
             state.student[field] = value;
         }
     },
+    ADD_ALLERGY(state, allergy) {
+        let allergiesArray = state.student.allergies ? state.student.allergies.split(",") : [];
+        allergiesArray.push(allergy);
+        state.student.allergies = allergiesArray.join(",");
+    },
+    REMOVE_ALLERGY(state, allergy) {
+        let allergiesArray = state.student.allergies ? state.student.allergies.split(",") : [];
+        const index = allergiesArray.indexOf(allergy);
+        if (index !== -1) {
+            allergiesArray.splice(index, 1);
+        }
+        state.student.allergies = allergiesArray.join(",");
+    },
 };
 
 export default {

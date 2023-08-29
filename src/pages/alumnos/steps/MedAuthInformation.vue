@@ -9,7 +9,7 @@
                     <h5>Tiene autorización para salir de paseos?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="student.trips_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton id="trips_auth" v-model="student.trips_auth" @change="value => handleInputChange('trips_auth', value.value)" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -18,7 +18,7 @@
                     <h5>Tiene autorización para recibir asistencia médica?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="student.medical_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton id="medical_auth" v-model="student.medical_auth" @change="value => handleInputChange('medical_auth', value.value)" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -31,7 +31,7 @@
                     <h5>Tiene autorización para salir solo del colegio?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="student.leave_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton id="leave_auth" v-model="student.leave_auth" @change="value => handleInputChange('leave_auth', value.value)" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -40,7 +40,7 @@
                     <h5>Tiene autorización para exposición pública?</h5>
                 </div>
                 <div class="col-12 md:col-1">
-                    <SelectButton v-model="student.public_auth" :options="options" optionLabel="name" optionValue="value"
+                    <SelectButton id="public_auth" v-model="student.public_auth" @change="value => handleInputChange('public_auth', value.value)" :options="options" optionLabel="name" optionValue="value"
                     aria-labelledby="single" />
                 </div>
                 <div class="field col-12 md:col-1">
@@ -58,21 +58,21 @@
 
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
-                        <Chips v-model="allergies" separator="," />
+                        <Chips v-model="student.allergies" @add="handleAllergyAdded" @remove="handleAllergyRemoved" separator="," />
                         <label for="number">Alergias (separar con , )</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
-                        <Chips v-model="medications" separator="," />
+                        <Chips v-model="student.medications" @update:modelValue="value => handleInputChange('allergies', value)" separator="," />
                         <label for="number">Medicamentos que consume (separar con , )</label>
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-12">
                     <span class="p-float-label">
-                        <Textarea v-model="observations" :autoResize="true" rows="5" cols="30" />
+                        <Textarea v-model="observations" @update:modelValue="value => handleInputChange('observations', value)" :autoResize="true" rows="5" cols="30" />
                         <label for="number">Observaciones (horarios para tomar medicamentos, consideraciones a tener en cuenta)</label>
                     </span>
                 </div>
@@ -94,13 +94,15 @@ import { mapState } from 'vuex';
 
 export default {
     mounted() {
-        console.log(this.student)
         if (this.student && this.student.id) {
 
             this.student.trips_auth = (this.student.trips_auth == true) ? 'True' : 'False';
             this.student.medical_auth = (this.student.medical_auth == true) ? 'True' : 'False';
             this.student.public_auth = (this.student.public_auth == true) ? 'True' : 'False';
             this.student.leave_auth = (this.student.leave_auth == true) ? 'True' : 'False';
+
+            this.student.allergies = this.student.allergies ? this.student.allergies.split(",") : [];
+            this.student.medications= this.student.medications ? this.student.medications.split(",") : [];
         }
     },
     data () {
@@ -119,19 +121,28 @@ export default {
             this.submitted = true;
                 this.$emit('next-page', {
                     formData: {
-                        trips_auth: this.trips_auth, 
-                        medical_auth: this.medical_auth, 
+                        trips_auth: this.trips_auth,
+                        medical_auth: this.medical_auth,
                         leave_auth: this.leave_auth,
                         public_auth: this.public_auth,
                         medications: this.medications ? this.medications.join(): '',
                         allergies: this.allergies ? this.allergies.join(): '',
                         observations: this.observations,
-                    }, 
+                    },
                     pageIndex: 2
                 });
         },
         prevPage() {
             this.$emit('prev-page', {pageIndex: 2});
+        },
+        handleAllergyAdded(event) {
+            this.$store.commit('student/ADD_ALLERGY', event.value);
+        },
+        handleAllergyRemoved(event) {
+            this.$store.commit('student/REMOVE_ALLERGY', event.value);
+        },
+        handleInputChange(fieldName, value) {
+            this.$store.commit('student/UPDATE_STUDENT_FIELD', { field: fieldName, value: value });
         }
     },
     computed: {
