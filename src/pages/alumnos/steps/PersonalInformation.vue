@@ -1,5 +1,4 @@
 <template>
-
     <div class="col-12 mt-4">
         <div class="card">
             <h5>Información Personal</h5>
@@ -90,21 +89,21 @@
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber id="number" type="text" min="0" v-model="student.number" @update:modelValue="handleNumberInputChange('number', $event)"/>
+                    <InputNumber id="number" :min="0" v-model="student.number" @update:modelValue="handleNumberInputChange('number', $event)"/>
                 <label for="number">Número</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="floor" type="text" min="0" v-model="student.floor" @update:modelValue="handleNumberInputChange('floor', $event)" showButtons/>
+                <InputNumber id="floor" :min="0" v-model="student.floor" @update:modelValue="handleNumberInputChange('floor', $event)" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                    <InputNumber id="department" type="text" min="0" v-model="student.department" @update:modelValue="handleNumberInputChange('number', $event)" showButtons/>
+                    <InputNumber id="department" :min="0" v-model="student.department" @update:modelValue="handleNumberInputChange('number', $event)" showButtons/>
                     <label for="department">Depto</label>
                 </span>
             </div>
@@ -159,9 +158,6 @@ import dayjs from 'dayjs';
 import { GENDER_OPTIONS, STATE_ITEMS } from '../../../service/Constants/Utils';
 
 export default {
-    beforeUnmount() {
-        this.$store.commit('clearStudent');
-    },
     created() {
         this.AdminService = new AdminService();
 

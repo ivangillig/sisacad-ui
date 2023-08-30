@@ -102,27 +102,28 @@ const routes = [
             {
                 path: '/alumnos/nuevoalumno',
                 name: 'nuevoalumno',
+                redirect: '/alumnos/nuevoalumno/informacionpersonal',
                 component: () => import('./pages/alumnos/AddStudent.vue'),
                 meta: { requireLogin: true},
                 props: true,
                 children: [
                     {
-                        path: '',
+                        path: 'informacionpersonal',
                         component: () => import('./pages/alumnos/steps/PersonalInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/informacioninstitucional',
+                        path: 'informacioninstitucional',
                         component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/informacionextra',
+                        path: 'informacionextra',
                         component: () => import('./pages/alumnos/steps/MedAuthInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/confirmacion',
+                        path: 'confirmacion',
                         component: () => import('./pages/alumnos/steps/Confirmation.vue'),
                         meta: { requireLogin: true}
                     },

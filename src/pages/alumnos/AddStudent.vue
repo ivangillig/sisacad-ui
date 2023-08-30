@@ -41,9 +41,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
+	beforeRouteLeave(to, from, next) {
+		if (!to.path.startsWith('/alumnos/nuevoalumno')) {
+			this.$store.commit('student/clearStudent');
+		}
+		next();
+	},
 	data() {
 		return {
 			action: '',
@@ -51,15 +57,15 @@ export default {
 			items: [
 				{
 					label: 'Información Personal',
-					to: '/alumnos/nuevoalumno',
+					to: '/alumnos/nuevoalumno/informacionpersonal',
 				},
 				{
 					label: 'Información Institucional',
-					to: '/steps/informacioninstitucional'
+					to: '/alumnos/nuevoalumno/informacioninstitucional'
 				},
 				{
 					label: 'Información Médica y Autorizaciones',
-					to: '/steps/informacionextra'
+					to: '/alumnos/nuevoalumno/informacionextra'
 				}
 			]
 		};
@@ -67,7 +73,7 @@ export default {
     mounted() {
 		this.items.push({
 			label: this.confirmationLabel,
-			to: '/steps/confirmacion'
+			to: '/alumnos/nuevoalumno/confirmacion'
 		});
 	},
     computed: {
@@ -77,15 +83,8 @@ export default {
         }
     },
 	methods: {
+		...mapActions('student', ['clearStudent']),
 		nextPage(event) {
-			switch (this.$route.path) {
-				case '/alumnos/nuevoalumno':
-					break;
-				case '/steps/informacioninstitucional':
-					break;
-				case '/steps/informacionextra':
-					break;
-			}
 			this.$router.push(this.items[event.pageIndex + 1].to);
 		},
 		prevPage(event) {
@@ -99,7 +98,7 @@ export default {
             this.showMessage = !this.showMessage;
 
             if(!this.showMessage) {
-                this.$router.push({ name: "crudalumnos" });
+				this.$router.push({ name: "crudalumnos" });
             }
         }
 	}
