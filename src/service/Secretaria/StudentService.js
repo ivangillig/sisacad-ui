@@ -5,6 +5,11 @@ export const newStudent = async (student) => {
     return response;
 }
 
+export const editStudent = async (student) => {
+    const response = await clienteAxios.put(`/api/secretaria/alumno/${student.id}/`, student);
+    return response;
+}
+
 export const getStudents = async () => {
     const response = await clienteAxios.get('/api/secretaria/alumno/');
     return response.data;

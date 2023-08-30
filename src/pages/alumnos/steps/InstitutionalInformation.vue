@@ -78,7 +78,7 @@ export default {
             return {
                 submitted: false,
                 validationErrors: {},
-                msg: [],
+                msg: []
             }
     },
     computed:{

@@ -61,7 +61,7 @@
 					<Column field="gender" header="Género" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">gender</span>
-							{{slotProps.data.gender}}
+							{{ getGenderLabel(slotProps.data.gender) }}
 						</template>
 					</Column>
 
@@ -71,14 +71,6 @@
 							{{slotProps.data.birthday}}
 						</template>
 					</Column>
-
-					<!-- <Column field="created_by" header="Creado por" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-						<template #body="slotProps">
-							<span class="p-column-title">Creado por</span>
-							{{slotProps.data.created_by.nombre1}}
-							{{slotProps.data.created_by.apellido1}}
-						</template>
-					</Column> -->
 
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
@@ -112,7 +104,6 @@
 							</template>
 						</Dropdown>
 					</div>
-					
 				</Dialog>
 
 				<Dialog v-model:visible="deleteStudentDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
@@ -145,6 +136,7 @@
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import studentsApi from '../../service/Secretaria/AdminService';
+import { GENDER_OPTIONS } from '../../service/Constants/Utils';
 
 export default {
 	data() {
@@ -160,7 +152,8 @@ export default {
 			statuses: [
 				{label: 'Activo', value: 'Activo'},
 				{label: 'Inactivo', value: 'Inactivo'},
-			]
+			],
+			genderOptions: GENDER_OPTIONS,
 		}
 	},
 	studentsApi: null,
@@ -177,6 +170,10 @@ export default {
 		this.studentsApi.getStudents().then(data => this.students = data);
 	},
 	methods: {
+		getGenderLabel(genderValue) {
+			let gender = this.genderOptions.find(g => g.value === genderValue.toString());
+			return gender ? gender.label : 'Desconocido';
+		},
 		openNew() {
 			this.$store.commit('clearStudent');
 			this.$router.replace({ path: "/alumnos/nuevoalumno" });
@@ -186,14 +183,9 @@ export default {
 			this.submitted = false;
 		},
 		editstudent(student) {
-			//this.student = {...student};
-			//var student1 = JSON.parse(JSON.stringify({...student}))
-
 			this.$store.commit('student/setStudentData', {...student})
 
 			this.$router.replace({ path: '/alumnos/nuevoalumno'});
-
-			//this.studentDialog = true;
 		},
 		confirmDeleteStudent(student) {
 			this.student = student;

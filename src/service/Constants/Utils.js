@@ -1,0 +1,32 @@
+export const GENDER_OPTIONS = [
+    {label: 'Sin especificar', value: '1'},
+    {label: 'Sin género', value: '2'},
+    {label: 'Masculino', value: '3'},
+    {label: 'Femenino', value: '4'},
+];
+
+export const STATE_ITEMS = [
+    {label: 'Buenos Aires', value: 1},
+    {label: 'Catamarca', value: 2},
+    {label: 'Chaco', value: 3},
+    {label: 'Chubut', value: 4},
+    {label: 'Córdoba', value: 5},
+    {label: 'Corrientes', value: 6},
+    {label: 'Entre Ríos', value: 7},
+    {label: 'Formosa', value: 8},
+    {label: 'Jujuy', value: 9},
+    {label: 'La Pampa', value: 10},
+    {label: 'La Rioja', value: 11},
+    {label: 'Mendoza', value: 12},
+    {label: 'Misiones', value: 13},
+    {label: 'Neuquén', value: 14},
+    {label: 'Río Negro', value: 15},
+    {label: 'Salta', value: 16},
+    {label: 'San Juan', value: 17},
+    {label: 'San Luis', value: 18},
+    {label: 'Santa Cruz', value: 19},
+    {label: 'Santa Fe', value: 20},
+    {label: 'Santiago del Estero', value: 21},
+    {label: 'Tierra Del Fuego', value: 22},
+    {label: 'Tucumán', value: 23},
+];

@@ -34,14 +34,6 @@
                     </span>
                 </div>
 
-                <!-- <div class="field col-12 md:col-3">
-                    <span class="label-modified">
-                        <AutoComplete id="nationality" v-model="student.nationality" @select="handleAutoCompleteChange('nationality', $event)" :suggestions="filteredCountries" 
-                        :options="countries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" @complete="searchCountry" :dropdown="true"></AutoComplete>
-                        <label for="state">Nacionalidad</label>
-                    </span>
-                </div> -->
-
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
                         <Dropdown id="nationality" v-model="student.nationality" :options="countries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" :editable="true" @change="handleDropdownChange('nationality', $event)"></Dropdown>
@@ -105,7 +97,7 @@
 
             <div class="field col-12 md:col-2">
                 <span class="label-modified">
-                <InputNumber id="floor" type="text" min="0" v-model="student.floor" @update:modelValue="handleNumberInputChange('number', $event)" showButtons/>
+                <InputNumber id="floor" type="text" min="0" v-model="student.floor" @update:modelValue="handleNumberInputChange('floor', $event)" showButtons/>
                 <label for="floor">Piso</label>
                 </span>
             </div>
@@ -164,6 +156,7 @@
 import AdminService from '../../../service/Secretaria/AdminService';
 import { mapState, mapActions } from 'vuex';
 import dayjs from 'dayjs';
+import { GENDER_OPTIONS, STATE_ITEMS } from '../../../service/Constants/Utils';
 
 export default {
     beforeUnmount() {
@@ -193,20 +186,9 @@ export default {
     data() {
         return {
             msg: [],
+            stateItems: STATE_ITEMS,
+            genderOptions: GENDER_OPTIONS,
 
-            stateItems: [
-                {label: 'Tierra Del Fuego', value: 1},
-                {label: 'Santa Cruz', value: 2},
-                {label: 'Chubut', value: 3},
-                {label: 'Buenos Aires', value: 4},
-            ],
-
-            genderOptions: [
-                {label: 'Sin especificar', value: '1'},
-                {label: 'Sin género', value: '2'},
-                {label: 'Masculino', value: '3'},
-                {label: 'Femenino', value: '4'},
-            ],
             submitted: false,
             validationErrors: {},
             searchQuery: ''
