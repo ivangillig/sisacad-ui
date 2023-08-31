@@ -162,7 +162,7 @@ export default {
 		this.initFilters();
 	},
 	mounted() {
-
+		this.$store.commit('student/clearStudent')
 		if(!this.$store.state.auth.isAuthenticated) {
 			this.$router.replace({ name: "Login" });
 		}
