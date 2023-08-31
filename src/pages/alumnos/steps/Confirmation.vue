@@ -208,7 +208,6 @@ export default {
             } else {
                 this.AdminService.editStudent(this.student).then(response => {
                     if (response.status === 200) {
-
                         this.$emit('complete', 'editStudent');
                     }}).catch(error => {
                         if (error.response) {
@@ -222,8 +221,6 @@ export default {
                         }
                     })
             }
-
-
         },
     },
 }

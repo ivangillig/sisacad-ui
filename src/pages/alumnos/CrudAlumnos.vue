@@ -74,7 +74,7 @@
 
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editstudent(slotProps.data)" />
+							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editStudent(slotProps.data)" />
 							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteStudent(slotProps.data)" />
 						</template>
 					</Column>
@@ -175,17 +175,16 @@ export default {
 			return gender ? gender.label : 'Desconocido';
 		},
 		openNew() {
-			this.$store.commit('clearStudent');
-			this.$router.replace({ path: "/alumnos/nuevoalumno" });
+			this.$router.replace({ path: "/alumnos/formulario" });
 		},
 		hideDialog() {
 			this.studentDialog = false;
 			this.submitted = false;
 		},
-		editstudent(student) {
+		editStudent(student) {
 			this.$store.commit('student/setStudentData', {...student})
 
-			this.$router.replace({ path: '/alumnos/nuevoalumno'});
+			this.$router.replace({ path: '/alumnos/formulario'});
 		},
 		confirmDeleteStudent(student) {
 			this.student = student;

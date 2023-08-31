@@ -9,7 +9,7 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'dashboard',
+                name: 'home',
                 component: () => import('./pages/Home.vue'),
                 meta: { requireLogin: true}
             },
@@ -100,29 +100,30 @@ const routes = [
                 meta: { requireLogin: true}
             },
             {
-                path: '/alumnos/nuevoalumno',
+                path: '/alumnos/formulario',
                 name: 'nuevoalumno',
+                redirect: '/alumnos/formulario/informacionpersonal',
                 component: () => import('./pages/alumnos/AddStudent.vue'),
                 meta: { requireLogin: true},
                 props: true,
                 children: [
                     {
-                        path: '',
+                        path: 'informacionpersonal',
                         component: () => import('./pages/alumnos/steps/PersonalInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/informacioninstitucional',
+                        path: 'informacioninstitucional',
                         component: () => import('./pages/alumnos/steps/InstitutionalInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/informacionextra',
+                        path: 'informacionextra',
                         component: () => import('./pages/alumnos/steps/MedAuthInformation.vue'),
                         meta: { requireLogin: true}
                     },
                     {
-                        path: '/steps/confirmacion',
+                        path: 'confirmacion',
                         component: () => import('./pages/alumnos/steps/Confirmation.vue'),
                         meta: { requireLogin: true}
                     },
