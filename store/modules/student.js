@@ -11,6 +11,7 @@ const state = {
         public_auth: false,
         leave_auth: false,
     },
+    students: {},
     countries: [],
 };
 
@@ -28,6 +29,19 @@ const actions = {
             commit('SET_COUNTRIES', response);
         } catch (error) {
             console.error('Error al obtener los países:', error);
+        }
+    },
+    async getStudents({ commit }) {
+        let service = new adminService();
+        try{
+            const response = await service.getStudents();
+            let students = response.map(student => ({
+                id: student.id,
+                name: `${student.first_name} ${student.first_lastname}`,
+            }));
+            commit('setStudents', students);
+        } catch (error) {
+            console.error('Error al obtener los pagos del estudiante:', error);
         }
     },
     async checkStudentByDNI(dni) {
@@ -55,6 +69,9 @@ const actions = {
 const mutations = {
     setStudentData (state, payload) {
         state.student = { ...state.student, ...payload }
+    },
+    setStudents (state, students) {
+        state.students = students;
     },
     clearStudent(state) {
         state.student = {};

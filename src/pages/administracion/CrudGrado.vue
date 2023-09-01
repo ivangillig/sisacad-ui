@@ -252,8 +252,6 @@ export default {
 
 				}
 				else {
-					//this.grade.state = this.grade.state ? this.grade.state.value : 'Activo';
-					//this.grades.push(this.grade);
 					this.SecretaryService.newGrade(this.grade).then(data => {
 						if(data.status === 201){
 							this.SecretaryService.getGrades().then(response => {
@@ -272,7 +270,7 @@ export default {
 		editGrade(grade) {
 			this.grade = {...grade};
 
-			if (grade.level) 
+			if (grade.level)
 				{const level = this.levels.find(level => level.name === grade.level);
 				this.grade.level = level.id
 
@@ -292,7 +290,6 @@ export default {
 				const speciality = this.specialities.find(speciality => speciality.name === grade.speciality);
 				this.grade.speciality = speciality.id
 			}
-			
 			this.gradeDialog = true;
 		},
 		confirmDeleteGrade(grade) {
@@ -300,17 +297,15 @@ export default {
 			this.deleteGradeDialog = true;
 		},
 		deleteGrade() {
-
 			this.SecretaryService.deleteGrade(this.grade.id).then(data => {
 				if(data.status === 204){
 				this.SecretaryService.getGrades().then(response => this.grades = response.data);
 				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Grado eliminado', life: 5000});
 				}
 			});
-			
+
 			this.deleteGradeDialog = false;
 			this.grade = {};
-
 		},
 		findIndexById(id) {
 			let index = -1;
@@ -354,7 +349,7 @@ export default {
         },
 		showDivision(levelId) {
 			const selectedLevel = this.levels.find(level => level.id === levelId);
-			
+
 			if (selectedLevel.name == 'Secundaria'){
 				this.showSpecialitiesDropdown = true;
 			} else {

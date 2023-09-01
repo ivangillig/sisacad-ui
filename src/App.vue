@@ -45,7 +45,7 @@ export default {
 						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
 						{label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones'},
 						{label: 'Modalidades', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/modalidades'},
-                        {label: 'Años', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/grados'},
+                        {label: 'Años/Grados', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/grados'},
                             ]
                         },
                         {
@@ -73,7 +73,7 @@ export default {
 					]
                 },
                 {
-                    label: 'Grados',
+                    label: 'Cursos',
                     items: [
                         {
                             label: 'Cursos lectivos', icon: 'pi pi-fw pi-user-edit',

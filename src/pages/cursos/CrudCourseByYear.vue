@@ -87,7 +87,7 @@
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import AdminService from '../../service/Secretaria/AdminService';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	data() {
@@ -97,7 +97,6 @@ export default {
 			courseYear: null,
 			selectedGrade: null,
 			courseShift: null,
-			grade: [],
 			filters: {},
 			submitted: false,
 			shift_list: [
@@ -113,10 +112,18 @@ export default {
 		this.initFilters();
 	},
 	mounted() {
-		this.$store.dispatch('getCourses');
-		this.$store.dispatch('getGrades');
+		this.getCourses();
+		this.getGrades();
 	},
+    computed: {
+        ...mapState('grade', ['grades']),
+        ...mapState('course', ['courses']),
+    },
 	methods: {
+        ...mapActions({
+			getCourses: 'course/getCourses',
+			getGrades: 'grade/getGrades'
+		}),
 		openNew() {
 			this.submitted = false;
 			this.levelDialog = true;
@@ -135,13 +142,12 @@ export default {
 						shift: this.courseShift
 				};
 
-
             try {
                 const response = await this.AdminService.newCourse(courseData);
                 if(response.status === 201){
                     this.$toast.add({severity:'success', summary: 'Exito', detail: response.data.message, life: 5000});
+                    this.getCourses();
 					this.levelDialog = false;
-                    this.$store.dispatch('getCourses');
 				}
                 this.selectedStudent = null;
             } catch (error) {
@@ -159,12 +165,11 @@ export default {
 			this.AdminService.deleteCourse(this.course.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getLevels().then(response => this.courses = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Curso Eliminado', life: 5000});
+				this.$toast.add({severity:'warn', summary: 'Exito', detail: 'Curso Eliminado', life: 5000});
+				this.getCourses();
+				this.deleteLevelDialog = false;
 				}
 			});
-			this.deleteLevelDialog = false;
-			this.$store.dispatch('getCourses');
-			this.course = {};
 
 		},
 		findIndexById(id) {
@@ -194,15 +199,6 @@ export default {
                 this.selectedGrade = null;
             }
         },
-		paymentDate(date){
-			this.paymentDate = date;
-		}
-    },
-    computed: {
-        ...mapState({
-			grades: state => state.grade.grades,
-			courses: state => state.course.courses
-		}),
     },
 }
 </script>
