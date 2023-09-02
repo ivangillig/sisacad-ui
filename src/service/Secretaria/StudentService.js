@@ -34,3 +34,8 @@ export const getPaymentsByStudent = async (studentId) => {
     const response = await clienteAxios.get(`/api/pagos-completos/payments_by_student/?student_id=${studentId}`);
     return response;
 }
+
+export const getCurrentCourse = async (studentId) => {
+    const response = await clienteAxios.get(`/api/secretaria/curso_alumno/current_course/${studentId}/`);
+    return response;
+}

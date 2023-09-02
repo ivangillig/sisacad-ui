@@ -1,4 +1,5 @@
 import AdminService from '../../src/service/Secretaria/AdminService';
+import CountryService from '../../src/service/CountryService';
 
 const state = {
     personData: null,
@@ -9,6 +10,15 @@ const getters = {
 };
 
 const actions = {
+    async fetchCountries({ commit }) {
+        try {
+            let service = new CountryService();
+            const response = await service.getCountries();
+            commit('SET_COUNTRIES', response);
+        } catch (error) {
+            console.error('Error al obtener los países:', error);
+        }
+    },
     // eslint-disable-next-line no-unused-vars
     async fetchPersonByDNI({ commit }, dni) {
         const service = new AdminService();
@@ -31,6 +41,9 @@ const mutations = {
     },
     CLEAR_PERSON_DATA(state) {
         state.personData = {};
+    },
+    SET_COUNTRIES(state, countries) {
+        state.countries = countries;
     },
 };
 

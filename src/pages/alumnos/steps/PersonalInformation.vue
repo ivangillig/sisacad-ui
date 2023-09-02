@@ -205,7 +205,12 @@ export default {
         ...mapState('student', ['student', 'countries']),
         },
     methods: {
-        ...mapActions('student', ['fetchCountries', 'checkStudentByDNI', 'updatePersonalInfo', 'clearStudent']),
+        ...mapActions({
+            checkStudentByDNI: 'student/checkStudentByDNI',
+            updatePersonalInfo: 'student/updatePersonalInfo',
+            clearStudent: 'student/clearStudent',
+            fetchCountries: 'person/fetchCountries'
+        }),
         handleInputChange(event) {
             const fieldName = event.target.id;
             let value;

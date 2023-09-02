@@ -74,8 +74,9 @@
 
 					<Column headerStyle="min-width:10rem;">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editStudent(slotProps.data)" />
-							<Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteStudent(slotProps.data)" />
+							<Button icon="pi pi-pencil" v-tooltip.top="'Editar alumno'" class="p-button-rounded p-button-success mr-2" @click="editStudent(slotProps.data)" />
+							<Button icon="pi pi-trash" v-tooltip.top="'Eliminar alumno'" class="p-button-rounded p-button-warning mt-2 mr-2" @click="confirmDeleteStudent(slotProps.data)" />
+							<Button icon="pi pi-file-pdf" v-tooltip.top="'Certicado de alumno regular'" class="p-button-rounded p-button-info mt-2" @click="newRegularStudentCertificate(slotProps.data)" />
 						</template>
 					</Column>
 				</DataTable>
@@ -104,6 +105,28 @@
 							</template>
 						</Dropdown>
 					</div>
+				</Dialog>
+
+				<Dialog v-model:visible="regularStudentDialog" :style="{width: '450px'}" header="Certificado de alumno regular" :modal="true" class="p-fluid">
+					<div class="field">
+						<label for="name">Nombre completo</label>
+						<InputText class="w-full" :value="fullName" disabled />
+					</div>
+
+					<div class="field">
+						<label for="doc_number">Nro de documento</label>
+						<InputText class="w-full" v-model="student.doc_number" disabled />
+					</div>
+
+					<div class="field">
+						<label for="name">Curso actual</label>
+						<InputText class="w-full" :value="currentCourseDescription" disabled />
+					</div>
+
+					<template #footer>
+						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
+						<Button label="Generar" icon="pi pi-check" class="p-button-text" @click="newCertificate(student.id)" />
+					</template>
 				</Dialog>
 
 				<Dialog v-model:visible="deleteStudentDialog" :style="{width: '450px'}" header="Confirmar" :modal="true">
@@ -137,15 +160,16 @@
 import {FilterMatchMode} from 'primevue/api';
 import studentsApi from '../../service/Secretaria/AdminService';
 import { GENDER_OPTIONS } from '../../service/Constants/Utils';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
 	data() {
 		return {
 			students: null,
 			studentDialog: false,
+			regularStudentDialog: false,
 			deleteStudentDialog: false,
 			deleteStudentsDialog: false,
-			student: {},
 			selectedStudents: null,
 			filters: {},
 			submitted: false,
@@ -169,7 +193,15 @@ export default {
 
 		this.studentsApi.getStudents().then(data => this.students = data);
 	},
+    computed: {
+        ...mapState('student', ['student', 'currentCourse']),
+		...mapGetters('student', ['fullName', 'currentCourseDescription'])
+    },
 	methods: {
+        ...mapActions({
+			setStudentData: 'student/setStudentData',
+			getCurrentCourseByStudent: 'student/getCurrentCourseByStudent'
+		}),
 		getGenderLabel(genderValue) {
 			let gender = this.genderOptions.find(g => g.value === genderValue.toString());
 			return gender ? gender.label : 'Desconocido';
@@ -177,13 +209,25 @@ export default {
 		openNew() {
 			this.$router.replace({ path: "/alumnos/formulario" });
 		},
+		newRegularStudentCertificate(student) {
+			this.setStudentData(student);
+
+			if(student && student.id){
+				this.getCurrentCourseByStudent(student.id);
+			}
+			this.regularStudentDialog = true;
+		},
+		newCertificate() {
+			if (this.student && this.currentCourse){
+				console.log('creando certificado')
+			}
+		},
 		hideDialog() {
 			this.studentDialog = false;
 			this.submitted = false;
 		},
 		editStudent(student) {
-			this.$store.commit('student/setStudentData', {...student})
-
+			this.setStudentData(student);
 			this.$router.replace({ path: '/alumnos/formulario'});
 		},
 		confirmDeleteStudent(student) {
