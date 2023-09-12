@@ -115,7 +115,7 @@
 
 					<div class="field">
 						<label for="doc_number">Nro de documento</label>
-						<InputText class="w-full" v-model="student.doc_number" disabled />
+						<InputText class="w-full" :value="studentDocument" disabled />
 					</div>
 
 					<div class="field">
@@ -166,6 +166,7 @@ export default {
 	data() {
 		return {
 			students: null,
+			student: {},
 			studentDialog: false,
 			regularStudentDialog: false,
 			deleteStudentDialog: false,
@@ -195,7 +196,7 @@ export default {
 	},
     computed: {
         ...mapState('student', ['student', 'currentCourse']),
-		...mapGetters('student', ['fullName', 'currentCourseDescription'])
+		...mapGetters('student', ['fullName', 'currentCourseDescription', 'studentDocument'])
     },
 	methods: {
         ...mapActions({

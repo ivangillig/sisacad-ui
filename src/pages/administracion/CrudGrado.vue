@@ -243,7 +243,7 @@ export default {
 					this.SecretaryService.updateGrade(this.grade.id, this.grade).then(data => {
 						if(data.status === 200){
 							this.SecretaryService.getGrades().then(response => this.grades = response.data);
-							this.$toast.add({severity:'success', summary: 'Exito', detail: 'Grado actualizado!', life: 3000});
+							this.$toast.add({severity:'success', summary: 'Exito', detail: 'Grado actualizado correctamente', life: 3000});
 						}
 						if(data.status === 400){
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
@@ -257,7 +257,7 @@ export default {
 							this.SecretaryService.getGrades().then(response => {
 								if(response.status === 200){
 									this.grades = response.data;
-									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Año creado correctamente!', life: 5000});
+									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Grado creado correctamente!', life: 5000});
 								}
 							})
 						}

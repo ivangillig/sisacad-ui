@@ -71,7 +71,7 @@
 					</Column>
 				</DataTable>
 
-				<Dialog v-model:visible="divisionDialog" :style="{width: '450px'}" header="Detalles del division" :modal="true" class="p-fluid">
+				<Dialog v-model:visible="divisionDialog" :style="{width: '450px'}" header="Detalles de la division" :modal="true" class="p-fluid">
 					<!-- <img :src="'images/division/' + division.image" :alt="division.image" v-if="division.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" /> -->
 					<div class="field">
 						<label for="name">Nombre</label>
@@ -175,7 +175,7 @@ export default {
 					this.AdminService.updateDivision(this.division.id, this.division).then(data => {
 						if(data.status === 200){
 							this.AdminService.getDivisions().then(response => this.divisions = response.data);
-							this.$toast.add({severity:'success', summary: 'Exito', detail: 'División actualizada!', life: 3000});
+							this.$toast.add({severity:'success', summary: 'Exito', detail: 'División actualizada correctamente', life: 3000});
 						}
 						if(data.status === 400){
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
@@ -211,7 +211,7 @@ export default {
 				if(data.status === 204){
 
 				this.AdminService.getDivisions().then(response => this.divisions = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'División Eliminada', life: 5000});
+				this.$toast.add({severity:'success', summary: 'Exito', detail: 'División eliminada con exito', life: 5000});
 				}
 			});
 			

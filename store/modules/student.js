@@ -34,6 +34,12 @@ const getters = {
         if (state.currentCourse?.division) parts.push(`"${state.currentCourse.division}"`);
         if (state.currentCourse?.level) parts.push(state.currentCourse.level);
         return parts.join(' - ');
+    },
+    studentDocument: (state) => {
+        if (state.student && typeof state.student.doc_number === 'string' && state.student.doc_number.length === 8) {
+            return state.student.doc_number.slice(0, 2) + '.' + state.student.doc_number.slice(2, 5) + '.' + state.student.doc_number.slice(5, 8);
+        }
+        return state.student.doc_number;
     }
 };
 

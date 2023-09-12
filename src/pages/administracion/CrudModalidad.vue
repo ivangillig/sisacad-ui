@@ -55,7 +55,7 @@
 							</div>
 						</template>
 					</Column>
-					
+
 					<Column field="created_at" header="Fecha Creado" headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">Fecha Creado</span>
@@ -71,7 +71,7 @@
 					</Column>
 				</DataTable>
 
-				<Dialog v-model:visible="specialityDialog" :style="{width: '450px'}" header="Detalles del speciality" :modal="true" class="p-fluid">
+				<Dialog v-model:visible="specialityDialog" :style="{width: '450px'}" header="Detalles de la modalidad" :modal="true" class="p-fluid">
 					<!-- <img :src="'images/speciality/' + speciality.image" :alt="speciality.image" v-if="speciality.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" /> -->
 					<div class="field">
 						<label for="name">Nombre</label>
@@ -86,7 +86,7 @@
 							<Dropdown id="state" v-model="speciality.state" :options="states_list" optionLabel="label" optionValue="value"
 							placeholder="Selecciona uno"></Dropdown>
 					</div>
-					
+
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
 						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveSpeciality" />
@@ -174,13 +174,12 @@ export default {
 					this.AdminService.updateSpeciality(this.speciality.id, this.speciality).then(data => {
 						if(data.status === 200){
 							this.AdminService.getSpecialities().then(response => this.specialities = response.data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Modalidad actualizada!', life: 3000});
+							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Modalidad actualizada correctamente', life: 3000});
 						}
 						if(data.status === 400){
 							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
 						}
 					});
-			
 				}
 				else {
 					//this.speciality.state = this.speciality.state ? this.speciality.state.value : 'Activo';
@@ -214,10 +213,10 @@ export default {
 			this.AdminService.deleteSpeciality(this.speciality.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getSpecialities().then(response => this.specialities = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Modalidad Eliminada', life: 5000});
+				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Modalidad eliminada con exito', life: 5000});
 				}
 			});
-			
+
 			this.deleteSpecialityDialog = false;
 			this.speciality = {};
 

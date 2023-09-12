@@ -71,7 +71,7 @@
 					</Column>
 				</DataTable>
 
-				<Dialog v-model:visible="levelDialog" :style="{width: '450px'}" header="Detalles del level" :modal="true" class="p-fluid">
+				<Dialog v-model:visible="levelDialog" :style="{width: '450px'}" header="Detalles del nivel" :modal="true" class="p-fluid">
 					<!-- <img :src="'images/level/' + level.image" :alt="level.image" v-if="level.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" /> -->
 					<div class="field">
 						<label for="name">Nombre</label>

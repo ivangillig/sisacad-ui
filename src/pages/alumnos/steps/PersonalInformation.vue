@@ -35,7 +35,7 @@
 
                 <div class="field col-12 md:col-3">
                     <span class="label-modified">
-                        <Dropdown id="nationality" v-model="student.nationality" :options="countries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" :editable="true" @change="handleDropdownChange('nationality', $event)"></Dropdown>
+                        <Dropdown id="nationality" v-model="student.nationality" :options="filteredCountries" optionLabel="name" optionValue="code" placeholder="País de nacimiento" :editable="true" @change="handleDropdownChange('nationality', $event)"></Dropdown>
                         <label for="nationality">Nacionalidad</label>
                     </span>
                 </div>
@@ -193,16 +193,17 @@ export default {
     computed: {
         filteredCountries() {
             if (!this.searchQuery) {
-                return this.$store.state.student.countries;
+                return this.countries;
             }
             else {
                 const query = this.searchQuery.toLowerCase();
-                return this.$store.state.student.countries.filter(country =>
+                return this.countries.filter(country =>
                     country.name.toLowerCase().startsWith(query)
                 );
             }
         },
-        ...mapState('student', ['student', 'countries']),
+        ...mapState('student', ['student']),
+        ...mapState('person', ['countries']),
         },
     methods: {
         ...mapActions({

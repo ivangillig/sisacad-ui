@@ -133,7 +133,7 @@
         </div>
     </ScrollPanel>
         <div class="grid grid-nogutter justify-content-between">
-            <Button label="Atrás" @click="prevPage()" icon="pi pi-angle-left"></Button>
+            <Button label="Anterior" @click="prevPage()" icon="pi pi-angle-left"></Button>
             <Button :label="student.id ? 'Guardar cambios' : 'Registrar Alumno'" @click="complete()" icon="pi pi-check" icon-pos="right" class="p-button-success"></Button>
         </div>
 </div>
