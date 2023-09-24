@@ -239,7 +239,7 @@ export default {
 			this.studentsApi.deleteStudent(this.student.id).then(data => {
 				if(data.status === 204){
 					this.studentsApi.getStudents().then(data => this.students = data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Alumno eliminado', life: 5000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Alumno eliminado', life: 5000});
 				}
 			});
 
@@ -271,7 +271,7 @@ export default {
 			this.studentsApi.deleteMultipleStudents(studentsList).then(data => {
 				if(data.status === 204){
 					this.studentsApi.getStudents().then(response => this.students = response.data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Los alumnos fueron eliminadas correctamente', life: 4000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Los alumnos fueron eliminadas correctamente', life: 4000});
 					this.deleteStudentsDialog = false;
 					this.selectedStudents = null;
 				}

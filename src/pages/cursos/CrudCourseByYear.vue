@@ -49,7 +49,7 @@
 
 					<div class="field">
                         <label for="year">Año</label>
-						<Calendar v-model="courseYear" view="year" dateFormat="yy" required="true" autofocus
+						<Calendar v-model="courseYear" view="year" :minDate="minDate" :maxDate="maxDate" dateFormat="yy" required="true" autofocus
 							:class="{'p-invalid': submitted && !courseYear}"
 							@keydown.enter="saveGrade" />
 							<small class="p-invalid" v-if="submitted && !courseYear">El año es obligatorio.</small>
@@ -88,6 +88,7 @@
 import {FilterMatchMode} from 'primevue/api';
 import AdminService from '../../service/Secretaria/AdminService';
 import { mapState, mapActions } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
 	data() {
@@ -110,6 +111,9 @@ export default {
 	created() {
 		this.AdminService = new AdminService();
 		this.initFilters();
+
+        this.minDate = dayjs('2022-01-01').toDate();
+        this.maxDate = dayjs('2024-01-01').toDate();
 	},
 	mounted() {
 		this.getCourses();
@@ -165,7 +169,7 @@ export default {
 			this.AdminService.deleteCourse(this.course.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getLevels().then(response => this.courses = response.data);
-				this.$toast.add({severity:'warn', summary: 'Exito', detail: 'Curso Eliminado', life: 5000});
+				this.$toast.add({severity:'info', summary: 'Exito', detail: 'Curso Eliminado', life: 5000});
 				this.getCourses();
 				this.deleteLevelDialog = false;
 				}
@@ -182,9 +186,6 @@ export default {
 			}
 			return index;
 		},
-		// confirmDeleteSelected() {
-		// 	this.deleteLevelsDialog = true;
-		// },
 		initFilters() {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},

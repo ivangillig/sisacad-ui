@@ -300,7 +300,7 @@ export default {
 			this.SecretaryService.deleteGrade(this.grade.id).then(data => {
 				if(data.status === 204){
 				this.SecretaryService.getGrades().then(response => this.grades = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Grado eliminado', life: 5000});
+				this.$toast.add({severity:'info', summary: 'Exito', detail: 'Grado eliminado', life: 5000});
 				}
 			});
 
@@ -318,7 +318,7 @@ export default {
 			return index;
 		},
 		exportCSV() {
-			//this.$refs.dt.exportCSV();
+			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
 			this.deleteGradesDialog = true;
@@ -333,7 +333,7 @@ export default {
 			this.SecretaryService.deleteMultipleGrades(gradeList).then(data => {
 				if(data.status === 204){
 					this.SecretaryService.getGrades().then(response => this.grades = response.data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Los grados fueron eliminados correctamente', life: 4000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Los grados fueron eliminados correctamente', life: 4000});
 					this.deleteGradesDialog = false;
 					this.selectedGrades = null;
 				}

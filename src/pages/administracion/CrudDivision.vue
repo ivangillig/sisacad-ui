@@ -211,7 +211,7 @@ export default {
 				if(data.status === 204){
 
 				this.AdminService.getDivisions().then(response => this.divisions = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'División eliminada con exito', life: 5000});
+				this.$toast.add({severity:'info', summary: 'Exito', detail: 'División eliminada con exito', life: 5000});
 				}
 			});
 			
@@ -230,7 +230,7 @@ export default {
 			return index;
 		},
 		exportCSV() {
-			//this.$refs.dt.exportCSV();
+			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
 			this.deleteDivisionsDialog = true;
@@ -245,7 +245,7 @@ export default {
 			this.AdminService.deleteMultipleDivisions(divisionList).then(data => {
 				if(data.status === 204){
 					this.AdminService.getDivisions().then(response => this.divisions = response.data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Las divisiones fueron eliminadas correctamente', life: 4000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Las divisiones fueron eliminadas correctamente', life: 4000});
 					this.deleteDivisionsDialog = false;
 					this.selectedDivisions = null;
 				}

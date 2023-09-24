@@ -164,38 +164,49 @@ export default {
 			this.levelDialog = false;
 			this.submitted = false;
 		},
-		saveLevel() {
+		async saveLevel() {
 			this.submitted = true;
 			if (this.level.name.trim()) {
 				if (this.level.id) {
 					this.level.state = this.level.state.value ? this.level.state.value: this.level.state;
-					this.levels[this.findIndexById(this.level.id)] = this.level;
 
 					this.AdminService.updateLevel(this.level.id, this.level).then(data => {
-						if(data.status === 200){
+						if (data.status === 200) {
 							this.AdminService.getLevels().then(response => this.levels = response.data);
-							this.$toast.add({severity:'success', summary: 'Exitoso', detail: 'Nivel actualizado correctamente', life: 3000});
-						}
-						if(data.status === 400){
-							this.$toast.add({severity:'error', summary: 'Hubo un error', detail: 'Intente nuevamente...', life: 3000});
-						}
+							this.$toast.add({
+								severity: 'success',
+								summary: 'Exitoso',
+								detail: 'Nivel actualizado correctamente',
+								life: 3000
+							});
+							this.levels[this.findIndexById(this.level.id)] = this.level;
+						}}
+					).catch(error => {
+						let errorMessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : 'Intente nuevamente...';
+							this.$toast.add({
+								severity: 'error',
+								summary: 'Hubo un error',
+								detail: errorMessage,
+								life: 3000
+							});
 					});
-
 				}
 				else {
-					//this.level.state = this.level.state ? this.level.state.value : 'Activo';
-					this.levels.push(this.level);
-
-					this.AdminService.newLevel(this.level).then(data => {
-						if(data.status === 201){
-							this.AdminService.getLevels().then(response => {
-								if(response.status === 200){
-									this.levels = response.data;
-									this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
-								}
-							})
+					try {
+						const data = await this.AdminService.newLevel(this.level);
+						if (data.status === 201) {
+							const response = await this.AdminService.getLevels();
+							if (response.status === 200) {
+								this.levels.push(this.level);
+								this.levels = response.data;
+								this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel creado correctamente!', life: 5000});
+							}
 						}
-					});
+					} catch (error) {
+						if (error && error.response && error.response.data && error.response.data.message) {
+							this.$toast.add({ severity: 'error', summary: 'Error', detail: error.response.data.message, life: 5000 });
+						}
+					}
 				}
 				this.levelDialog = false;
 				this.level = {};
@@ -214,7 +225,7 @@ export default {
 			this.AdminService.deleteLevel(this.level.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getLevels().then(response => this.levels = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Nivel eliminado correctamente', life: 5000});
+				this.$toast.add({severity:'info', summary: 'Exito', detail: 'Nivel eliminado correctamente', life: 5000});
 				}
 			});
 
@@ -233,7 +244,7 @@ export default {
 			return index;
 		},
 		exportCSV() {
-			//this.$refs.dt.exportCSV();
+			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
 			this.deleteLevelsDialog = true;
@@ -248,7 +259,7 @@ export default {
 			this.AdminService.deleteMultipleLevels(levelList).then(data => {
 				if(data.status === 204){
 					this.AdminService.getLevels().then(response => this.levels = response.data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Los niveles fueron eliminados correctamente', life: 4000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Los niveles fueron eliminados correctamente', life: 4000});
 					this.deleteLevelsDialog = false;
 					this.selectedLevels = null;
 				}

@@ -213,7 +213,7 @@ export default {
 			this.AdminService.deleteSpeciality(this.speciality.id).then(data => {
 				if(data.status === 204){
 				this.AdminService.getSpecialities().then(response => this.specialities = response.data);
-				this.$toast.add({severity:'success', summary: 'Exito', detail: 'Modalidad eliminada con exito', life: 5000});
+				this.$toast.add({severity:'info', summary: 'Exito', detail: 'Modalidad eliminada con exito', life: 5000});
 				}
 			});
 
@@ -232,7 +232,7 @@ export default {
 			return index;
 		},
 		exportCSV() {
-			//this.$refs.dt.exportCSV();
+			this.$refs.dt.exportCSV();
 		},
 		confirmDeleteSelected() {
 			this.deleteSpecialitiesDialog = true;
@@ -247,7 +247,7 @@ export default {
 			this.AdminService.deleteMultipleSpecialities(specialityList).then(data => {
 				if(data.status === 204){
 					this.AdminService.getSpecialities().then(response => this.specialities = response.data);
-					this.$toast.add({severity:'success', summary: 'Exito', detail: 'Las modalidades fueron eliminadas correctamente', life: 4000});
+					this.$toast.add({severity:'info', summary: 'Exito', detail: 'Las modalidades fueron eliminadas correctamente', life: 4000});
 					this.deleteSpecialitiesDialog = false;
 					this.selectedSpecialities = null;
 				}
