@@ -201,7 +201,8 @@ export default {
 	methods: {
         ...mapActions({
 			setStudentData: 'student/setStudentData',
-			getCurrentCourseByStudent: 'student/getCurrentCourseByStudent'
+			getCurrentCourseByStudent: 'student/getCurrentCourseByStudent',
+			newRegularCertificate: 'student/newRegularCertificate'
 		}),
 		getGenderLabel(genderValue) {
 			let gender = this.genderOptions.find(g => g.value === genderValue.toString());
@@ -218,13 +219,18 @@ export default {
 			}
 			this.regularStudentDialog = true;
 		},
-		newCertificate() {
+		async newCertificate() {
 			if (this.student && this.currentCourse){
-				console.log('creando certificado')
+				const result = await this.newRegularCertificate()
+				if (result) {
+					this.$toast.add({ severity: 'success', summary: 'Exito', detail: result.data.message, life: 5000 });
+					this.hideDialog();
+				}
 			}
 		},
 		hideDialog() {
 			this.studentDialog = false;
+			this.regularStudentDialog = false;
 			this.submitted = false;
 		},
 		editStudent(student) {

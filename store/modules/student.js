@@ -1,5 +1,5 @@
 import adminService from '../../src/service/Secretaria/AdminService';
-import { getCurrentCourse } from '../../src/service/Secretaria/StudentService';
+import { getCurrentCourse, generateRegularCertificate } from '../../src/service/Secretaria/StudentService';
 
 const state = {
     student: {
@@ -71,6 +71,7 @@ const actions = {
 
             let courseData = response.data.course;
             let course = {
+                id: courseData.id,
                 academic_year: courseData.academic_year,
                 name: courseData.grade.name,
                 division: courseData.grade.division,
@@ -81,6 +82,25 @@ const actions = {
             commit('SET_CURRENT_COURSE_DATA', course);
         } catch (error) {
             commit('CLEAR_CURRENT_COURSE_DATA');
+        }
+    },
+    async newRegularCertificate({ commit, state }) {
+        let formData = new FormData();
+
+        formData.append('student_id', state.student.id);
+        formData.append('currentCourse', state.currentCourse.id);
+
+        try {
+            const response = await generateRegularCertificate(formData);
+            if (response.status === 200){
+                commit('clearStudent');
+                commit('CLEAR_CURRENT_COURSE');
+                return response;
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data && error.response.data.error) {
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: error.response.data.error, life: 5000 });
+            }
         }
     },
     setStudentData({ commit }, student) {
@@ -109,6 +129,9 @@ const mutations = {
     },
     clearStudent(state) {
         state.student = {};
+    },
+    CLEAR_CURRENT_COURSE(state) {
+        state.currentCourse = null;
     },
     SET_CURRENT_COURSE_DATA (state, payload) {
         state.currentCourse = { ...state.currentCourse, ...payload}

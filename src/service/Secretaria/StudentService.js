@@ -30,6 +30,11 @@ export const createNewPaymentAndPaymentStudent = async (formData) => {
     return response;
 }
 
+export const generateRegularCertificate = async (formData) => {
+    const response = await clienteAxios.post('/api/secretaria/alumno/generate_regular_certificate/', formData);
+    return response;
+}
+
 export const getPaymentsByStudent = async (studentId) => {
     const response = await clienteAxios.get(`/api/pagos-completos/payments_by_student/?student_id=${studentId}`);
     return response;
