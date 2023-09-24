@@ -42,34 +42,38 @@ export default {
                         {
                             label: 'ABM Secretaría', icon: 'pi pi-fw pi-th-large',
                             items: [
-						{label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles'},
-						{label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones'},
-						{label: 'Modalidades', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/modalidades'},
-                        {label: 'Años/Grados', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/grados'},
+                                { label: 'Niveles', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/niveles' },
+                                { label: 'Divisiones', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/divisiones' },
+                                { label: 'Modalidades', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/modalidades' },
+                                { label: 'Años/Grados', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/grados' },
                             ]
                         },
                         {
                             label: 'Cuotas/Matriculas', icon: 'pi pi-fw pi-money-bill',
                             items: [
-						{label: 'Registrar pago', icon: 'pi pi-fw pi-plus-circle', to: '/administracion/pagos'},
+                                { label: 'Registrar pago', icon: 'pi pi-fw pi-plus-circle', to: '/administracion/pagos' },
                             ]
                         },
-						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
-						//{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
+                        {
+                            label: 'Cargos docentes', icon: 'pi pi-fw pi-fw pi-briefcase',
+                            items: [
+                                { label: 'Alta/baja de cargos', icon: 'pi pi-fw pi-inbox' },
+                                { label: 'Certificación de servicios', icon: 'pi pi-file-pdf' },
+                                { label: 'Prestación de servicios', icon: 'pi pi-file-pdf' },
+                            ]
+                        },
 					]
                 },
                 {
                     label: 'Alumnos',
                     items: [
                         {
-                            label: 'ABM Alumnos', icon: 'pi pi-fw pi-user-edit',
+                            label: 'Gestión de Alumnos', icon: 'pi pi-fw pi-user-edit',
                             items: [
-						{label: 'Listado Alumnos', icon: 'pi pi-fw pi-filter-fill', to: '/alumnos'},
-						//{label: 'Nuevo Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/nuevoalumno'},
+                                { label: 'Listado Alumnos', icon: 'pi pi-fw pi-users', to: '/alumnos' },
+                                { label: 'Tutores', icon: 'pi pi-fw pi-users' },
                             ]
                         },
-						//{label: 'Pago de cuota', icon: 'pi pi-fw pi-money-bill', to: '/alumnos/pagocuota'},
-						//{label: 'Constancias alumno regular', icon: 'pi pi-fw pi-file-o', to: '/alumnos/pagocuota'},
 					]
                 },
                 {
@@ -82,10 +86,25 @@ export default {
                             label: 'Listado de cursos', icon: 'pi pi-fw pi-filter-fill', to: '/administracion/curso_lectivo'
                         },
                         {
-                            label: 'Alta de alumno en curso', icon: 'pi pi-fw pi-user-edit', to: '/asociar-alumnos'
+                            label: 'Alta de alumno en curso', icon: 'pi pi-fw pi-plus-circle', to: '/asociar-alumnos'
                         },
                     ]
                 }]
+                },
+                {
+                    label: 'Docentes',
+                    icon: 'pi pi-fw pi-users',
+                    items: [
+                        {
+                            label: 'Gestión de Docentes', icon: 'pi pi-fw pi-users',
+                            items: [
+                                {label: 'Listado Docentes', icon: 'pi pi-fw pi-filter-fill'},
+                                {label: 'Recibos de haberes', icon: 'pi pi-fw pi-folder'},
+                                {label: 'Licencias', icon: 'pi pi-fw pi-clock'},
+                                {label: 'Estadísticas', icon: 'pi pi-fw pi-chart-line'},
+                            ]
+                        },
+                    ]
                 },
             ]
         }
