@@ -62,7 +62,7 @@ const actions = {
             const response = await adminService.getPerson(dni);
             return response.data.success;
         } catch (error) {
-          // Manejar errores
+          // error handling
         }
     },
     async getCurrentCourseByStudent({commit}, id) {

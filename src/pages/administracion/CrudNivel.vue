@@ -147,13 +147,7 @@ export default {
 		this.initFilters();
 	},
 	mounted() {
-
-		// if(!this.$store.state.isAuthenticated) {
-		// 	this.$router.replace({ name: "Login" });
-		// }
-
 		this.AdminService.getLevels().then(response => this.levels = response.data);
-
 	},
 	methods: {
 		openNew() {

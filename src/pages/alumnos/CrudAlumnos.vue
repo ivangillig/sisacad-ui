@@ -108,22 +108,26 @@
 				</Dialog>
 
 				<Dialog v-model:visible="regularStudentDialog" :style="{width: '450px'}" header="Certificado de alumno regular" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">Nombre completo</label>
-						<InputText class="w-full" :value="fullName" disabled />
-					</div>
+					<ProgressBar  v-if="loading" style="height: 6px" mode="indeterminate"></ProgressBar>
 
-					<div class="field">
-						<label for="doc_number">Nro de documento</label>
-						<InputText class="w-full" :value="studentDocument" disabled />
-					</div>
+					<template v-else>
+						<div class="field">
+							<label for="name">Nombre completo</label>
+							<InputText class="w-full" :value="fullName" disabled />
+						</div>
 
-					<div class="field">
-						<label for="name">Curso actual</label>
-						<InputText class="w-full" :value="currentCourseDescription" disabled />
-					</div>
+						<div class="field">
+							<label for="doc_number">Nro de documento</label>
+							<InputText class="w-full" :value="studentDocument" disabled />
+						</div>
 
-					<template #footer>
+						<div class="field">
+							<label for="name">Curso actual</label>
+							<InputText class="w-full" :value="currentCourseDescription" disabled />
+						</div>
+					</template>
+
+					<template v-if="!loading" #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
 						<Button label="Generar" icon="pi pi-check" class="p-button-text" @click="newCertificate(student.id)" />
 					</template>
@@ -165,6 +169,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
+			loading: false,
 			students: null,
 			student: {},
 			studentDialog: false,
@@ -220,9 +225,11 @@ export default {
 			this.regularStudentDialog = true;
 		},
 		async newCertificate() {
+			this.loading = true;
 			if (this.student && this.currentCourse){
 				const result = await this.newRegularCertificate()
 				if (result) {
+					this.loading = false;
 					this.$toast.add({ severity: 'success', summary: 'Exito', detail: result.data.message, life: 5000 });
 					this.hideDialog();
 				}

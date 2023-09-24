@@ -147,13 +147,7 @@ export default {
 		this.initFilters();
 	},
 	mounted() {
-
-		// if(!this.$store.state.isAuthenticated) {
-		// 	this.$router.replace({ name: "Login" });
-		// }
-
 		this.AdminService.getSpecialities().then(response => this.specialities = response.data);
-
 	},
 	methods: {
 		openNew() {
@@ -182,7 +176,6 @@ export default {
 					});
 				}
 				else {
-					//this.speciality.state = this.speciality.state ? this.speciality.state.value : 'Activo';
 					this.specialities.push(this.speciality);
 
 					this.AdminService.newSpeciality(this.speciality).then(data => {

@@ -193,10 +193,6 @@ export default {
 		this.SecretaryService.getDivisions().then(response => this.divisions = response.data);
 		this.SecretaryService.getSpecialities().then(response => this.specialities = response.data);
 
-		// if(!this.$store.state.isAuthenticated) {
-		// 	this.$router.replace({ name: "Login" });
-		// }
-
 		this.SecretaryService.getGrades().then(response => this.grades = response.data);
 	},
 	methods: {
