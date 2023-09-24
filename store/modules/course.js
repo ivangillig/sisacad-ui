@@ -16,10 +16,10 @@ const getters = {
 };
 
 const actions = {
-    async getCourses({ commit }) {
+    async getCourses({ commit }, year = null) {
         let service = new AdminService();
         try {
-            let response = await service.getCourses();
+            let response = await service.getCourses(year);
             let course = response.data.map(course => ({
                 id: course.id,
                 name: `${course.grade.name} "${course.grade.division}"${course.grade.speciality !== 'No aplica' ? ' - ' + course.grade.speciality : ''}`,

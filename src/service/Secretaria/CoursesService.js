@@ -1,7 +1,8 @@
 import clienteAxios from '../../config/axios';
 
-export const getCourses = async () => {
-  const response = await clienteAxios.get('/api/secretaria/curso/');
+export const getCourses = async (year) => {
+  const url = year ? `/api/secretaria/curso/?academic_year=${year}` : `/api/secretaria/curso/`
+  const response = await clienteAxios.get(url);
   return response;
 }
 

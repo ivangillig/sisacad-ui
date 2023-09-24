@@ -124,8 +124,8 @@ export default class AdminService {
     return await getPaymentsByStudent(studentId)
   }
 
-  async getCourses() {
-    return await getCourses();
+  async getCourses(year) {
+    return await getCourses(year);
   }
 
   async getCourse(id) {

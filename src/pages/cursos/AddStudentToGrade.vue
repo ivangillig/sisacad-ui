@@ -3,14 +3,18 @@
     <div class="col-12">
         <div class="card col-12 md:col-8 flex flex-col md:flex-row md:items-center">
             <div class="mr-4">
-                <h5>Curso lectivo {{ actualYear }}</h5>
-                <Dropdown class="w-full" v-model="selectedCourse" :options="courses" optionLabel="name"
-                    placeholder="Seleccione un curso" />
+                <h5>Año lectivo</h5>
+                <Calendar v-model="courseYear" view="year" placeholder="Seleccione un año" :minDate="minDate" :maxDate="maxDate" dateFormat="yy" required="true" autofocus />
+            </div>
+            <div class="mr-4">
+                <h5>Cursos </h5>
+                <Dropdown class="w-full" v-model="selectedCourse" :disabled="!courseYear" :options="courses" optionLabel="name"
+                    placeholder="Seleccione un curso" emptyMessage="No hay cursos para este año"/>
             </div>
             <div class="mr-4 mt-4 md:mt-0">
                 <h5>Alumno</h5>
                 <div class="filter-container">
-                    <AutoComplete class="mr-4" placeholder="Buscar" id="dd" :dropdown="true" :multiple="false"
+                    <AutoComplete class="mr-4" placeholder="Buscar" id="dd" :disabled="!selectedCourse" :dropdown="true" :multiple="false"
                         v-model="selectedStudent" :suggestions="autoFilteredValue" @complete="searchStudent($event)"
                         @select="onSelectStudent($event)" field="name" />
                     <Button label="Agregar alumno al curso" @click="nextPage()" icon="pi pi-angle-right" icon-pos="right" />
@@ -42,14 +46,18 @@
 
 import CourseStudentService from '../../service/Secretaria/CurseByYear';
 import { mapState, mapActions } from 'vuex';
+import dayjs from 'dayjs';
 
 export default {
     created(){
         this.courseStudentService = new CourseStudentService();
         this.actualYear = new Date().getFullYear();
+        //this.courseYear = new Date();
+        //this.$store.dispatch('course/getCourses', dayjs(this.courseYear).format('YYYY-01-01'));
     },
     data() {
         return {
+			courseYear: null,
             actualYear: null,
             selectedCourse: null,
             selectedStudent: null,
@@ -95,6 +103,12 @@ export default {
         },
     },
     watch: {
+        courseYear(newYear) {
+            if (newYear) {
+                const formattedYear = dayjs(newYear).format('YYYY-01-01');
+                this.$store.dispatch('course/getCourses', formattedYear);
+            }
+        },
         selectedCourse(course) {
             if(course) {
                 this.loadStudentsForCourse(course.id);
