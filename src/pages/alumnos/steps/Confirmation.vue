@@ -181,6 +181,7 @@ export default {
 
             if (this.student && !this.student.id) {
                 let user = { "email": this.student.email, "password1": this.student.doc_number.replaceAll('.', ''), "password2": this.student.doc_number.replaceAll('.', '') }
+                console.log(this.student)
                 this.AuthService.newUser(user).then(response => {
                     if (response.status === 201) {
                         this.student.user = response.data.id

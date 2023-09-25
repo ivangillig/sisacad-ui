@@ -1,7 +1,7 @@
 <template>
     <Toast/>
-    <div class="col-12">
-        <div class="card col-12 md:col-8 flex flex-col md:flex-row md:items-center">
+    <div class="col-24">
+        <div class="card col-24 md:col-24 flex flex-col md:flex-row md:items-center">
             <div class="mr-4">
                 <h5>Año lectivo</h5>
                 <Calendar v-model="courseYear" view="year" placeholder="Seleccione un año" :minDate="minDate" :maxDate="maxDate" dateFormat="yy" required="true" autofocus />

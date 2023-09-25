@@ -217,7 +217,7 @@ export default {
             let value;
 
             if (fieldName === 'birthday') {
-                value = dayjs(event.target.value).format('YYYY-DD-MM')
+                value = dayjs(event.target.value).format('YYYY-MM-DD')
             } else {
                 value = event.target.value;
             }

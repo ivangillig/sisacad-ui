@@ -129,7 +129,7 @@
 
 					<template v-if="!loading" #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Generar" icon="pi pi-check" class="p-button-text" @click="newCertificate(student.id)" />
+						<Button label="Generar" :disabled="!currentCourseDescription" icon="pi pi-check" class="p-button-text" @click="newCertificate(student.id)" />
 					</template>
 				</Dialog>
 

@@ -222,12 +222,12 @@ export default {
 				this.$toast.add({severity:'error', summary: 'Error', detail: 'El campo división es obligatorio', life: 3000});
 				return;
 			}
-
-			if (this.showSpecialitiesDropdown && this.grade.speciality === 0) {
-				this.grade.speciality = null;
-			}else if(!this.grade.speciality){
+			
+			if (this.showSpecialitiesDropdown && this.grade.speciality == null) {
 				this.$toast.add({severity:'error', summary: 'Error', detail: 'La modalidad es obligatoria', life: 3000});
 				return;
+			}else {
+				this.grade.speciality = 3;
 			}
 
 			this.submitted = true;
