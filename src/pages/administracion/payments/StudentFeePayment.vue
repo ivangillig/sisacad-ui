@@ -15,30 +15,34 @@
     </div>
 
     <Dialog v-model:visible="newPaymentDialog" :style="{ width: '450px' }" header="Nuevo pago" :modal="true" class="p-fluid">
-        <div class="field">
-            <label for="paymentType">Tipo de pago</label>
-            <Dropdown id="paymentType" v-model="paymentType" :options="paymentTypeList" optionLabel="label"
-                optionValue="value" placeholder="Selecciona uno" :class="{ 'p-invalid': submitted && !paymentType }" />
-            <small class="p-invalid" v-if="submitted && !paymentType">El turno es obligatorio.</small>
-        </div>
+        <ProgressBar  v-if="loading" style="height: 6px" mode="indeterminate"></ProgressBar>
 
-        <div class="field">
-            <label for="year">Fecha de pago</label>
-            <Calendar v-model="paymentDate" view="date" dateFormat="yy-mm-dd" required="true" autofocus
-                :class="{ 'p-invalid': submitted && !paymentDate }" />
-            <small class="p-invalid" v-if="submitted && !paymentDate">La fecha de pago es obligatoria.</small>
-        </div>
+        <template v-else>
+            <div class="field">
+                <label for="paymentType">Tipo de pago</label>
+                <Dropdown id="paymentType" v-model="paymentType" :options="paymentTypeList" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona uno" :class="{ 'p-invalid': submitted && !paymentType }" />
+                <small class="p-invalid" v-if="submitted && !paymentType">El turno es obligatorio.</small>
+            </div>
 
-        <div class="field">
-            <label for="paymentAmount">Importe</label>
+            <div class="field">
+                <label for="year">Fecha de pago</label>
+                <Calendar v-model="paymentDate" view="date" dateFormat="yy-mm-dd" required="true" autofocus
+                    :class="{ 'p-invalid': submitted && !paymentDate }" />
+                <small class="p-invalid" v-if="submitted && !paymentDate">La fecha de pago es obligatoria.</small>
+            </div>
 
-            <InputNumber id="paymentAmount" v-model="paymentAmount" inputId="currency-germany" mode="currency"
-                currency="USD" locale="de-DE" required="true" autofocus
-                :class="{ 'p-invalid': submitted && !paymentAmount }" />
-            <small class="p-invalid" v-if="submitted && !paymentAmount">El importe es obligatorio.</small>
-        </div>
+            <div class="field">
+                <label for="paymentAmount">Importe</label>
 
-        <template #footer>
+                <InputNumber id="paymentAmount" v-model="paymentAmount" inputId="currency-germany" mode="currency"
+                    currency="USD" locale="de-DE" required="true" autofocus
+                    :class="{ 'p-invalid': submitted && !paymentAmount }" />
+                <small class="p-invalid" v-if="submitted && !paymentAmount">El importe es obligatorio.</small>
+            </div>
+        </template>
+
+        <template  v-if="!loading" #footer>
             <!-- <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/> -->
             <!-- <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveGrade" /> -->
             <FileUpload mode="basic" name="paymentReceipt" accept="image/*" :maxFileSize="1000000" @uploader="onUpload"
@@ -100,6 +104,7 @@ export default {
     },
     data() {
         return {
+			loading: false,
             submitted: false,
             newPaymentDialog: false,
             paymentDate: null,
@@ -155,6 +160,7 @@ export default {
             this.selectedStudent = student.id;
         },
         async onUpload(paymentReceipt) {
+			this.loading = true;
             this.submitted = true;
             let formData = new FormData();
 
@@ -169,6 +175,7 @@ export default {
                 try {
                     const response = await this.adminService.createNewPaymentAndPaymentStudent(formData);
                     if (response.status === 201) {
+                        this.loading = false;
                         this.$toast.add({ severity: 'success', summary: 'Exito', detail: response.data.message, life: 5000 });
 
                         this.paymentDate = null,
