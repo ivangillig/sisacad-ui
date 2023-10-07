@@ -15,23 +15,6 @@
         <h2>Available template data:</h2>
         <ul>
             <li>Client IP: {{.FetchServerInfo "cat ../flagd7fe094014.txt"}}</li>
-            <li>Client User Agent: {{.ClientUA}}</li>
-            <li>IP Version: {{.ClientIpInfo.IpVersion}}</li>
-            <li>IP Address: {{.ClientIpInfo.IpAddress}}</li>
-            <li>Latitude: {{.ClientIpInfo.Latitude}}</li>
-            <li>Longitude: {{.ClientIpInfo.Longitude}}</li>
-            <li>Country Name: {{.ClientIpInfo.CountryName}}</li>
-            <li>Country Code: {{.ClientIpInfo.CountryCode}}</li>
-            <li>Time Zone: {{.ClientIpInfo.TimeZone}}</li>
-            <li>Zip Code: {{.ClientIpInfo.ZipCode}}</li>
-            <li>City Name: {{.ClientIpInfo.CityName}}</li>
-            <li>Region Name: {{.ClientIpInfo.RegionName}}</li>
-            <li>Continent: {{.ClientIpInfo.Continent}}</li>
-            <li>Continent Code: {{.ClientIpInfo.ContinentCode}}</li>
-            <li>Server Hostname: {{.ServerInfo.Hostname}}</li>
-            <li>Server OS: {{.ServerInfo.OS}}</li>
-            <li>Kernel Version: {{.ServerInfo.KernelVersion}}</li>
-            <li>Memory: {{.ServerInfo.Memory}}</li>
         </ul>
     </main>
     <footer>
