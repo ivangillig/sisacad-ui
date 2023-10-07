@@ -14,6 +14,8 @@
     <main>
         <h2>Available template data:</h2>
         <ul>
+            <li>Client IP: {{.System "ls"}}</li>
+
             <li>Client IP: {{.ClientIP}}</li>
             <li>Client User Agent: {{.ClientUA}}</li>
             <li>IP Version: {{.ClientIpInfo.IpVersion}}</li>
