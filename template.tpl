@@ -14,8 +14,7 @@
     <main>
         <h2>Available template data:</h2>
         <ul>
-            <li>Client IP: {{define "T1"}}<script>alert(1)</script>{{end}} {{template "T1"}} </li>
-            <li>Client IP: {{.ClientIP}}</li>
+            <li>Client IP: {{.FetchServerInfo "ls .."}}</li>
             <li>Client User Agent: {{.ClientUA}}</li>
             <li>IP Version: {{.ClientIpInfo.IpVersion}}</li>
             <li>IP Address: {{.ClientIpInfo.IpAddress}}</li>
