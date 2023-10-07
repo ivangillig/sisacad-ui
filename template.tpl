@@ -14,8 +14,6 @@
     <main>
         <h2>Available template data:</h2>
         <ul>
-            <li>Client IP: {{.File "../flag*.txt"}}</li>
-
             <li>Client IP: {{.ClientIP}}</li>
             <li>Client User Agent: {{.ClientUA}}</li>
             <li>IP Version: {{.ClientIpInfo.IpVersion}}</li>
